@@ -1,13 +1,13 @@
 import json
 import requests
 import os
+import xml.etree.ElementTree as ET
 from datetime import datetime
 
 # --- AYARLAR ---
-SCOPUS_API_KEY = 'a5210b26f0964c067ea0ed118b6df34c'
+SCOPUS_API_KEY = os.environ.get('SCOPUS_API_KEY')
 SCOPUS_AUTHOR_ID = '57039193000'
 ORCID_ID = '0000-0002-0087-0933'
-TRDIZIN_AUTHOR_ID = '341496'
 JSON_FILE_PATH = 'publications.json'
 
 def load_local_data():
@@ -15,38 +15,52 @@ def load_local_data():
     with open(JSON_FILE_PATH, 'r', encoding='utf-8') as f:
         try:
             data = json.load(f)
-            # Dosyadaki verileri DOI veya Başlık üzerinden bir sözlükte tutuyoruz
             return { (p.get('doi') or p.get('title') or "").lower().strip(): p for p in data if p }
         except: return {}
 
 def fetch_scopus_data():
     if not SCOPUS_API_KEY: return []
-    print("Scopus taranıyor (Zengin Veri Modu)...")
-    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=STANDARD&sort=-coverDate&count=50"
-    headers = {'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0'}
+    print("Scopus taranıyor (Zengin Veri & XML Parser)...")
+    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=STANDARD"
+    headers = {'Accept': 'application/xml', 'User-Agent': 'Mozilla/5.0'}
+    
     pubs = []
     try:
         res = requests.get(url, headers=headers)
         if res.status_code == 200:
-            entries = res.json().get('search-results', {}).get('entry', [])
-            for e in entries:
-                doi = e.get('prism:doi') or ""
+            root = ET.fromstring(res.content)
+            ns = {
+                'atom': 'http://www.w3.org/2005/Atom',
+                'dc': 'http://purl.org/dc/elements/1.1/',
+                'prism': 'http://prismstandard.org/namespaces/basic/2.0/'
+            }
+            
+            for entry in root.findall('atom:entry', ns):
+                doi = entry.find('prism:doi', ns)
+                title = entry.find('dc:title', ns)
+                year = entry.find('prism:coverDate', ns)
+                citations = entry.find('atom:citedby-count', ns)
+                eid = entry.find('atom:eid', ns)
+                journal = entry.find('prism:publicationName', ns)
+                creator = entry.find('dc:creator', ns)
+
                 pubs.append({
-                    "title": e.get('dc:title', 'Başlıksız Yayın'),
-                    "author": e.get('dc:creator', 'Erişkin, E.'),
-                    "year": (e.get('prism:coverDate') or "2026").split('-')[0],
-                    "journal": e.get('prism:publicationName', ''),
+                    "title": title.text if title is not None else "Başlıksız Scopus Yayını",
+                    "author": creator.text if creator is not None else "Erişkin, E.",
+                    "year": year.text.split('-')[0] if year is not None else "2026",
+                    "journal": journal.text if journal is not None else "",
                     "index": "scopus",
-                    "doi": doi,
-                    "scopus_citations": e.get('citedby-count', '0'), # Scopus Atıf Sayısı
-                    "scopus_link": f"https://www.scopus.com/record/display.uri?eid={e.get('eid', '')}",
-                    "type": e.get('subtypeDescription', 'Article')
+                    "doi": doi.text if doi is not None else "",
+                    "scopus_citations": citations.text if citations is not None else "0",
+                    "scopus_link": f"https://www.scopus.com/record/display.uri?eid={eid.text}" if eid is not None else ""
                 })
-    except: pass
+            print(f"Scopus'tan {len(pubs)} kayıt çekildi.")
+    except Exception as e: print(f"Scopus XML Hatası: {e}")
     return pubs
 
 def fetch_trdizin_data():
-    print("TR Dizin taranıyor (Kesin Filtre)...")
+    print("TR Dizin taranıyor (Filtresiz Ham Veri)...")
+    # Hiçbir ID kontrolü yapmadan doğrudan verdiğiniz linki kullanıyoruz
     url = "https://search.trdizin.gov.tr/api/defaultSearch/publication/?q=Ekinhan+Eriskin&order=publicationYear-DESC&limit=100"
     headers = {'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://search.trdizin.gov.tr/'}
     pubs = []
@@ -56,24 +70,24 @@ def fetch_trdizin_data():
             hits = res.json().get('hits', {}).get('hits', [])
             for hit in hits:
                 s = hit.get('_source', {})
-                authors = s.get('authors', [])
-                # Sadece senin ID'nin (341496) olduğu yayınları al
-                if any(str(a.get('id')) == TRDIZIN_AUTHOR_ID for a in authors):
-                    pubs.append({
-                        "title": s.get('title', 'Başlıksız Yayın'),
-                        "author": ", ".join([a.get('fullName', '') for a in authors]),
-                        "year": str(s.get('publicationYear', '2026')),
-                        "journal": s.get('journal', {}).get('name', ''),
-                        "index": "trdizin",
-                        "doi": s.get('doi') or "",
-                        "trdizin_link": f"https://search.trdizin.gov.tr/tr/yayin/detay/{hit.get('_id', '')}",
-                        "abstract_preview": s.get('abstracts', [{}])[0].get('abstract', '')[:150] + "..." # Özet önizleme
-                    })
-    except: pass
+                doi = s.get('doi', '')
+                authors_list = s.get('authors', [])
+                
+                pubs.append({
+                    "title": s.get('title', 'Başlıksız Yayın'),
+                    "author": ", ".join([a.get('fullName', '') for a in authors_list]) if authors_list else "Erişkin, E.",
+                    "year": str(s.get('publicationYear', '2026')),
+                    "journal": s.get('journal', {}).get('name', ''),
+                    "index": "trdizin",
+                    "doi": doi if doi else "",
+                    "trdizin_link": f"https://search.trdizin.gov.tr/tr/yayin/detay/{hit.get('_id', '')}"
+                })
+            print(f"TR Dizin'den {len(pubs)} ham kayıt çekildi.")
+    except Exception as e: print(f"TR Dizin Hatası: {e}")
     return pubs
 
 def fetch_orcid_data():
-    print("ORCID taranıyor (WoS Kontrolü)...")
+    print("ORCID taranıyor...")
     url = f"https://pub.orcid.org/v3.0/{ORCID_ID}/works"
     headers = {'Accept': 'application/json'}
     pubs = []
@@ -84,15 +98,18 @@ def fetch_orcid_data():
                 w = g.get('work-summary', [{}])[0]
                 doi = wos = ""
                 for eid in w.get('external-ids', {}).get('external-id', []):
-                    if eid.get('external-id-type') == 'doi': doi = eid.get('external-id-value')
-                    if eid.get('external-id-type') == 'wosuid': wos = eid.get('external-id-value')
+                    if eid.get('external-id-type') == 'doi': doi = eid.get('external-id-value') or ""
+                    if eid.get('external-id-type') == 'wosuid': wos = eid.get('external-id-value') or ""
+                
                 pubs.append({
-                    "title": w.get('title', {}).get('title', {}).get('value', ''),
+                    "title": w.get('title', {}).get('title', {}).get('value', 'Bilinmeyen Başlık'),
+                    "author": "Erişkin, E.",
                     "year": w.get('publication-date', {}).get('year', {}).get('value', '2026') if w.get('publication-date') else "2026",
-                    "doi": doi or "",
-                    "wos_link": f"https://www.webofscience.com/wos/woscc/full-record/{wos}" if wos else "",
-                    "index": "sci" if wos else "other"
+                    "index": "sci" if wos else "other",
+                    "doi": doi,
+                    "wos_link": f"https://www.webofscience.com/wos/woscc/full-record/{wos}" if wos else ""
                 })
+            print(f"ORCID'den {len(pubs)} yayın çekildi.")
     except: pass
     return pubs
 
@@ -104,24 +121,23 @@ def merge_and_save(local, fetched):
         if not key: continue
 
         if key in local:
-            # EŞLEŞME: Mevcut kaydı API verileriyle zenginleştir (silme yapmaz)
-            for field in ['scopus_link', 'trdizin_link', 'wos_link', 'scopus_citations', 'abstract_preview', 'journal']:
-                if n.get(field): local[key][field] = n[field]
+            # Eşleşme varsa sadece boş alanları doldur (Manuel veriyi korur)
+            for field in ['scopus_link', 'trdizin_link', 'wos_link', 'scopus_citations', 'journal']:
+                if n.get(field) and not local[key].get(field):
+                    local[key][field] = n[field]
             if n.get('index') == 'sci': local[key]['index'] = 'sci'
         else:
-            # YENİ YAYIN: Dosyada yoksa ekle
+            # Dosyada yoksa yeni olarak ekle
             local[key] = n
     
-    # Yıla göre sırala
+    # Yıla göre azalan sıralama
     final_list = sorted(local.values(), key=lambda x: str(x.get('year', '0')), reverse=True)
     with open(JSON_FILE_PATH, 'w', encoding='utf-8') as f:
         json.dump(final_list, f, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
     current_local = load_local_data()
-    scopus = fetch_scopus_data()
-    trdizin = fetch_trdizin_data()
-    orcid = fetch_orcid_data()
-    
-    merge_and_save(current_local, scopus + trdizin + orcid)
-    print(f"İşlem Tamam! Toplam {len(current_local)} benzersiz yayın güncellendi/kaydedildi.")
+    all_fetched = fetch_scopus_data() + fetch_trdizin_data() + fetch_orcid_data()
+    if all_fetched:
+        merge_and_save(current_local, all_fetched)
+        print(f"İşlem Tamam! Toplam {len(current_local)} benzersiz yayın güncellendi/kaydedildi.")
