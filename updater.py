@@ -28,7 +28,7 @@ def load_local_data():
 def fetch_scopus_data():
     print("Scopus verileri çekiliyor...")
     # count=200 ekledik: Varsayılan 25 sınırı yerine tek seferde 200 yayını çeker
-    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=COMPLETE&count=200"
+    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=COMPLETE&count=100"
     headers = {'Accept': 'application/json'}
     pubs = []
     if not SCOPUS_API_KEY:
