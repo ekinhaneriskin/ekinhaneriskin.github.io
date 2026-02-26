@@ -1,353 +1,123 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Ekinhan Erişkin | AI & Transportation</title>
-
     <link rel="icon" href="icon.ico" type="image/x-icon">
-
     
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:wght@700&family=Arizonia&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:wght@700&family=Arizonia&family=Lato&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-
-
     <style>
-
         :root {
-
             --accent-color: #4dabf7;
-
             --bg-color: #0d1117;
-
             --text-color: #c9d1d9;
-
             --card-bg: #161b22;
-
         }
-
         body, html {
-
-            margin: 0; padding: 0; height: 100%;
-
+            margin: 0; padding: 0;
             font-family: 'Inter', sans-serif;
-
             background-color: var(--bg-color); color: var(--text-color);
-
             scroll-behavior: smooth;
-
         }
-
         
-
+        /* Navigation & Header */
         header {
-
             position: absolute; width: 100%; padding: 30px 0;
-
-            display: flex; justify-content: center; gap: 30px; z-index: 10;
-
+            display: flex; justify-content: center; z-index: 1000;
+            transition: all 0.3s ease;
         }
-
+        nav { display: flex; gap: 50px; }
         header a { color: #fff; text-decoration: none; font-weight: 500; font-size: 1.05em; transition: color 0.3s; }
-
         header a:hover { color: var(--accent-color); }
 
+        /* Hamburger Icon */
+        .menu-icon {
+            display: none; cursor: pointer; font-size: 1.8em; color: #fff;
+            position: fixed; top: 20px; right: 30px; z-index: 1200;
+        }
 
+        /* Responsive Settings (Tablet & Mobile) */
+        @media (max-width: 768px) {
+            .menu-icon { display: block; }
+            #nav-menu {
+                display: none; flex-direction: column; position: fixed;
+                top: 0; left: 0; width: 100%; height: 100vh;
+                background-color: rgba(13, 17, 23, 0.98); justify-content: center;
+                align-items: center; z-index: 1100; gap: 40px !important;
+                backdrop-filter: blur(10px);
+            }
+            #nav-menu.active { display: flex; }
+            #nav-menu a { font-size: 1.5em; }
+            header { position: static; padding: 0; }
+            .hero h1 { font-size: 2.8em; }
+            .hero h2 { font-size: 1.6em; }
+            .bio-container { flex-direction: column; text-align: center; }
+        }
 
+        /* Hero Section */
         .hero {
-
             height: 100vh;
-
             background: linear-gradient(rgba(13, 17, 23, 0.5), rgba(13, 17, 23, 0.7)), url('background.jpg') no-repeat center center/cover;
-
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-
         }
-
+        .hero h1 { font-family: 'Merriweather', serif; font-size: 4em; color: #fff; margin-bottom: 0px; font-weight: 700; }
+        .hero h2 { font-family: 'Arizonia', cursive; font-size: 2.5em; color: var(--accent-color); font-weight: 400; margin-top: -10px; margin-bottom: 35px; letter-spacing: 1px; }
         
-
-        /* İsim Fontu: Merriweather */
-
-        .hero h1 { 
-
-            font-family: 'Merriweather', serif; 
-
-            font-size: 4em; 
-
-            color: #fff; 
-
-            margin-bottom: 0px; 
-
-            font-weight: 700; 
-
-        }
-
-        
-
-        /* Unvan Fontu: Arizonia */
-
-        .hero h2 { 
-
-            font-family: 'Arizonia', cursive; 
-
-            font-size: 2.5em; 
-
-            color: var(--accent-color); 
-
-            font-weight: 400; 
-
-            margin-top: -10px; 
-
-            margin-bottom: 35px;
-
-            letter-spacing: 1px;
-
-        }
-
-        
-
         .social-links { margin-bottom: 40px; display: flex; gap: 15px; }
-
         .social-links a {
-
             display: inline-flex; justify-content: center; align-items: center;
-
             width: 45px; height: 45px; border-radius: 50%;
-
             background-color: var(--card-bg); color: var(--text-color);
-
-            text-decoration: none; border: 1px solid #30363d;
-
-            transition: all 0.3s; font-size: 1.2em;
-
+            text-decoration: none; border: 1px solid #30363d; transition: all 0.3s; font-size: 1.2em;
         }
-
         .social-links a:hover { border-color: var(--accent-color); color: var(--accent-color); transform: translateY(-3px); }
 
-
-
+        /* Content Sections */
         .content-section { padding: 80px 10%; max-width: 900px; margin: auto; }
-
         .content-section h3 { color: var(--accent-color); font-size: 2em; border-bottom: 1px solid #30363d; padding-bottom: 10px; margin-bottom: 30px; font-weight: 500; }
-
         p, li { font-size: 1.1em; line-height: 1.8; color: #8b949e; }
-
         .highlight { color: #fff; font-weight: 500; }
 
-
-
         .bio-container { display: flex; gap: 40px; align-items: center; }
-
         .bio-img { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); box-shadow: 0 0 20px rgba(77, 171, 247, 0.2); }
 
-
-
-        @media (max-width: 768px) { 
-
-            .bio-container { flex-direction: column; text-align: center; } 
-
-            .hero h1 { font-size: 3em; }
-
-            .hero h2 { font-size: 2em; }
-
-        }
-
-        
-
-        .filter-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
-
-        select { padding: 10px; background-color: var(--card-bg); color: #fff; border: 1px solid #30363d; border-radius: 5px; cursor: pointer; }
-
-
-
+        /* Publications Items */
         .pub-item { background-color: var(--card-bg); padding: 25px; margin-bottom: 20px; border-radius: 8px; border-left: 4px solid var(--accent-color); position: relative; }
-
         .pub-title { margin-bottom: 8px; padding-right: 100px; }
-
-        .pub-link { color: #fff; text-decoration: none; transition: color 0.3s; font-weight: 600; font-size: 1.15em; line-height: 1.4; }
-
+        .pub-link { color: #fff; text-decoration: none; font-weight: 600; font-size: 1.15em; line-height: 1.4; transition: color 0.3s; }
         .pub-link:hover { color: var(--accent-color); text-decoration: underline; }
-
-
-
         .journal-name { font-style: italic; color: var(--accent-color); font-size: 0.95em; display: block; margin-bottom: 5px; }
-
         
-
         .citations-count { 
-
-            position: absolute; top: 25px; right: 25px; 
-
-            background: #238636; color: #fff; padding: 4px 10px; 
-
-            border-radius: 6px; font-size: 0.85em; font-weight: 700;
-
+            position: absolute; top: 25px; right: 25px; background: #238636; color: #fff; 
+            padding: 4px 10px; border-radius: 6px; font-size: 0.85em; font-weight: 700;
         }
-
-
 
         .links-area { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-
-        .index-badge { font-size: 0.85em; padding: 6px 14px; border-radius: 20px; text-decoration: none; color: #fff; font-weight: 500; display: flex; align-items: center; }
-
+        .index-badge { font-size: 0.85em; padding: 6px 14px; border-radius: 20px; text-decoration: none; color: #fff; font-weight: 500; display: flex; align-items: center; background: #30363d; }
         .badge-wos { background-color: #5e35b1; }
-
         .badge-scopus { background-color: #ef6c00; }
-
         .badge-trdizin { background-color: #c62828; }
-
-
 
         .plumx-plum-print-popup { transform: scale(1.3); margin-left: 10px; vertical-align: middle; }
 
+        /* SDG Styles */
+        .sdg-wrapper { display: flex; gap: 10px; margin-top: 15px; align-items: center; border-top: 1px solid #30363d; padding-top: 15px; }
+        .sdg-icon { width: 45px; height: 45px; object-fit: contain; border-radius: 4px; transition: transform 0.2s; cursor: pointer; }
+        .sdg-icon:hover { transform: scale(1.15); }
 
-
-        .sdg-wrapper { display: flex; gap: 8px; margin-top: 15px; align-items: center; border-top: 1px solid #30363d; padding-top: 12px; }
-
-        .sdg-badge {
-
-            width: 28px; height: 28px; border-radius: 4px; display: flex; align-items: center; justify-content: center;
-
-            font-size: 11px; color: #fff; font-weight: 800; cursor: help;
-
-        }
-
-
+        .filter-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+        select { padding: 10px; background-color: var(--card-bg); color: #fff; border: 1px solid #30363d; border-radius: 5px; cursor: pointer; }
         .contact-card { background-color: var(--card-bg); padding: 30px; border-radius: 8px; border: 1px solid #30363d; }
-
-        nav { 
-            display: flex; 
-            gap: 50px; /* Bu değeri 30px'den 50px veya 60px'e çıkararak arayı açabilirsiniz */
-        }
-
-        /* Masaüstünde menü simgesi gizli */
-
-        .menu-icon {
-
-            display: none;
-
-            cursor: pointer;
-
-            font-size: 1.8em;
-
-            color: #fff;
-
-            position: fixed;
-
-            top: 20px;
-
-            right: 20px;
-
-            z-index: 1001;
-
-        }
-
-        
-
-        /* Tablet ve Mobil Uyumu (768px ve altı) */
-
-        @media (max-width: 768px) {
-
-            .menu-icon { display: block; }
-
-        
-
-            nav {
-
-                display: none; /* Başlangıçta gizli */
-
-                flex-direction: column;
-
-                background-color: rgba(13, 17, 23, 0.95);
-
-                position: fixed;
-
-                top: 0; left: 0; width: 100%; height: 100vh;
-
-                justify-content: center; align-items: center;
-
-                z-index: 1000;
-
-                gap: 40px !important;
-
-            }
-
-        
-
-            nav.active { display: flex; } /* Tıklanınca açılacak */
-
-        
-
-            header { position: static; padding: 0; }
-
-            
-
-            .hero h1 { font-size: 2.5em; } /* Mobilde ismi biraz küçültelim */
-
-            .hero h2 { font-size: 1.5em; }
-
-        }
-
-        /* Masaüstünde buton gizli */
-        .menu-icon {
-            display: none;
-            cursor: pointer;
-            font-size: 1.8em;
-            color: #fff;
-            position: fixed;
-            top: 20px;
-            right: 30px;
-            z-index: 1200;
-        }
-        
-        /* TABLET & MOBİL AYARLARI (768px ve altı) */
-        @media (max-width: 768px) {
-            .menu-icon { display: block; }
-        
-            #nav-menu {
-                display: none; /* Başlangıçta gizli */
-                flex-direction: column;
-                background-color: rgba(13, 17, 23, 0.98); /* Sayfa renginde tam ekran panel */
-                position: fixed;
-                top: 0; left: 0; width: 100%; height: 100vh;
-                justify-content: center; align-items: center;
-                z-index: 1100;
-                gap: 40px !important;
-                backdrop-filter: blur(10px);
-            }
-        
-            #nav-menu.active {
-                display: flex; /* Butona basınca görünür yap */
-            }
-        
-            #nav-menu a {
-                font-size: 1.5em; /* Mobilde linkleri büyüt */
-            }
-        
-            header {
-                position: static; /* Mobilde header'ı serbest bırak */
-                padding: 0;
-            }
-        }
     </style>
-
 </head>
-
 <body>
-
-
 
     <header id="main-header">
         <div class="menu-icon" onclick="toggleMenu()"><i class="fas fa-bars" id="menu-btn"></i></div>
-        
         <nav id="nav-menu">
             <a href="#home">Home</a>
             <a href="#about">Bio</a>
@@ -356,110 +126,70 @@
         </nav>
     </header>
 
-
-
     <div class="hero" id="home">
-
         <h1>Ekinhan Eriskin, PhD</h1>
-
         <h2>Associate Professor | Transportation Engineering & AI Modeling</h2>
-
         <div class="social-links">
-
             <a href="https://scholar.google.com/citations?user=L8vpWnUAAAAJ&hl=en" target="_blank" title="Google Scholar"><i class="fa-brands fa-google"></i></a>
-
             <a href="https://www.webofscience.com/wos/author/record/N-1821-2016" target="_blank" title="Web of Science"><i class="fa-solid fa-atom"></i></a>
-
             <a href="https://www.scopus.com/authid/detail.uri?authorId=57039193000" target="_blank" title="Scopus"><i class="fa-solid fa-book-open"></i></a>
-
             <a href="https://orcid.org/0000-0002-0087-0933" target="_blank" title="ORCID"><i class="fa-brands fa-orcid"></i></a>
-
             <a href="https://www.linkedin.com/in/ekinhaneriskin/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-
             <a href="https://www.researchgate.net/profile/Ekinhan-Eriskin" target="_blank" title="ResearchGate"><i class="fa-brands fa-researchgate"></i></a>
-
             <a href="https://w3.sdu.edu.tr/personel/05437" target="_blank" title="SDU Profile"><i class="fa-solid fa-university"></i></a>
-
         </div>
-
     </div>
-
-
 
     <div class="content-section" id="about">
         <h3>Bio</h3>
         <div class="bio-container">
             <img src="foto.jpeg" alt="Ekinhan Erişkin" class="bio-img">
             <div>
-                <p>
-                    I am an <span class="highlight">Associate Professor of Civil Engineering</span> at Suleyman Demirel University, specializing in the innovative integration of <span class="highlight">Transportation Infrastructure and Artificial Intelligence</span>. 
-                </p>
-                <p>
-                    My research is dedicated to transforming traditional engineering with AI-driven precision. I focus on developing advanced predictive models using <span class="highlight">Physics-Informed Machine Learning</span>, optimizing urban traffic flow through <span class="highlight">Monte Carlo simulations</span>, and enhancing road safety with high-accuracy crash severity forecasting.
-                </p>
-                <p>
-                    Driven by a vision of sustainable and smart mobility, my work aligns with <span class="highlight">UN Sustainable Development Goals</span> (Industry, Innovation, and Infrastructure & Sustainable Cities). I strive to build the bridge between data science and physical infrastructure to create safer, more efficient, and resilient transportation networks for the future.
-                </p>
+                <p>I am an <span class="highlight">Associate Professor of Civil Engineering</span> at Suleyman Demirel University, specializing in the innovative integration of <span class="highlight">Transportation Infrastructure and Artificial Intelligence</span>.</p>
+                <p>My research is dedicated to transforming traditional engineering with AI-driven precision. I focus on developing advanced predictive models using <span class="highlight">Physics-Informed Machine Learning</span>, optimizing urban traffic flow through <span class="highlight">Monte Carlo simulations</span>, and enhancing road safety with high-accuracy crash severity forecasting.</p>
+                <p>Driven by a vision of sustainable and smart mobility, my work aligns with <span class="highlight">UN Sustainable Development Goals</span>. I strive to build the bridge between data science and physical infrastructure to create safer, more efficient, and resilient transportation networks for the future.</p>
             </div>
         </div>
     </div>
 
-    
     <div class="content-section" id="publications">
-
-        <h3>Selected Publications</h3>
-
+        <h3>Publications</h3>
         <div class="filter-bar">
-
             <select id="yearFilter" onchange="filterPubs()"><option value="all">All Years</option></select>
-
             <select id="indexFilter" onchange="filterPubs()"><option value="all">All Indices</option></select>
-
         </div>
-
         <div id="pub-list"><p style="color: #8b949e;">Yayınlar yükleniyor...</p></div>
-
     </div>
-
-
 
     <div class="content-section" id="contact">
-
         <h3>Get in Touch</h3>
-
         <div class="contact-card">
-
             <p><i class="fa-solid fa-building-columns"></i> Suleyman Demirel University, Isparta, Turkey.</p>
-
             <p><i class="fa-solid fa-phone"></i> +90 246 211 4649</p>
-
             <p><i class="fa-solid fa-envelope"></i> <a href="mailto:ekinhaneriskin@sdu.edu.tr" style="color: #8b949e; text-decoration: none;">ekinhaneriskin@sdu.edu.tr</a></p>
-
         </div>
-
     </div>
 
-
+    <footer style="padding: 40px 0; border-top: 1px solid #30363d; margin-top: 50px; text-align: center;">
+        <div style="font-family: 'Lato', sans-serif; color: #8b949e; font-size: 0.9em;">
+            Ekinhan Eriskin &copy; 2020-<span id="currentYear"></span> | All rights reserved
+        </div>
+    </footer>
 
     <script>
-
+        // Hamburger Menu Logic
         function toggleMenu() {
             const nav = document.getElementById('nav-menu');
             const icon = document.getElementById('menu-btn');
-            
             nav.classList.toggle('active');
-            
-            // Simgeyi değiştir (Hamburger <-> Çarpı)
             if (nav.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
+                icon.classList.replace('fa-bars', 'fa-times');
             } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+                icon.classList.replace('fa-times', 'fa-bars');
             }
         }
-        
-        // Menü linklerinden birine tıklandığında menüyü otomatik kapat
+
+        // Close menu on link click
         document.querySelectorAll('#nav-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 document.getElementById('nav-menu').classList.remove('active');
@@ -467,153 +197,88 @@
             });
         });
 
+        // Header scroll effect
+        window.onscroll = function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.style.backgroundColor = "rgba(13, 17, 23, 0.9)";
+                header.style.backdropFilter = "blur(10px)";
+                header.style.position = "fixed";
+                header.style.padding = "15px 0";
+            } else {
+                header.style.backgroundColor = "transparent";
+                header.style.backdropFilter = "none";
+                header.style.position = "absolute";
+                header.style.padding = "30px 0";
+            }
+        };
+
+        // Data Loading
         fetch('publications.json')
-
             .then(res => res.json())
-
             .then(data => {
-
-                // Verinin 'metrics' objesi mi yoksa eski düz liste mi olduğunu kontrol et
-
                 const pubs = data.publications ? data.publications : data;
-
                 const pubList = document.getElementById('pub-list');
-
                 
-
-                // Filtreleri Oluştur
-
                 const years = [...new Set(pubs.map(p => p.year))].sort((a,b) => b-a);
-
                 const indices = [...new Set(pubs.map(p => p.index))];
-
                 years.forEach(y => document.getElementById('yearFilter').innerHTML += `<option value="${y}">${y}</option>`);
-
-                const labels = {"sci":"WoS / SCI-E", "scopus":"Scopus", "trdizin":"TR Dizin"};
-
+                const labels = {"sci":"WoS", "scopus":"Scopus", "trdizin":"TR Dizin"};
                 indices.forEach(i => document.getElementById('indexFilter').innerHTML += `<option value="${i}">${labels[i] || i.toUpperCase()}</option>`);
 
-
-
                 pubList.innerHTML = '';
-
                 pubs.forEach(pub => {
-
                     let linksHTML = '';
-
                     if (pub.wos_link) linksHTML += `<a href="${pub.wos_link}" target="_blank" class="index-badge badge-wos">WoS</a>`;
-
                     if (pub.scopus_link) linksHTML += `<a href="${pub.scopus_link}" target="_blank" class="index-badge badge-scopus">Scopus</a>`;
-
                     if (pub.trdizin_link) linksHTML += `<a href="${pub.trdizin_link}" target="_blank" class="index-badge badge-trdizin">TR Dizin</a>`;
-
-
 
                     let sdgHTML = '';
                     if (pub.sdg && pub.sdg.length > 0) {
                         sdgHTML = '<div class="sdg-wrapper"><span style="font-size:0.75em; color:#8b949e; margin-right:10px;">Global Goals:</span>';
                         pub.sdg.forEach(val => {
-                            // Rakamı ayıkla ve tek haneliyse başına 0 ekle (Örn: 9 -> 09, 11 -> 11)
                             const num = val.toString().replace(/\D/g, "").padStart(2, '0');
-                            
-                            // UN'in Inverted Icons serisi için tam link
                             const iconUrl = `https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Inverted-Icons_WEB-${num}-1024x1024.png`;
-                    
-                            sdgHTML += `<img src="${iconUrl}" 
-                                             style="width: 42px; height: 42px; object-fit: contain; border-radius: 4px; transition: transform 0.2s; cursor: pointer;" 
-                                             title="Goal ${val}" 
-                                             onerror="this.style.display='none'"
-                                             onmouseover="this.style.transform='scale(1.15)'" 
-                                             onmouseout="this.style.transform='scale(1)'">`;
+                            sdgHTML += `<img src="${iconUrl}" class="sdg-icon" title="Goal ${val}" onerror="this.style.display='none'">`;
                         });
                         sdgHTML += '</div>';
                     }
 
-
                     let citBadge = (pub.citations && pub.citations !== "0") ? `<div class="citations-count">Cited: ${pub.citations}</div>` : '';
 
-
-
                     pubList.innerHTML += `
-
                         <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
-
                             ${citBadge}
-
                             <div class="pub-title"><a href="https://doi.org/${pub.doi}" target="_blank" class="pub-link">${pub.title}</a></div>
-
                             <div class="journal-name">${pub.journal || ''}</div>
-
                             <div style="font-size: 0.9em; color: #a1a1aa; margin-bottom: 8px;">${pub.author} (${pub.year})</div>
-
                             <div class="links-area">
-
                                 ${linksHTML}
-
                                 <a href="https://plu.mx/plum/a/?doi=${pub.doi}" class="plumx-plum-print-popup" data-popup="right" data-size="medium"></a>
-
                             </div>
-
                             ${sdgHTML}
-
                         </div>`;
-
                 });
 
-
-
                 setTimeout(() => {
-
                     let s = document.createElement("script");
-
                     s.src = "https://cdn.plu.mx/widget-popup.js";
-
                     document.body.appendChild(s);
-
                 }, 500);
-
             });
 
-
-
         function filterPubs() {
-
             const y = document.getElementById("yearFilter").value;
-
             const i = document.getElementById("indexFilter").value;
-
             const items = document.getElementsByClassName("pub-item");
-
             for (let item of items) {
-
                 const yM = (y === "all" || item.dataset.year === y);
-
                 const iM = (i === "all" || item.dataset.index === i);
-
                 item.style.display = (yM && iM) ? "block" : "none";
-
             }
-
         }
 
-    </script>
-    <footer style="padding: 40px 0; border-top: 1px solid #30363d; margin-top: 50px; position: relative; text-align: center;">
-        <div class="footer-links" style="margin-bottom: 20px;">
-            <a href="CV_Ekinhan_Eriskin.pdf" target="_blank" class="index-badge" style="background: var(--accent-color); color: #000; font-weight: 700;">
-               <i class="fa-solid fa-file-pdf"></i> Download Academic CV
-            </a>
-        </div>
-        
-        <div style="font-family: 'Lato', sans-serif; color: #8b949e; font-size: 0.9em;">
-            Ekinhan Eriskin &copy; 2020-<span id="currentYear"></span> | All rights reserved
-        </div>
-    </footer>
-    
-    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
-    <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
-
 </body>
-
 </html>
