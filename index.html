@@ -11,8 +11,8 @@
 
     <style>
         :root {
-            --accent-color: #4dabf7; /* Yeni Teknolojik Çelik Mavisi */
-            --bg-color: #0d1117; /* GitHub tarzı daha yumuşak bir karanlık arka plan */
+            --accent-color: #4dabf7;
+            --bg-color: #0d1117;
             --text-color: #c9d1d9;
             --card-bg: #161b22;
         }
@@ -23,7 +23,6 @@
             scroll-behavior: smooth;
         }
         
-        /* Şeffaf Üst Menü */
         header {
             position: absolute; width: 100%; padding: 30px 0;
             display: flex; justify-content: center; gap: 30px; z-index: 10;
@@ -31,17 +30,14 @@
         header a { color: #fff; text-decoration: none; font-weight: 500; font-size: 1.05em; transition: color 0.3s; }
         header a:hover { color: var(--accent-color); }
 
-        /* Arka Plan ve Karşılama Alanı */
         .hero {
             height: 100vh;
-            /* Opaklık değerleri 0.5 ve 0.7'ye düşürüldü. Fotoğraf çok daha net görünecek. */
             background: linear-gradient(rgba(13, 17, 23, 0.5), rgba(13, 17, 23, 0.7)), url('background.jpg') no-repeat center center/cover;
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
         .hero h1 { font-size: 3.5em; color: #fff; margin-bottom: 5px; font-weight: 600; }
         .hero h2 { font-size: 1.3em; color: var(--accent-color); font-weight: 300; margin-top: 0; margin-bottom: 30px; }
         
-        /* Profil Linkleri (Yuvarlak İkonlar) */
         .social-links { margin-bottom: 40px; display: flex; gap: 15px; }
         .social-links a {
             display: inline-flex; justify-content: center; align-items: center;
@@ -52,56 +48,46 @@
         }
         .social-links a:hover { border-color: var(--accent-color); color: var(--accent-color); transform: translateY(-3px); }
 
-        /* İçerik Bölümleri */
         .content-section { padding: 80px 10%; max-width: 900px; margin: auto; }
         .content-section h3 { color: var(--accent-color); font-size: 2em; border-bottom: 1px solid #30363d; padding-bottom: 10px; margin-bottom: 30px; font-weight: 500; }
-        p, li { font-size: 1.1em; line-height: 1.8; color: #8b949e; }
-        .highlight { color: #fff; font-weight: 500; }
-
-        /* Bio Bölümü (Fotoğraf + Metin) */
-        .bio-container { display: flex; gap: 40px; align-items: center; }
-        .bio-img { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); box-shadow: 0 0 20px rgba(77, 171, 247, 0.2); }
-        @media (max-width: 768px) { .bio-container { flex-direction: column; text-align: center; } }
-
-        /* Dinamik Yayınlar Filtresi */
-        .filter-bar { display: flex; gap: 15px; margin-bottom: 20px; }
-        select { padding: 10px; background-color: var(--card-bg); color: #fff; border: 1px solid #30363d; border-radius: 5px; font-family: 'Inter', sans-serif; cursor: pointer; }
-        .pub-item { background-color: var(--card-bg); padding: 20px; margin-bottom: 15px; border-radius: 6px; border-left: 3px solid var(--accent-color); }
-        .pub-title { color: #fff; font-weight: 500; margin-bottom: 5px; font-size: 1.1em; }
-        .pub-meta { font-size: 0.9em; color: var(--accent-color); }
         
-        /* İletişim Kartı */
-        .contact-card { background-color: var(--card-bg); padding: 30px; border-radius: 8px; border: 1px solid #30363d; }
-        .contact-card p { margin: 10px 0; display: flex; align-items: center; gap: 15px; }
-        .contact-card i { color: var(--accent-color); font-size: 1.2em; width: 20px; }
+        .filter-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+        select { padding: 10px; background-color: var(--card-bg); color: #fff; border: 1px solid #30363d; border-radius: 5px; cursor: pointer; }
 
-        /* Yayın Linkleri ve Rozetleri İçin Yeni Stiller */
-        .pub-link { color: #fff; text-decoration: none; transition: color 0.3s; font-weight: 600; }
+        .pub-item { background-color: var(--card-bg); padding: 25px; margin-bottom: 20px; border-radius: 8px; border-left: 4px solid var(--accent-color); }
+        .pub-title { margin-bottom: 8px; }
+        .pub-link { color: #fff; text-decoration: none; transition: color 0.3s; font-weight: 600; font-size: 1.15em; }
         .pub-link:hover { color: var(--accent-color); text-decoration: underline; }
+
         .links-area { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
         .index-badge { 
-            font-size: 0.85em; padding: 5px 12px; border-radius: 20px; text-decoration: none; color: #fff; font-weight: 500; transition: all 0.3s; border: 1px solid transparent;
+            font-size: 0.85em; padding: 6px 14px; border-radius: 20px; text-decoration: none; color: #fff; font-weight: 500; display: flex; align-items: center;
         }
-        .index-badge i { margin-right: 5px; }
-        .index-badge:hover { transform: translateY(-2px); }
-        /* Farklı indeksler için özel renkler */
-        .badge-wos { background-color: #5e35b1; } /* Mor */
-        .badge-wos:hover { border-color: #b39ddb; }
-        .badge-scopus { background-color: #ef6c00; } /* Turuncu */
-        .badge-scopus:hover { border-color: #ffcc80; }
-        .badge-trdizin { background-color: #c62828; } /* Kırmızı */
-        .badge-trdizin:hover { border-color: #ef9a9a; }
-        /* PlumX Widget Ayarı */
-        .plumx-plum-print-popup { vertical-align: middle; }
+        .badge-wos { background-color: #5e35b1; }
+        .badge-scopus { background-color: #ef6c00; }
+        .badge-trdizin { background-color: #c62828; }
+
+        /* PlumX Boyut İyileştirmesi */
+        .plumx-plum-print-popup { transform: scale(1.5); margin-left: 10px; vertical-align: middle; }
+
+        /* SDG Rozetleri */
+        .sdg-wrapper { display: flex; gap: 8px; margin-top: 15px; align-items: center; border-top: 1px solid #30363d; padding-top: 12px; }
+        .sdg-badge {
+            width: 28px; height: 28px; border-radius: 4px; display: flex; align-items: center; justify-content: center;
+            font-size: 11px; color: #fff; font-weight: 800; cursor: help;
+        }
+        .sdg-9 { background-color: #fd6925; }
+        .sdg-11 { background-color: #fd9d24; }
+        .sdg-13 { background-color: #3f7e44; }
+
+        .contact-card { background-color: var(--card-bg); padding: 30px; border-radius: 8px; border: 1px solid #30363d; }
     </style>
-    <script type="text/javascript" src="//cdn.plu.mx/widget-popup.js"></script>
 </head>
 <body>
 
     <header>
         <a href="#home">Home</a>
         <a href="#about">Bio</a>
-        <a href="#research">Research & AI</a>
         <a href="#publications">Publications</a>
         <a href="#contact">Contact</a>
     </header>
@@ -109,148 +95,92 @@
     <div class="hero" id="home">
         <h1>Ekinhan Erişkin</h1>
         <h2>Assoc. Prof. | Civil Engineering & AI Modeling</h2>
-        
         <div class="social-links">
-            <a href="https://scholar.google.com/citations?user=L8vpWnUAAAAJ&hl=en" target="_blank" title="Google Scholar"><i class="fa-brands fa-google"></i></a>
-            <a href="https://www.webofscience.com/wos/author/record/N-1821-2016" target="_blank" title="Web of Science"><i class="fa-solid fa-atom"></i></a>
-            <a href="https://www.scopus.com/authid/detail.uri?authorId=57039193000" target="_blank" title="Scopus"><i class="fa-solid fa-book-open"></i></a>
-            <a href="https://orcid.org/0000-0002-0087-0933" target="_blank" title="ORCID"><i class="fa-brands fa-orcid"></i></a>
-            <a href="https://www.linkedin.com/in/ekinhaneriskin/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-            <a href="https://www.researchgate.net/profile/Ekinhan-Eriskin" target="_blank" title="ResearchGate"><i class="fa-brands fa-researchgate"></i></a>
-            <a href="https://w3.sdu.edu.tr/personel/05437" target="_blank" title="SDU Profile"><i class="fa-solid fa-university"></i></a>
-        </div>
-    </div>
-
-    <div class="content-section" id="about">
-        <h3>Bio</h3>
-        <div class="bio-container">
-            <img src="foto.jpeg" alt="Ekinhan Erişkin" class="bio-img">
-            <div>
-                <p>I am an Associate Professor in Civil Engineering at Suleyman Demirel University, deeply passionate about the intersection of transportation infrastructure and artificial intelligence.</p>
-                <p>My work focuses on developing predictive models and traffic management systems using advanced machine learning algorithms. I strive to bridge the gap between traditional civil engineering practices and modern AI-driven solutions, optimizing urban mobility, safety, and sustainability.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="content-section" id="research">
-        <h3>Research & Citations</h3>
-        <p>Active research areas include <span class="highlight">Traffic Flow Optimization</span>, <span class="highlight">Pavement Condition AI Modeling</span>, and <span class="highlight">Crash Severity Prediction</span>.</p>
-        
-        <div style="margin-top: 30px; background-color: var(--card-bg); padding: 10px; border-radius: 8px;">
-            <iframe src="https://www.jung.ms/citations.php?id=L8vpWnUAAAAJ&lang=en" frameborder="0" width="100%" height="200px" scrolling="no" style="border-radius: 5px;"></iframe>
+            <a href="https://scholar.google.com/citations?user=L8vpWnUAAAAJ&hl=en" target="_blank"><i class="fa-brands fa-google"></i></a>
+            <a href="https://www.webofscience.com/wos/author/record/N-1821-2016" target="_blank"><i class="fa-solid fa-atom"></i></a>
+            <a href="https://www.scopus.com/authid/detail.uri?authorId=57039193000" target="_blank"><i class="fa-solid fa-book-open"></i></a>
+            <a href="https://www.linkedin.com/in/ekinhaneriskin/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
         </div>
     </div>
 
     <div class="content-section" id="publications">
         <h3>Selected Publications</h3>
-        <p>Sisteme yeni yayın eklemek için HTML içindeki listeye sadece kopyala-yapıştır yapman yeterlidir. Filtreleme otomatik çalışır.</p>
-        
         <div class="filter-bar">
-            <select id="yearFilter" onchange="filterPubs()">
-                <option value="all">All Years</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-            </select>
-            <select id="indexFilter" onchange="filterPubs()">
-                <option value="all">All Indices</option>
-                <option value="sci">SCI / SCI-E</option>
-                <option value="trdizin">TR Dizin</option>
-            </select>
+            <select id="yearFilter" onchange="filterPubs()"><option value="all">All Years</option></select>
+            <select id="indexFilter" onchange="filterPubs()"><option value="all">All Indices</option></select>
         </div>
-
-        <div id="pub-list">
-            <p style="color: #8b949e; font-style: italic;">Yayınlar veri tabanından yükleniyor...</p>
-        </div>
+        <div id="pub-list"><p style="color: #8b949e;">Yayınlar yükleniyor...</p></div>
     </div>
 
     <div class="content-section" id="contact">
         <h3>Get in Touch</h3>
         <div class="contact-card">
-            <p><i class="fa-solid fa-building-columns"></i> Suleyman Demirel University, Isparta Vocational School of Health Services, Office 135, Çünür, Merkez, Isparta, Turkey.</p>
-            <p><i class="fa-solid fa-phone"></i> +90 246 211 4649</p>
+            <p><i class="fa-solid fa-building-columns"></i> Suleyman Demirel University, Isparta, Turkey.</p>
             <p><i class="fa-solid fa-envelope"></i> <a href="mailto:ekinhaneriskin@sdu.edu.tr" style="color: #8b949e; text-decoration: none;">ekinhaneriskin@sdu.edu.tr</a></p>
         </div>
     </div>
 
     <script>
-        const SCOPUS_API_KEY = 'a5210b26f0964c067ea0ed118b6df34c';
-        const SCOPUS_AUTHOR_ID = '57039193000'; // Senin Scopus ID'n
-    
-        // Scopus'tan veri çekme fonksiyonu
-        async function fetchScopusData() {
-            const url = `https://api.elsevier.com/content/search/scopus?query=AU-ID(${SCOPUS_AUTHOR_ID})&apiKey=${SCOPUS_API_KEY}&view=COMPLETE`;
-            
-            try {
-                const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
-                const data = await response.json();
-                const entries = data['search-results']['entry'];
-                renderPublications(entries);
-            } catch (error) {
-                console.error("Scopus bağlantı hatası:", error);
-                document.getElementById('pub-list').innerHTML = '<p style="color:red;">Scopus verileri çekilemedi. Lütfen API anahtarını kontrol edin.</p>';
-            }
-        }
-    
-        function renderPublications(entries) {
-            const pubList = document.getElementById('pub-list');
-            const yearFilter = document.getElementById('yearFilter');
-            pubList.innerHTML = '';
-    
-            // Yılları ve İndeksleri Otomatik Belirle
-            const years = [...new Set(entries.map(e => e['prism:coverDate'].split('-')[0]))].sort((a,b) => b-a);
-            yearFilter.innerHTML = '<option value="all">All Years</option>';
-            years.forEach(y => yearFilter.innerHTML += `<option value="${y}">${y}</option>`);
-    
-            entries.forEach(entry => {
-                const title = entry['dc:title'];
-                const authors = entry['dc:creator']; // İlk yazar veya tümü (API görünümüne göre değişir)
-                const year = entry['prism:coverDate'].split('-')[0];
-                const doi = entry['prism:doi'];
-                const journal = entry['prism:publicationName'];
-                const citationCount = entry['citedby-count'];
+        // HİBRİT SİSTEM: publications.json dosyasından verileri çeker
+        // (Bu dosya senin Python botun tarafından otomatik güncelleniyor)
+        fetch('publications.json')
+            .then(res => res.json())
+            .then(data => {
+                const pubList = document.getElementById('pub-list');
                 
-                // SDG Verisi (Eğer API dönüyorsa çekilir, dönmüyorsa Scopus linkine gömülür)
-                let sdgHTML = ''; 
-                // Not: Kişisel API paketine göre SDG doğrudan dönmeyebilir, 
-                // ancak Scopus Linki üzerinden ziyaretçi görebilir.
-    
-                const pubHTML = `
-                    <div class="pub-item" data-year="${year}">
-                        <div class="pub-title">
-                            <a href="https://doi.org/${doi}" target="_blank" class="pub-link">${title}</a>
-                        </div>
-                        <div style="font-size: 0.9em; color: #a1a1aa; margin-bottom: 8px;">${authors} | <em>${journal}</em></div>
-                        <div class="pub-meta">
-                            <i class="fa-solid fa-calendar"></i> ${year} | 
-                            <i class="fa-solid fa-quote-right"></i> Citations: <span style="color:var(--accent-color); font-weight:bold;">${citationCount}</span>
-                        </div>
-                        <div class="links-area">
-                            <a href="https://www.scopus.com/record/display.uri?eid=${entry['eid']}" target="_blank" class="index-badge badge-scopus">
-                                <img src="https://www.scopus.com/static/proteus-images/favicon.ico" style="height:12px; margin-right:5px;"> Scopus Profile
-                            </a>
-                            <a href="https://plu.mx/plum/a/?doi=${doi}" class="plumx-plum-print-popup" data-popup="right" data-size="tiny"></a>
-                        </div>
-                    </div>
-                `;
-                pubList.innerHTML += pubHTML;
+                // Sıralama: Önce Yıl (Azalan), Sonra Başlık (Alfabetik)
+                data.sort((a, b) => b.year.localeCompare(a.year) || a.title.localeCompare(b.title));
+
+                // Filtreleri Otomatik Oluştur
+                const years = [...new Set(data.map(p => p.year))].sort((a, b) => b - a);
+                const indices = [...new Set(data.map(p => p.index))];
+                years.forEach(y => document.getElementById('yearFilter').innerHTML += `<option value="${y}">${y}</option>`);
+                
+                const labels = {"sci":"SCI-E", "ssci":"SSCI", "scopus":"Scopus", "trdizin":"TR Dizin"};
+                indices.forEach(i => document.getElementById('indexFilter').innerHTML += `<option value="${i}">${labels[i] || i.toUpperCase()}</option>`);
+
+                pubList.innerHTML = '';
+                data.forEach(pub => {
+                    let linksHTML = '';
+                    if (pub.wos_link) linksHTML += `<a href="${pub.wos_link}" target="_blank" class="index-badge badge-wos"><img src="https://www.webofscience.com/wos/static/favicon.png" style="height:12px; margin-right:5px;"> WoS</a>`;
+                    if (pub.scopus_link) linksHTML += `<a href="${pub.scopus_link}" target="_blank" class="index-badge badge-scopus"><img src="https://www.scopus.com/static/proteus-images/favicon.ico" style="height:12px; margin-right:5px;"> Scopus</a>`;
+                    if (pub.trdizin_link) linksHTML += `<a href="${pub.trdizin_link}" target="_blank" class="index-badge badge-trdizin"><i class="fa-solid fa-bookmark" style="font-size:10px; margin-right:5px;"></i> TR Dizin</a>`;
+
+                    let sdgHTML = '';
+                    if (pub.sdg && pub.sdg.length > 0) {
+                        sdgHTML = '<div class="sdg-wrapper"><span style="font-size:0.75em; color:#8b949e; margin-right:10px;">UN SDGs:</span>';
+                        pub.sdg.forEach(num => sdgHTML += `<div class="sdg-badge sdg-${num}" title="Goal ${num}">${num}</div>`);
+                        sdgHTML += '</div>';
+                    }
+
+                    pubList.innerHTML += `
+                        <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
+                            <div class="pub-title"><a href="https://doi.org/${pub.doi}" target="_blank" class="pub-link">${pub.title}</a></div>
+                            <div style="font-size: 0.9em; color: #a1a1aa; margin-bottom: 8px;">${pub.author}</div>
+                            <div class="links-area">
+                                ${linksHTML}
+                                <a href="https://plu.mx/plum/a/?doi=${pub.doi}" class="plumx-plum-print-popup" data-popup="right" data-size="medium"></a>
+                            </div>
+                            ${sdgHTML}
+                        </div>`;
+                });
+
+                // PlumX Yükle
+                setTimeout(() => {
+                    let s = document.createElement("script");
+                    s.src = "https://cdn.plu.mx/widget-popup.js";
+                    document.body.appendChild(s);
+                }, 500);
             });
-    
-            // PlumX Tetikleyici
-            setTimeout(() => {
-                let s = document.createElement("script");
-                s.src = "https://cdn.plu.mx/widget-popup.js";
-                document.body.appendChild(s);
-            }, 500);
-        }
-    
-        // Başlat
-        fetchScopusData();
-    
+
         function filterPubs() {
-            const year = document.getElementById("yearFilter").value;
-            const pubs = document.getElementsByClassName("pub-item");
-            for (let p of pubs) {
-                p.style.display = (year === "all" || p.dataset.year === year) ? "block" : "none";
+            const y = document.getElementById("yearFilter").value;
+            const i = document.getElementById("indexFilter").value;
+            const items = document.getElementsByClassName("pub-item");
+            for (let item of items) {
+                const yM = (y === "all" || item.dataset.year === y);
+                const iM = (i === "all" || item.dataset.index === i);
+                item.style.display = (yM && iM) ? "block" : "none";
             }
         }
     </script>
