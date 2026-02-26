@@ -34,7 +34,8 @@
         /* Arka Plan ve Karşılama Alanı */
         .hero {
             height: 100vh;
-            background: linear-gradient(rgba(13, 17, 23, 0.8), rgba(13, 17, 23, 0.95)), url('background.jpg') no-repeat center center/cover;
+            /* Opaklık değerleri 0.5 ve 0.7'ye düşürüldü. Fotoğraf çok daha net görünecek. */
+            background: linear-gradient(rgba(13, 17, 23, 0.5), rgba(13, 17, 23, 0.7)), url('background.jpg') no-repeat center center/cover;
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
         .hero h1 { font-size: 3.5em; color: #fff; margin-bottom: 5px; font-weight: 600; }
@@ -73,7 +74,27 @@
         .contact-card { background-color: var(--card-bg); padding: 30px; border-radius: 8px; border: 1px solid #30363d; }
         .contact-card p { margin: 10px 0; display: flex; align-items: center; gap: 15px; }
         .contact-card i { color: var(--accent-color); font-size: 1.2em; width: 20px; }
+
+        /* Yayın Linkleri ve Rozetleri İçin Yeni Stiller */
+        .pub-link { color: #fff; text-decoration: none; transition: color 0.3s; font-weight: 600; }
+        .pub-link:hover { color: var(--accent-color); text-decoration: underline; }
+        .links-area { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .index-badge { 
+            font-size: 0.85em; padding: 5px 12px; border-radius: 20px; text-decoration: none; color: #fff; font-weight: 500; transition: all 0.3s; border: 1px solid transparent;
+        }
+        .index-badge i { margin-right: 5px; }
+        .index-badge:hover { transform: translateY(-2px); }
+        /* Farklı indeksler için özel renkler */
+        .badge-wos { background-color: #5e35b1; } /* Mor */
+        .badge-wos:hover { border-color: #b39ddb; }
+        .badge-scopus { background-color: #ef6c00; } /* Turuncu */
+        .badge-scopus:hover { border-color: #ffcc80; }
+        .badge-trdizin { background-color: #c62828; } /* Kırmızı */
+        .badge-trdizin:hover { border-color: #ef9a9a; }
+        /* PlumX Widget Ayarı */
+        .plumx-plum-print-popup { vertical-align: middle; }
     </style>
+    <script type="text/javascript" src="//cdn.plu.mx/widget-popup.js"></script>
 </head>
 <body>
 
@@ -159,25 +180,54 @@
                 const pubList = document.getElementById('pub-list');
                 pubList.innerHTML = ''; // Yükleniyor yazısını temizle
                 
-                // Her bir yayın için otomatik HTML kartı oluştur
+                // Her bir yayın için verileri kontrol et ve kartı oluştur
                 data.forEach(pub => {
+                    
+                    // 1. Başlık DOI varsa tıklanabilir olsun, yoksa düz yazı kalsın
+                    let titleHTML = pub.title;
+                    if (pub.doi && pub.doi !== "") {
+                        titleHTML = `<a href="https://doi.org/${pub.doi}" target="_blank" class="pub-link" title="Go to Publisher (DOI)">${pub.title} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.8em;"></i></a>`;
+                    }
+
+                    // 2. İndeks Linkleri Rozetlerini Hazırla (Veri varsa ekle)
+                    let linksHTML = '';
+                    if (pub.wos_link) linksHTML += `<a href="${pub.wos_link}" target="_blank" class="index-badge badge-wos"><i class="fa-solid fa-atom"></i> WoS Link</a> `;
+                    if (pub.scopus_link) linksHTML += `<a href="${pub.scopus_link}" target="_blank" class="index-badge badge-scopus"><i class="fa-solid fa-book-open"></i> Scopus Link</a> `;
+                    if (pub.trdizin_link) linksHTML += `<a href="${pub.trdizin_link}" target="_blank" class="index-badge badge-trdizin"><i class="fa-solid fa-bookmark"></i> TR Dizin Link</a> `;
+
+                    // 3. PlumX Widget'ı Hazırla (Sadece DOI varsa ve SCI/Scopus ise)
+                    let plumxHTML = '';
+                    if (pub.doi && (pub.index === 'sci' || pub.index === 'scopus')) {
+                        // PlumX'in kendi formatı
+                        plumxHTML = `<a href="https://plu.mx/plum/a/?doi=${pub.doi}" class="plumx-plum-print-popup plum-bigbtn" data-popup="left" data-hide-when-empty="true"></a>`;
+                    }
+
+                    // Ana HTML yapısını birleştir
                     const pubHTML = `
                         <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
-                            <div class="pub-title">
-                                <a href="${pub.link}" target="_blank" style="color: #fff; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#4dabf7'" onmouseout="this.style.color='#fff'">${pub.title}</a>
-                            </div>
+                            <div class="pub-title">${titleHTML}</div>
                             <div class="pub-meta"><i class="fa-solid fa-calendar"></i> ${pub.year} | <i class="fa-solid fa-tag"></i> ${pub.index_label}</div>
+                            
+                            <div class="links-area">
+                                ${linksHTML}
+                                ${plumxHTML}
+                            </div>
                         </div>
                     `;
                     pubList.innerHTML += pubHTML;
                 });
+
+                // PlumX widget'larını manuel olarak tetikle (Veri geldikten sonra)
+                if (window.__plumX && window.__plumX.widgets) {
+                    window.__plumX.widgets.init();
+                }
             })
             .catch(error => {
                 console.error('Veri çekme hatası:', error);
                 document.getElementById('pub-list').innerHTML = '<p style="color: red;">Yayınlar yüklenirken bir hata oluştu.</p>';
             });
 
-        // Filtreleme Fonksiyonu (Eski sistemle aynı mantıkta çalışır)
+        // Filtreleme Fonksiyonu
         function filterPubs() {
             let year = document.getElementById("yearFilter").value;
             let index = document.getElementById("indexFilter").value;
@@ -186,10 +236,8 @@
             for (let i = 0; i < pubs.length; i++) {
                 let pYear = pubs[i].getAttribute("data-year");
                 let pIndex = pubs[i].getAttribute("data-index");
-                
                 let yearMatch = (year === "all" || year === pYear);
                 let indexMatch = (index === "all" || index === pIndex);
-                
                 if (yearMatch && indexMatch) {
                     pubs[i].style.display = "block";
                 } else {
