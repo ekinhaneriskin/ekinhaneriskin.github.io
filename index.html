@@ -173,78 +173,104 @@
     </div>
 
     <script>
-        // Sayfa açıldığında publications.json dosyasını oku
-        fetch('publications.json')
-            .then(response => response.json())
-            .then(data => {
-                const pubList = document.getElementById('pub-list');
-                pubList.innerHTML = ''; // Yükleniyor yazısını temizle
-                
-                // Her bir yayın için verileri kontrol et ve kartı oluştur
-                data.forEach(pub => {
-                    
-                    // 1. Başlık DOI varsa tıklanabilir olsun, yoksa düz yazı kalsın
-                    let titleHTML = pub.title;
-                    if (pub.doi && pub.doi !== "") {
-                        titleHTML = `<a href="https://doi.org/${pub.doi}" target="_blank" class="pub-link" title="Go to Publisher (DOI)">${pub.title} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.8em;"></i></a>`;
-                    }
-
-                    // 2. İndeks Linkleri Rozetlerini Hazırla (Veri varsa ekle)
-                    let linksHTML = '';
-                    if (pub.wos_link) linksHTML += `<a href="${pub.wos_link}" target="_blank" class="index-badge badge-wos"><i class="fa-solid fa-atom"></i> WoS Link</a> `;
-                    if (pub.scopus_link) linksHTML += `<a href="${pub.scopus_link}" target="_blank" class="index-badge badge-scopus"><i class="fa-solid fa-book-open"></i> Scopus Link</a> `;
-                    if (pub.trdizin_link) linksHTML += `<a href="${pub.trdizin_link}" target="_blank" class="index-badge badge-trdizin"><i class="fa-solid fa-bookmark"></i> TR Dizin Link</a> `;
-
-                    // 3. PlumX Widget'ı Hazırla (Sadece DOI varsa ve SCI/Scopus ise)
-                    let plumxHTML = '';
-                    if (pub.doi && (pub.index === 'sci' || pub.index === 'scopus')) {
-                        // PlumX'in kendi formatı
-                        plumxHTML = `<a href="https://plu.mx/plum/a/?doi=${pub.doi}" class="plumx-plum-print-popup plum-bigbtn" data-popup="left" data-hide-when-empty="true"></a>`;
-                    }
-
-                    // Ana HTML yapısını birleştir
-                    const pubHTML = `
-                        <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
-                            <div class="pub-title">${titleHTML}</div>
-                            <div class="pub-meta"><i class="fa-solid fa-calendar"></i> ${pub.year} | <i class="fa-solid fa-tag"></i> ${pub.index_label}</div>
-                            
-                            <div class="links-area">
-                                ${linksHTML}
-                                ${plumxHTML}
-                            </div>
-                        </div>
-                    `;
-                    pubList.innerHTML += pubHTML;
-                });
-
-                // PlumX widget'larını manuel olarak tetikle (Veri geldikten sonra)
-                if (window.__plumX && window.__plumX.widgets) {
-                    window.__plumX.widgets.init();
+    fetch('publications.json')
+        .then(response => response.json())
+        .then(data => {
+            const pubList = document.getElementById('pub-list');
+            const yearFilter = document.getElementById('yearFilter');
+            const indexFilter = document.getElementById('indexFilter');
+            
+            // 1. SIRALAMA: Önce Yıl (Azalan), sonra Başlık (Alfabetik)
+            data.sort((a, b) => {
+                if (b.year !== a.year) {
+                    return b.year.localeCompare(a.year); // En yeni yıl üstte
                 }
-            })
-            .catch(error => {
-                console.error('Veri çekme hatası:', error);
-                document.getElementById('pub-list').innerHTML = '<p style="color: red;">Yayınlar yüklenirken bir hata oluştu.</p>';
+                return a.title.localeCompare(b.title); // Aynı yıl içindekiler alfabetik
             });
 
-        // Filtreleme Fonksiyonu
-        function filterPubs() {
-            let year = document.getElementById("yearFilter").value;
-            let index = document.getElementById("indexFilter").value;
-            let pubs = document.getElementsByClassName("pub-item");
+            // 2. OTOMATİK FİLTRE OLUŞTURMA (Yıllar ve İndeksler)
+            const years = [...new Set(data.map(pub => pub.year))].sort((a, b) => b - a);
+            const indices = [...new Set(data.map(pub => pub.index))];
             
-            for (let i = 0; i < pubs.length; i++) {
-                let pYear = pubs[i].getAttribute("data-year");
-                let pIndex = pubs[i].getAttribute("data-index");
-                let yearMatch = (year === "all" || year === pYear);
-                let indexMatch = (index === "all" || index === pIndex);
-                if (yearMatch && indexMatch) {
-                    pubs[i].style.display = "block";
-                } else {
-                    pubs[i].style.display = "none";
+            // Yıl filtresini temizle ve doldur
+            yearFilter.innerHTML = '<option value="all">All Years</option>';
+            years.forEach(year => {
+                yearFilter.innerHTML += `<option value="${year}">${year}</option>`;
+            });
+
+            // İndeks filtresini temizle ve doldur (Label'ları eşleştirerek)
+            indexFilter.innerHTML = '<option value="all">All Indices</option>';
+            const indexLabels = {
+                "sci": "SCI / SCI-E",
+                "ssci": "SSCI",
+                "scopus": "Scopus",
+                "trdizin": "TR Dizin",
+                "other": "Other"
+            };
+            indices.forEach(idx => {
+                const label = indexLabels[idx] || idx.toUpperCase();
+                indexFilter.innerHTML += `<option value="${idx}">${label}</option>`;
+            });
+
+            // 3. YAYINLARI SAYFAYA YAZDIRMA
+            pubList.innerHTML = ''; 
+            data.forEach(pub => {
+                let titleHTML = pub.title;
+                if (pub.doi && pub.doi !== "") {
+                    titleHTML = `<a href="https://doi.org/${pub.doi}" target="_blank" class="pub-link">${pub.title} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.8em;"></i></a>`;
                 }
-            }
+
+                let linksHTML = '';
+                if (pub.wos_link) {
+                    linksHTML += `<a href="${pub.wos_link}" target="_blank" class="index-badge badge-wos" title="Web of Science">
+                        <img src="https://www.webofscience.com/wos/static/favicon.png" style="height:12px; margin-right:5px; vertical-align:middle;"> WoS
+                    </a> `;
+                }
+                if (pub.scopus_link) {
+                    linksHTML += `<a href="${pub.scopus_link}" target="_blank" class="index-badge badge-scopus" title="Scopus">
+                        <img src="https://www.scopus.com/static/proteus-images/favicon.ico" style="height:12px; margin-right:5px; vertical-align:middle;"> Scopus
+                    </a> `;
+                }
+                if (pub.trdizin_link) {
+                    linksHTML += `<a href="${pub.trdizin_link}" target="_blank" class="index-badge badge-trdizin" title="TR Dizin">
+                        <i class="fa-solid fa-bookmark" style="font-size:10px; margin-right:5px;"></i> TR Dizin
+                    </a> `;
+                }
+
+                let plumxHTML = '';
+                if (pub.doi && (pub.index === 'sci' || pub.index === 'scopus' || pub.index === 'ssci')) {
+                    plumxHTML = `<a href="https://plu.mx/plum/a/?doi=${pub.doi}" class="plumx-plum-print-popup" data-popup="right" data-size="tiny"></a>`;
+                }
+
+                pubList.innerHTML += `
+                    <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
+                        <div class="pub-title">${titleHTML}</div>
+                        <div style="font-size: 0.95em; color: #a1a1aa; margin-bottom: 8px;">${pub.author}</div>
+                        <div class="pub-meta"><i class="fa-solid fa-calendar"></i> ${pub.year} | <i class="fa-solid fa-tag"></i> ${pub.index_label}</div>
+                        <div class="links-area">${linksHTML} ${plumxHTML}</div>
+                    </div>
+                `;
+            });
+
+            // PlumX Widget'ını Tetikle
+            setTimeout(() => {
+                let plumScript = document.createElement("script");
+                plumScript.src = "https://cdn.plu.mx/widget-popup.js";
+                document.body.appendChild(plumScript);
+            }, 500);
+        });
+
+    function filterPubs() {
+        const year = document.getElementById("yearFilter").value;
+        const index = document.getElementById("indexFilter").value;
+        const pubs = document.getElementsByClassName("pub-item");
+        
+        for (let pub of pubs) {
+            const yMatch = (year === "all" || pub.getAttribute("data-year") === year);
+            const iMatch = (index === "all" || pub.getAttribute("data-index") === index);
+            pub.style.display = (yMatch && iMatch) ? "block" : "none";
         }
-    </script>
+    }
+</script>
 </body>
 </html>
