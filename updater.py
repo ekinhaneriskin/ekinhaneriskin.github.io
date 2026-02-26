@@ -24,25 +24,31 @@ def fetch_scopus_data():
         print("Hata: SCOPUS_API_KEY bulunamadı.")
         return []
     
-    print("Scopus taranıyor (Derin Arama Modu)...")
-    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=STANDARD&count=100"
+    print("Scopus taranıyor (Güvenli Parametre Modu)...")
+    url = "https://api.elsevier.com/content/search/scopus"
+    
+    # Parametreleri ayrı bir sözlük olarak gönderiyoruz (Requests bunu otomatik encode eder)
+    query_params = {
+        'query': f'AU-ID({SCOPUS_AUTHOR_ID})',
+        'apiKey': SCOPUS_API_KEY,
+        'view': 'STANDARD',
+        'count': 100
+    }
+    
     headers = {'Accept': 'application/xml'}
     
     pubs = []
     try:
-        res = requests.get(url, headers=headers)
+        # URL yerine params=query_params kullanıyoruz (400 hatasını bu çözer)
+        res = requests.get(url, headers=headers, params=query_params)
+        
         if res.status_code == 200:
-            # XML içeriğini parse et
             root = ET.fromstring(res.content)
-            
-            # XML içindeki TÜM 'entry' etiketlerini, namespace ne olursa olsun bulur
             entries = root.findall('.//{*}entry')
             
             for entry in entries:
-                # Namespace-independent (Ad alanından bağımsız) arama yapıyoruz
                 title_node = entry.find('.//{*}title')
                 title = title_node.text if title_node is not None else ""
-                
                 if not title: continue
 
                 doi_node = entry.find('.//{*}doi')
@@ -71,9 +77,9 @@ def fetch_scopus_data():
                     "citations": citations,
                     "scopus_link": scopus_link
                 })
-            print(f"Scopus'tan {len(pubs)} adet kayıt başarıyla işlendi.")
+            print(f"Scopus'tan {len(pubs)} kayıt başarıyla çekildi.")
         else:
-            print(f"Scopus API Hatası: {res.status_code}")
+            print(f"Scopus API Hatası ({res.status_code}): {res.text}")
     except Exception as e: 
         print(f"Sistem Hatası: {e}")
     return pubs
