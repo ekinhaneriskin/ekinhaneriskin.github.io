@@ -3,37 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ekinhan Erişkin | Academic Portfolio</title>
+    <title>Ekinhan Erişkin | AI & Transportation</title>
     <style>
+        /* Sitenin Renk ve Tasarım Ayarları (CSS) */
+        :root {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --accent-color: #00ffcc; /* Teknolojik neon yeşil/mavi */
+            --card-bg: #1e1e1e;
+        }
         body {
-            background-color: #121212; /* Karanlık arkaplan */
-            color: #e0e0e0; /* Okunabilir açık gri metin */
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 10% 15%;
+            padding: 0;
             line-height: 1.6;
         }
-        h1 {
-            color: #ffffff;
-            border-bottom: 2px solid #00ffcc; /* Teknolojik neon yeşil/mavi çizgi */
-            padding-bottom: 10px;
+        /* Üst Menü Tasarımı */
+        header {
+            background-color: #0a0a0a;
+            padding: 20px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.5em;
+            color: var(--text-color);
+        }
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: var(--accent-color);
+        }
+        /* İçerik Alanı */
+        .container {
+            padding: 50px 10%;
+            max-width: 1000px;
+            margin: auto;
         }
         h2 {
-            color: #aaaaaa;
-            font-weight: 300;
+            color: var(--accent-color);
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-top: 40px;
         }
-        p {
-            font-size: 1.1em;
-            margin-top: 20px;
+        /* Proje Kartları */
+        .project-card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--accent-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        /* Butonlar */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background-color: var(--accent-color);
+            color: #000;
         }
     </style>
 </head>
 <body>
 
-    <h1>Assoc. Prof. Ekinhan Erişkin</h1>
-    <h2>Civil Engineering | Transportation & AI Modeling</h2>
-    
-    <p>Welcome to my personal website. This page is currently under construction, being built from scratch with pure HTML/CSS.</p>
+    <header>
+        <h1>E. Erişkin</h1>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#projects">Research & AI</a>
+            <a href="#publications">Publications</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <section id="about">
+            <h2>About Me</h2>
+            <p>I am an Assoc. Prof. in Civil Engineering, specializing in Transportation, Traffic Management, and Artificial Intelligence modeling. My research focuses on integrating AI and Python-based simulations to solve complex urban mobility and safety challenges.</p>
+        </section>
+
+        <section id="projects">
+            <h2>Featured Projects & Colab Models</h2>
+            
+            <div class="project-card">
+                <h3>Traffic Crash Severity Prediction using Machine Learning</h3>
+                <p>Developed an AI model predicting the severity of traffic accidents based on multi-variable urban data. The methodology utilizes deep learning frameworks integrated via Python.</p>
+                <a href="#" class="btn">View Colab Notebook</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Pavement Roughness Analysis</h3>
+                <p>Automated analysis of pavement conditions and its impact on driving quality using computer vision and predictive modeling.</p>
+                <a href="#" class="btn">Read Publication</a>
+            </div>
+        </section>
+        
+        <section id="publications">
+            <h2>Recent Publications</h2>
+            <p>List of latest peer-reviewed articles will be updated here soon.</p>
+            <a href="#" class="btn">Visit Google Scholar</a>
+        </section>
+
+    </div>
 
 </body>
 </html>
