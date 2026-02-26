@@ -58,39 +58,6 @@ def fetch_scopus_data():
     except Exception as e: print(f"Scopus XML Hatası: {e}")
     return pubs
 
-def fetch_trdizin_data():
-    print("TR Dizin taranıyor (Yazar Facet Filtresi)...")
-    # Sizin önerdiğiniz kesin sonuç veren sorgu yapısı
-    url = "https://search.trdizin.gov.tr/api/defaultSearch/publication/?q=&order=publicationYear-DESC&limit=100&facet-authorName=Ekinhan+Eriskin"
-    headers = {'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://search.trdizin.gov.tr/'}
-    pubs = []
-    try:
-        res = requests.get(url, headers=headers)
-        if res.status_code == 200:
-            hits = res.json().get('hits', {}).get('hits', [])
-            for hit in hits:
-                s = hit.get('_source', {})
-                if not s: continue
-                
-                title = s.get('title')
-                authors_raw = s.get('authors', [])
-                author_names = [a.get('fullName') for a in authors_raw if a.get('fullName')]
-                
-                if not title: continue
-
-                pubs.append({
-                    "title": title,
-                    "author": ", ".join(author_names) if author_names else "Erişkin, E.",
-                    "year": str(s.get('publicationYear', '2026')),
-                    "journal": s.get('journal', {}).get('name', '') if s.get('journal') else '',
-                    "index": "trdizin",
-                    "doi": s.get('doi', '') or "",
-                    "trdizin_link": f"https://search.trdizin.gov.tr/tr/yayin/detay/{hit.get('_id', '')}"
-                })
-            print(f"TR Dizin'den {len(pubs)} kesin kayıt ayıklandı.")
-    except: pass
-    return pubs
-
 def fetch_orcid_data():
     print("ORCID taranıyor...")
     url = f"https://pub.orcid.org/v3.0/{ORCID_ID}/works"
