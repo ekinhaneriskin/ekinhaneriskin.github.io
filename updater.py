@@ -61,31 +61,46 @@ def fetch_scopus_data():
     return pubs
 
 def fetch_trdizin_data():
-    print("TR Dizin verileri çekiliyor...")
-    url = f"https://search.trdizin.gov.tr/api/author/{TRDIZIN_AUTHOR_ID}/publications"
+    print("TR Dizin taranıyor (Kesin Sorgu)...")
+    # İsmini hem arama terimi hem de kesin filtre (facet) olarak ekledik
+    url = f"https://search.trdizin.gov.tr/api/defaultSearch/publication/?q=Ekinhan+Eriskin&facet-authorName=Ekinhan+Eriskin&order=publicationYear-DESC&limit=100"
+    
+    headers = {
+        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Referer': 'https://search.trdizin.gov.tr/'
+    }
     pubs = []
     try:
-        headers = {'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0'}
-        response = requests.get(url, headers=headers)
-        print(f"TR Dizin Yanıt Kodu: {response.status_code}")
+        res = requests.get(url, headers=headers)
+        print(f"TR Dizin Yanıt Kodu: {res.status_code}")
         
-        if response.status_code == 200:
-            entries = response.json().get('data', [])
-            current_year = str(datetime.now().year)
-            for entry in entries:
-                doi = entry.get('doi', '')
-                year_raw = entry.get('year')
-                year = str(year_raw) if year_raw else current_year
-                pubs.append({
-                    "title": entry.get('title', ''),
-                    "author": entry.get('authors', 'Erişkin, E.'),
-                    "year": year,
-                    "index": "trdizin",
-                    "doi": doi,
-                    "trdizin_link": f"https://search.trdizin.gov.tr/en/yayin/detay/{entry.get('id', '')}"
-                })
+        if res.status_code == 200:
+            data = res.json()
+            # Senin paylaştığın JSON'da veriler hits -> hits içindeydi
+            hits_list = data.get('hits', {}).get('hits', [])
+            print(f"TR Dizin'den {len(hits_list)} aday yayın yakalandı.")
+            
+            for hit in hits_list:
+                source = hit.get('_source', {})
+                # Yazarları kontrol edip senin ID'nle (341496) eşleşenleri alıyoruz
+                authors = source.get('authors', [])
+                is_mine = any(str(a.get('id')) == str(TRDIZIN_AUTHOR_ID) for a in authors)
+                
+                if is_mine:
+                    pubs.append({
+                        "title": source.get('title', ''),
+                        "author": ", ".join([a.get('fullName', '') for a in authors]),
+                        "year": str(source.get('publicationYear', '2025')),
+                        "index": "trdizin",
+                        "doi": source.get('doi', ''),
+                        "trdizin_link": f"https://search.trdizin.gov.tr/tr/yayin/detay/{hit.get('_id', '')}"
+                    })
+            print(f"Doğrulanan yayın sayısı: {len(pubs)}")
+        else:
+            print(f"TR Dizin API Hatası: {res.status_code}")
     except Exception as e:
-        print(f"TR Dizin bağlantı hatası: {e}")
+        print(f"TR Dizin Bağlantı Hatası: {e}")
     return pubs
 
 def fetch_orcid_data():
