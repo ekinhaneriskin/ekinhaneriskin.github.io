@@ -138,14 +138,7 @@
         </div>
 
         <div id="pub-list">
-            <div class="pub-item" data-year="2024" data-index="sci">
-                <div class="pub-title">Example AI-Driven Traffic Prediction Model Paper</div>
-                <div class="pub-meta"><i class="fa-solid fa-calendar"></i> 2024 | <i class="fa-solid fa-tag"></i> SCI-E</div>
-            </div>
-            <div class="pub-item" data-year="2023" data-index="trdizin">
-                <div class="pub-title">Türkiye Karayolları Esnek Üstyapı Bozulmaları Analizi</div>
-                <div class="pub-meta"><i class="fa-solid fa-calendar"></i> 2023 | <i class="fa-solid fa-tag"></i> TR Dizin</div>
-            </div>
+            <p style="color: #8b949e; font-style: italic;">Yayınlar veri tabanından yükleniyor...</p>
         </div>
     </div>
 
@@ -159,6 +152,32 @@
     </div>
 
     <script>
+        // Sayfa açıldığında publications.json dosyasını oku
+        fetch('publications.json')
+            .then(response => response.json())
+            .then(data => {
+                const pubList = document.getElementById('pub-list');
+                pubList.innerHTML = ''; // Yükleniyor yazısını temizle
+                
+                // Her bir yayın için otomatik HTML kartı oluştur
+                data.forEach(pub => {
+                    const pubHTML = `
+                        <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
+                            <div class="pub-title">
+                                <a href="${pub.link}" target="_blank" style="color: #fff; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#4dabf7'" onmouseout="this.style.color='#fff'">${pub.title}</a>
+                            </div>
+                            <div class="pub-meta"><i class="fa-solid fa-calendar"></i> ${pub.year} | <i class="fa-solid fa-tag"></i> ${pub.index_label}</div>
+                        </div>
+                    `;
+                    pubList.innerHTML += pubHTML;
+                });
+            })
+            .catch(error => {
+                console.error('Veri çekme hatası:', error);
+                document.getElementById('pub-list').innerHTML = '<p style="color: red;">Yayınlar yüklenirken bir hata oluştu.</p>';
+            });
+
+        // Filtreleme Fonksiyonu (Eski sistemle aynı mantıkta çalışır)
         function filterPubs() {
             let year = document.getElementById("yearFilter").value;
             let index = document.getElementById("indexFilter").value;
