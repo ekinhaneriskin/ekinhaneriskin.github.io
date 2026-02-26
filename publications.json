@@ -5,7 +5,56 @@
         "year": "2026",
         "index": "other",
         "doi": "10.1007/s11269-025-04399-w",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-105026208678",
+        "scopus_citations": "1",
+        "journal": "Water Resources Management"
+    },
+    {
+        "title": "Estimating Pavement Temperature Using Machine Learning Models Based on Climatic Data",
+        "author": "Terzi ",
+        "year": "2025",
+        "journal": "Airfield and Highway Pavements 2025 Design Construction Condition Evaluation and Management of Pavements Selected Papers from the International Airfield and Highway Pavements Conference 2025",
+        "index": "scopus",
+        "doi": "10.1061/9780784486214.036",
+        "scopus_citations": "0",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-105010402575"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": ", , ",
+        "year": "2025",
+        "journal": "Anestezi Dergisi",
+        "index": "trdizin",
+        "doi": "10.54875/jarss.2025.76093",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1334749"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": "",
+        "year": "2025",
+        "journal": "Türk Dili Araştırmaları Yıllığı - Belleten",
+        "index": "trdizin",
+        "doi": "10.32925/tday.2025.128",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1319946"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": "",
+        "year": "2025",
+        "journal": "Turcology research (Online)",
+        "index": "trdizin",
+        "doi": "10.62425/turcology.1490243",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1313433"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": ", ",
+        "year": "2025",
+        "journal": "EKEV AKADEMİ DERGİSİ",
+        "index": "trdizin",
+        "doi": "10.17753/sosekev.1512500",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1307224"
     },
     {
         "title": "Using Ensemble Machine Learning to Estimate International Roughness Index of Asphalt Pavements",
@@ -13,7 +62,10 @@
         "year": "2024",
         "index": "other",
         "doi": "10.1007/s40996-023-01320-6",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85180654047",
+        "scopus_citations": "2",
+        "journal": "Iranian Journal of Science and Technology Transactions of Civil Engineering"
     },
     {
         "title": "Predicting Hydrological Droughts of Long-Narrow Type Drainage Basin Using Monte Carlo Technique",
@@ -21,7 +73,10 @@
         "year": "2024",
         "index": "other",
         "doi": "10.1061/JHYEFF.HEENG-6144",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85190527987",
+        "scopus_citations": "0",
+        "journal": "Journal of Hydrologic Engineering"
     },
     {
         "title": "Collaborative Game-Theoretic Optimization of Public Transport Fare Policies: A Global Framework for Sustainable Urban Mobility",
@@ -29,7 +84,83 @@
         "year": "2024",
         "index": "sci",
         "doi": "10.3390/SU162411199",
-        "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001386540200001"
+        "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001386540200001",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85213213330",
+        "scopus_citations": "1",
+        "journal": "Sustainability Switzerland"
+    },
+    {
+        "title": "An alternative approach for increasing the visibility of roads",
+        "author": "Terzi S.",
+        "year": "2024",
+        "journal": "Revista De La Construccion",
+        "index": "scopus",
+        "doi": "10.7764/RDLC.23.2.203",
+        "scopus_citations": "1",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85203088073"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": "",
+        "year": "2024",
+        "journal": "Arkeoloji ve Sanat",
+        "index": "trdizin",
+        "doi": "",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1306119"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": "",
+        "year": "2024",
+        "journal": "Journal of innovative transportation (Online)",
+        "index": "trdizin",
+        "doi": "10.53635/jit.1563541",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1288605"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": "",
+        "year": "2024",
+        "journal": "Sinop Üniversitesi sosyal bilimler dergisi",
+        "index": "trdizin",
+        "doi": "10.30561/sinopusd.1542329",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1283694"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": ", ",
+        "year": "2024",
+        "journal": "Black Sea Journal of Engineering and Science",
+        "index": "trdizin",
+        "doi": "10.34248/bsengineering.1532507",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1280888"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": ", ",
+        "year": "2024",
+        "journal": "Anatolian Journal of Emergency Medicine",
+        "index": "trdizin",
+        "doi": "10.54996/anatolianjem.1404434",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1267866"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": ", , , , , , , , , , , , ",
+        "year": "2024",
+        "journal": "Çocuk Enfeksiyon Dergisi",
+        "index": "trdizin",
+        "doi": "10.5578/ced.20240303",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1263260"
+    },
+    {
+        "title": "Başlıksız Yayın",
+        "author": ", ",
+        "year": "2024",
+        "journal": "Türk Hijyen ve Deneysel Biyoloji Dergisi",
+        "index": "trdizin",
+        "doi": "10.5505/TurkHijyen.2024.04874",
+        "trdizin_link": "https://search.trdizin.gov.tr/tr/yayin/detay/1242672"
     },
     {
         "title": "Replacement of signalized traffic network design with Hamiltonian roads: delay? Nevermind",
@@ -37,7 +168,10 @@
         "year": "2023",
         "index": "other",
         "doi": "10.1007/s00500-022-07735-z",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85144199026",
+        "scopus_citations": "0",
+        "journal": "Soft Computing"
     },
     {
         "title": "Importance of A-pillars of vehicles during intersection approach",
@@ -61,7 +195,10 @@
         "year": "2022",
         "index": "other",
         "doi": "10.1016/j.conbuildmat.2022.128004",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85131455218",
+        "scopus_citations": "8",
+        "journal": "Construction and Building Materials"
     },
     {
         "title": "Prediction of Road Visibility Based on Meteorological Parameters by Machine Learning Methods",
@@ -77,7 +214,10 @@
         "year": "2022",
         "index": "sci",
         "doi": "10.1016/J.MEASUREMENT.2021.110591",
-        "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000742841900008"
+        "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000742841900008",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85121217597",
+        "scopus_citations": "8",
+        "journal": "Measurement Journal of the International Measurement Confederation"
     },
     {
         "title": "Bitumen expanding using bio-oil product of rose pulp’s pyrolysis process",
@@ -85,7 +225,10 @@
         "year": "2020",
         "index": "other",
         "doi": "10.1016/j.conbuildmat.2020.118721",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85082136200",
+        "scopus_citations": "3",
+        "journal": "Construction and Building Materials"
     },
     {
         "title": "Evaluating mechanical properties of bitumen and hot mix asphalt modified with nano ferric oxide",
@@ -93,7 +236,40 @@
         "year": "2020",
         "index": "other",
         "doi": "10.1016/j.conbuildmat.2019.117381",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85074557301",
+        "scopus_citations": "32",
+        "journal": "Construction and Building Materials"
+    },
+    {
+        "title": "Utility of Aramid, Polyolefin and Polypropylene Combination in Hot Mix Asphalt as a Fiber Material",
+        "author": "Karahancer B.",
+        "year": "2020",
+        "journal": "Lecture Notes in Civil Engineering",
+        "index": "scopus",
+        "doi": "10.1007/978-981-15-2349-6_61",
+        "scopus_citations": "0",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85085218062"
+    },
+    {
+        "title": "Expanded Glass Usability in Hot-Mix Asphalt as Fine Aggregate",
+        "author": "Karahancer S.",
+        "year": "2020",
+        "journal": "Lecture Notes in Civil Engineering",
+        "index": "scopus",
+        "doi": "10.1007/978-981-15-2349-6_54",
+        "scopus_citations": "0",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85085193242"
+    },
+    {
+        "title": "Investigation the Usability of Garnet as Filler Material in Hot Mix Asphalt",
+        "author": "Karahancer S.",
+        "year": "2020",
+        "journal": "Lecture Notes in Civil Engineering",
+        "index": "scopus",
+        "doi": "10.1007/978-981-15-2349-6_60",
+        "scopus_citations": "0",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85085204877"
     },
     {
         "title": "Increasing the visibility of roads using phosphorous paint",
@@ -101,7 +277,30 @@
         "year": "2019",
         "index": "other",
         "doi": "10.1080/14680629.2017.1374999",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85029426588",
+        "scopus_citations": "2",
+        "journal": "Road Materials and Pavement Design"
+    },
+    {
+        "title": "Moisture Susceptibility of Nano-Al2O3 and SiO2 Modified Asphalt Mixtures",
+        "author": "Karahancer S.",
+        "year": "2019",
+        "journal": "Airfield and Highway Pavements 2019 Testing and Characterization of Pavement Materials Selected Papers from the International Airfield and Highway Pavements Conference 2019",
+        "index": "scopus",
+        "doi": "10.1061/9780784482469.013",
+        "scopus_citations": "2",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85073903849"
+    },
+    {
+        "title": "Sulphur factory waste usability in hot mix asphalt as filler material",
+        "author": "Karahancer S.",
+        "year": "2018",
+        "journal": "Advances in Materials and Pavement Performance Prediction Proceedings of the International Am3p Conference 2018",
+        "index": "scopus",
+        "doi": "",
+        "scopus_citations": "0",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85061295763"
     },
     {
         "title": "Examination of the Effect of Superhydrophobic Coated Pavement under Wet Conditions",
@@ -109,7 +308,10 @@
         "year": "2017",
         "index": "other",
         "doi": "10.1016/j.proeng.2017.04.411",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85020835208",
+        "scopus_citations": "6",
+        "journal": "Procedia Engineering"
     },
     {
         "title": "Optimization of Traffic Signal Timing at Oversaturated Intersections Using Elimination Pairing System",
@@ -117,7 +319,10 @@
         "year": "2017",
         "index": "other",
         "doi": "10.1016/j.proeng.2017.04.378",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85020493749",
+        "scopus_citations": "24",
+        "journal": "Procedia Engineering"
     },
     {
         "title": "Waste frying oil modified bitumen usage for sustainable hot mix asphalt pavement",
@@ -125,7 +330,40 @@
         "year": "2017",
         "index": "other",
         "doi": "10.1016/j.acme.2017.03.006",
-        "wos_link": ""
+        "wos_link": "",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85018634577",
+        "scopus_citations": "48",
+        "journal": "Archives of Civil and Mechanical Engineering"
+    },
+    {
+        "title": "Modelling Marshall Stability of fiber reinforced asphalt mixtures with ANFIS",
+        "author": "Morova N.",
+        "year": "2017",
+        "journal": "Proceedings 2017 IEEE International Conference on Innovations in Intelligent Systems and Applications Inista 2017",
+        "index": "scopus",
+        "doi": "10.1109/INISTA.2017.8001152",
+        "scopus_citations": "5",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85030233095"
+    },
+    {
+        "title": "Comparing cbr values obtained from field with laboratory test results",
+        "author": "Karahancer S.",
+        "year": "2017",
+        "journal": "Bearing Capacity of Roads Railways and Airfields Proceedings of the 10th International Conference on the Bearing Capacity of Roads Railways and Airfields Bcrra 2017",
+        "index": "scopus",
+        "doi": "",
+        "scopus_citations": "1",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85058517582"
+    },
+    {
+        "title": "Estimation of specific gravity with penetration and penetration index parameters by artificial neural network",
+        "author": "Serin S.",
+        "year": "2017",
+        "journal": "Periodicals of Engineering and Natural Sciences",
+        "index": "scopus",
+        "doi": "10.21533/pen.v5i2.106",
+        "scopus_citations": "1",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85035317532"
     },
     {
         "title": "Utility of polyparaphenylene terephtalamide fiber in hot mix asphalt as a fiber",
@@ -141,6 +379,19 @@
         "year": "2016",
         "index": "sci",
         "doi": "10.1016/J.CONBUILDMAT.2016.08.147",
-        "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000385600100098"
+        "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000385600100098",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-84984973170",
+        "scopus_citations": "12",
+        "journal": "Construction and Building Materials"
+    },
+    {
+        "title": "Marshall stability estimating using artificial neural network with polyparaphenylene terephtalamide fibre rate",
+        "author": "Karahancer S.",
+        "year": "2016",
+        "journal": "Proceedings of the 2016 International Symposium on Innovations in Intelligent Systems and Applications Inista 2016",
+        "index": "scopus",
+        "doi": "10.1109/INISTA.2016.7571848",
+        "scopus_citations": "6",
+        "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-84992046827"
     }
 ]
