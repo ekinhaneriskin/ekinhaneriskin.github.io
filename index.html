@@ -494,17 +494,24 @@
 
 
 
-                    // SADECE BU BLOĞU GÜNCELLE
+                    // GÜVENLİ VE GÜNCEL SDG İKON SİSTEMİ
                     let sdgHTML = '';
                     if (pub.sdg && pub.sdg.length > 0) {
                         sdgHTML = '<div class="sdg-wrapper"><span style="font-size:0.75em; color:#8b949e; margin-right:10px;">Global Goals:</span>';
                         pub.sdg.forEach(val => {
-                            const num = val.toString().replace(/\D/g, ""); // "Goal 9" yazsan bile sadece 9'u alır
-                            // Resmi UNDP Assetlerinden ikonları çekiyoruz
-                            sdgHTML += `<img src="https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E_SDG_Icons-${num}.jpg" 
-                                             style="width: 45px; height: 45px; object-fit: contain; border-radius: 4px; transition: transform 0.2s;" 
+                            // "Goal 9" veya sadece 9 fark etmeksizin rakamı alır
+                            const num = val.toString().replace(/\D/g, ""); 
+                            // İki haneli formatı ayarlar (Örn: 9 -> 09)
+                            const formattedNum = num.padStart(2, '0'); 
+                            
+                            // Daha güvenilir kaynak: Global Goals resmi assetleri
+                            const iconUrl = `https://raw.githubusercontent.com/UNSceam/sdg-icons/main/icons/en/sdg-en-goal-${formattedNum}.png`;
+                    
+                            sdgHTML += `<img src="${iconUrl}" 
+                                             style="width: 42px; height: 42px; object-fit: contain; border-radius: 4px; transition: transform 0.2s; cursor: pointer;" 
                                              title="Goal ${num}" 
-                                             onmouseover="this.style.transform='scale(1.1)'" 
+                                             onerror="this.src='https://via.placeholder.com/42?text=SDG${num}'"
+                                             onmouseover="this.style.transform='scale(1.15)'" 
                                              onmouseout="this.style.transform='scale(1)'">`;
                         });
                         sdgHTML += '</div>';
