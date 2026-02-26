@@ -114,27 +114,52 @@ def fetch_orcid_data():
     except: pass
     return pubs
 
-def merge_and_save(local, fetched):
-    for n in fetched:
-        key = (n.get('doi') or n.get('title')).lower().strip()
-        if key in local:
-            # Mevcut kaydı zenginleştir
-            for field in ['scopus_link', 'wos_link', 'citations', 'journal', 'author']:
-                if n.get(field): local[key][field] = n[field]
-            if n.get('index') == 'sci': local[key]['index'] = 'sci'
-        else:
-            local[key] = n
+def merge_and_save(local_data, fetched_pubs, metrics):
+    # Mevcut yayınları DOI veya Başlık bazlı bir sözlüğe al
+    local_dict = { (p.get('doi') or p.get('title') or "").lower().strip(): p for p in local_data['publications'] if p }
     
-    # Final temizliği: TR Dizin kalıntılarını (başlığı olmayanları) uçur
-    final_list = [p for p in local.values() if p and len(p.get('title', '')) > 5]
-    final_list = sorted(final_list, key=lambda x: str(x.get('year', '0')), reverse=True)
+    for n in fetched_pubs:
+        n_doi = str(n.get('doi') or "").strip().lower()
+        n_title = str(n.get('title') or "").strip().lower()
+        key = n_doi if n_doi else n_title
+        if not key: continue
+
+        if key in local_dict:
+            # --- EŞLEŞME VARSA: SADECE DEĞİŞKEN VERİLERİ GÜNCELLE ---
+            # Atıf sayısı her zaman güncellenir
+            local_dict[key]['citations'] = n.get('citations', local_dict[key].get('citations', '0'))
+            
+            # Eksik olan linkleri veya dergi adını doldur (varsa dokunma)
+            for field in ['scopus_link', 'wos_link', 'journal']:
+                if n.get(field) and not local_dict[key].get(field):
+                    local_dict[key][field] = n[field]
+            
+            # İndeks SCI-E ise yükselt
+            if n.get('index') == 'sci':
+                local_dict[key]['index'] = 'sci'
+        else:
+            # --- YENİ YAYIN: LİSTEYE EKLE ---
+            local_dict[key] = n
+    
+    # Final JSON Yapısı
+    output = {
+        "metrics": metrics,
+        "publications": sorted(local_dict.values(), key=lambda x: str(x.get('year', '0')), reverse=True)
+    }
     
     with open(JSON_FILE_PATH, 'w', encoding='utf-8') as f:
-        json.dump(final_list, f, ensure_ascii=False, indent=4)
+        json.dump(output, f, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
-    local_pubs = load_local_data()
-    all_fetched = fetch_scopus_data() + fetch_orcid_data()
-    if all_fetched:
-        merge_and_save(local_pubs, all_fetched)
-        print(f"İşlem Tamam! Toplam {len(local_pubs)} benzersiz yayın kaydedildi.")
+    # Verileri oku
+    local_data = load_local_data()
+    
+    # API'lerden taze verileri çek
+    metrics = fetch_scopus_metrics()
+    s_pubs = fetch_scopus_data()
+    o_pubs = fetch_orcid_data()
+    
+    # Birleştir ve Kaydet
+    merge_and_save(local_data, s_pubs + o_pubs, metrics)
+    
+    print(f"İşlem Başarılı! {len(local_data['publications'])} yayın kontrol edildi, atıf sayıları güncellendi.")
