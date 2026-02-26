@@ -1,16 +1,22 @@
 [
     {
-        "title": "Example AI-Driven Traffic Prediction Model Paper",
+        "title": "A Novel AI-Driven Approach for Urban Traffic Flow Optimization",
         "year": "2024",
         "index": "sci",
         "index_label": "SCI-E",
-        "link": "https://doi.org/ornek-link"
+        "doi": "10.1016/j.trc.example", 
+        "wos_link": "https://webofscience.link/example",
+        "scopus_link": "https://scopus.link/example",
+        "trdizin_link": ""
     },
     {
-        "title": "Türkiye Karayolları Esnek Üstyapı Bozulmaları Analizi",
+        "title": "Türkiye Karayolları Esnek Üstyapı Bozulmaları Analizi ve Modellenmesi",
         "year": "2023",
         "index": "trdizin",
         "index_label": "TR Dizin",
-        "link": "https://dergipark.org.tr/ornek-link"
+        "doi": "",
+        "wos_link": "",
+        "scopus_link": "",
+        "trdizin_link": "https://dergipark.org.tr/tr/pub/example"
     }
 ]
