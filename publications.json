@@ -8,6 +8,7 @@
         "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001651149800011",
         "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-105026208678",
         "citations": "1",
+        "sdg": [6],
         "journal": "Water Resources Management"
     },
     {
@@ -41,6 +42,7 @@
         "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001202621600013",
         "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85190527987",
         "citations": "0",
+        "sdg": [6, 8],
         "journal": "Journal of Hydrologic Engineering"
     },
     {
@@ -52,6 +54,7 @@
         "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001386540200001",
         "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85213213330",
         "citations": "1",
+        "sdg": [9, 10, 11, 17],
         "journal": "Sustainability Switzerland"
     },
     {
@@ -62,6 +65,7 @@
         "index": "scopus",
         "doi": "10.7764/RDLC.23.2.203",
         "citations": "1",
+        "sdg": [3, 11],
         "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001416924800003",
         "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85203088073"
     },
@@ -74,6 +78,7 @@
         "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000900793700004",
         "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85144199026",
         "citations": "0",
+        "sdg": [11],
         "journal": "Soft Computing"
     },
     {
@@ -120,6 +125,7 @@
         "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000742841900008",
         "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85121217597",
         "citations": "8",
+        "sdg": [11],
         "journal": "Measurement Journal of the International Measurement Confederation"
     },
     {
@@ -131,6 +137,7 @@
         "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000535925900030",
         "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85082136200",
         "citations": "3",
+        "sdg": [7, 9],
         "journal": "Construction and Building Materials"
     },
     {
