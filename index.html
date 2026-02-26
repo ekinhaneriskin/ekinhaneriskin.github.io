@@ -173,104 +173,86 @@
     </div>
 
     <script>
-    fetch('publications.json')
-        .then(response => response.json())
-        .then(data => {
+        const SCOPUS_API_KEY = 'a5210b26f0964c067ea0ed118b6df34c';
+        const SCOPUS_AUTHOR_ID = '57039193000'; // Senin Scopus ID'n
+    
+        // Scopus'tan veri çekme fonksiyonu
+        async function fetchScopusData() {
+            const url = `https://api.elsevier.com/content/search/scopus?query=AU-ID(${SCOPUS_AUTHOR_ID})&apiKey=${SCOPUS_API_KEY}&view=COMPLETE`;
+            
+            try {
+                const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+                const data = await response.json();
+                const entries = data['search-results']['entry'];
+                renderPublications(entries);
+            } catch (error) {
+                console.error("Scopus bağlantı hatası:", error);
+                document.getElementById('pub-list').innerHTML = '<p style="color:red;">Scopus verileri çekilemedi. Lütfen API anahtarını kontrol edin.</p>';
+            }
+        }
+    
+        function renderPublications(entries) {
             const pubList = document.getElementById('pub-list');
             const yearFilter = document.getElementById('yearFilter');
-            const indexFilter = document.getElementById('indexFilter');
-            
-            // 1. SIRALAMA: Önce Yıl (Azalan), sonra Başlık (Alfabetik)
-            data.sort((a, b) => {
-                if (b.year !== a.year) {
-                    return b.year.localeCompare(a.year); // En yeni yıl üstte
-                }
-                return a.title.localeCompare(b.title); // Aynı yıl içindekiler alfabetik
-            });
-
-            // 2. OTOMATİK FİLTRE OLUŞTURMA (Yıllar ve İndeksler)
-            const years = [...new Set(data.map(pub => pub.year))].sort((a, b) => b - a);
-            const indices = [...new Set(data.map(pub => pub.index))];
-            
-            // Yıl filtresini temizle ve doldur
+            pubList.innerHTML = '';
+    
+            // Yılları ve İndeksleri Otomatik Belirle
+            const years = [...new Set(entries.map(e => e['prism:coverDate'].split('-')[0]))].sort((a,b) => b-a);
             yearFilter.innerHTML = '<option value="all">All Years</option>';
-            years.forEach(year => {
-                yearFilter.innerHTML += `<option value="${year}">${year}</option>`;
-            });
-
-            // İndeks filtresini temizle ve doldur (Label'ları eşleştirerek)
-            indexFilter.innerHTML = '<option value="all">All Indices</option>';
-            const indexLabels = {
-                "sci": "SCI / SCI-E",
-                "ssci": "SSCI",
-                "scopus": "Scopus",
-                "trdizin": "TR Dizin",
-                "other": "Other"
-            };
-            indices.forEach(idx => {
-                const label = indexLabels[idx] || idx.toUpperCase();
-                indexFilter.innerHTML += `<option value="${idx}">${label}</option>`;
-            });
-
-            // 3. YAYINLARI SAYFAYA YAZDIRMA
-            pubList.innerHTML = ''; 
-            data.forEach(pub => {
-                let titleHTML = pub.title;
-                if (pub.doi && pub.doi !== "") {
-                    titleHTML = `<a href="https://doi.org/${pub.doi}" target="_blank" class="pub-link">${pub.title} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.8em;"></i></a>`;
-                }
-
-                let linksHTML = '';
-                if (pub.wos_link) {
-                    linksHTML += `<a href="${pub.wos_link}" target="_blank" class="index-badge badge-wos" title="Web of Science">
-                        <img src="https://www.webofscience.com/wos/static/favicon.png" style="height:12px; margin-right:5px; vertical-align:middle;"> WoS
-                    </a> `;
-                }
-                if (pub.scopus_link) {
-                    linksHTML += `<a href="${pub.scopus_link}" target="_blank" class="index-badge badge-scopus" title="Scopus">
-                        <img src="https://www.scopus.com/static/proteus-images/favicon.ico" style="height:12px; margin-right:5px; vertical-align:middle;"> Scopus
-                    </a> `;
-                }
-                if (pub.trdizin_link) {
-                    linksHTML += `<a href="${pub.trdizin_link}" target="_blank" class="index-badge badge-trdizin" title="TR Dizin">
-                        <i class="fa-solid fa-bookmark" style="font-size:10px; margin-right:5px;"></i> TR Dizin
-                    </a> `;
-                }
-
-                let plumxHTML = '';
-                if (pub.doi && (pub.index === 'sci' || pub.index === 'scopus' || pub.index === 'ssci')) {
-                    plumxHTML = `<a href="https://plu.mx/plum/a/?doi=${pub.doi}" class="plumx-plum-print-popup" data-popup="right" data-size="tiny"></a>`;
-                }
-
-                pubList.innerHTML += `
-                    <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
-                        <div class="pub-title">${titleHTML}</div>
-                        <div style="font-size: 0.95em; color: #a1a1aa; margin-bottom: 8px;">${pub.author}</div>
-                        <div class="pub-meta"><i class="fa-solid fa-calendar"></i> ${pub.year} | <i class="fa-solid fa-tag"></i> ${pub.index_label}</div>
-                        <div class="links-area">${linksHTML} ${plumxHTML}</div>
+            years.forEach(y => yearFilter.innerHTML += `<option value="${y}">${y}</option>`);
+    
+            entries.forEach(entry => {
+                const title = entry['dc:title'];
+                const authors = entry['dc:creator']; // İlk yazar veya tümü (API görünümüne göre değişir)
+                const year = entry['prism:coverDate'].split('-')[0];
+                const doi = entry['prism:doi'];
+                const journal = entry['prism:publicationName'];
+                const citationCount = entry['citedby-count'];
+                
+                // SDG Verisi (Eğer API dönüyorsa çekilir, dönmüyorsa Scopus linkine gömülür)
+                let sdgHTML = ''; 
+                // Not: Kişisel API paketine göre SDG doğrudan dönmeyebilir, 
+                // ancak Scopus Linki üzerinden ziyaretçi görebilir.
+    
+                const pubHTML = `
+                    <div class="pub-item" data-year="${year}">
+                        <div class="pub-title">
+                            <a href="https://doi.org/${doi}" target="_blank" class="pub-link">${title}</a>
+                        </div>
+                        <div style="font-size: 0.9em; color: #a1a1aa; margin-bottom: 8px;">${authors} | <em>${journal}</em></div>
+                        <div class="pub-meta">
+                            <i class="fa-solid fa-calendar"></i> ${year} | 
+                            <i class="fa-solid fa-quote-right"></i> Citations: <span style="color:var(--accent-color); font-weight:bold;">${citationCount}</span>
+                        </div>
+                        <div class="links-area">
+                            <a href="https://www.scopus.com/record/display.uri?eid=${entry['eid']}" target="_blank" class="index-badge badge-scopus">
+                                <img src="https://www.scopus.com/static/proteus-images/favicon.ico" style="height:12px; margin-right:5px;"> Scopus Profile
+                            </a>
+                            <a href="https://plu.mx/plum/a/?doi=${doi}" class="plumx-plum-print-popup" data-popup="right" data-size="tiny"></a>
+                        </div>
                     </div>
                 `;
+                pubList.innerHTML += pubHTML;
             });
-
-            // PlumX Widget'ını Tetikle
+    
+            // PlumX Tetikleyici
             setTimeout(() => {
-                let plumScript = document.createElement("script");
-                plumScript.src = "https://cdn.plu.mx/widget-popup.js";
-                document.body.appendChild(plumScript);
+                let s = document.createElement("script");
+                s.src = "https://cdn.plu.mx/widget-popup.js";
+                document.body.appendChild(s);
             }, 500);
-        });
-
-    function filterPubs() {
-        const year = document.getElementById("yearFilter").value;
-        const index = document.getElementById("indexFilter").value;
-        const pubs = document.getElementsByClassName("pub-item");
-        
-        for (let pub of pubs) {
-            const yMatch = (year === "all" || pub.getAttribute("data-year") === year);
-            const iMatch = (index === "all" || pub.getAttribute("data-index") === index);
-            pub.style.display = (yMatch && iMatch) ? "block" : "none";
         }
-    }
-</script>
+    
+        // Başlat
+        fetchScopusData();
+    
+        function filterPubs() {
+            const year = document.getElementById("yearFilter").value;
+            const pubs = document.getElementsByClassName("pub-item");
+            for (let p of pubs) {
+                p.style.display = (year === "all" || p.dataset.year === year) ? "block" : "none";
+            }
+        }
+    </script>
 </body>
 </html>
