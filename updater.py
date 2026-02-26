@@ -27,30 +27,28 @@ def load_local_data():
 
 def fetch_scopus_data():
     print("Scopus verileri çekiliyor...")
-    # count=200 ekledik: Varsayılan 25 sınırı yerine tek seferde 200 yayını çeker
-    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=COMPLETE&count=100"
+    # count=200 KADIRILDI. Yerine sort=-coverDate EKLENDİ (En yeni yayınları ilk getirir)
+    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=COMPLETE&sort=-coverDate"
     headers = {'Accept': 'application/json'}
     pubs = []
+    
     if not SCOPUS_API_KEY:
-        print("HATA: API Anahtarı bulunamadı!")
+        print("HATA: API Anahtarı bulunamadı (Secrets kontrol edin)!")
         return pubs
         
     try:
         response = requests.get(url, headers=headers)
+        print(f"Scopus Sunucu Yanıt Kodu: {response.status_code}") # Hata ayıklama için
+        
         if response.status_code == 200:
             data = response.json()
             entries = data.get('search-results', {}).get('entry', [])
-            current_year = str(datetime.now().year) # Otomatik olarak güncel yılı alır
+            current_year = str(datetime.now().year)
             
             for entry in entries:
                 doi = entry.get('prism:doi', '')
-                
-                # Tarihi güvenli bir şekilde çek
                 cover_date = entry.get('prism:coverDate')
-                if cover_date:
-                    year = cover_date.split('-')[0]
-                else:
-                    year = current_year # Tarih yoksa bu seneyi yaz
+                year = cover_date.split('-')[0] if cover_date else current_year
                     
                 pubs.append({
                     "title": entry.get('dc:title', ''),
@@ -60,8 +58,10 @@ def fetch_scopus_data():
                     "doi": doi,
                     "scopus_link": f"https://www.scopus.com/record/display.uri?eid={entry.get('eid', '')}",
                 })
+        else:
+            print(f"Scopus API Hatası Detayı: {response.text}") # Neden reddettiğini yazar
     except Exception as e:
-        print(f"Scopus hatası: {e}")
+        print(f"Scopus bağlantı hatası: {e}")
     return pubs
 
 def fetch_trdizin_data():
@@ -69,18 +69,18 @@ def fetch_trdizin_data():
     url = f"https://search.trdizin.gov.tr/api/author/{TRDIZIN_AUTHOR_ID}/publications"
     pubs = []
     try:
-        response = requests.get(url, headers={'Accept': 'application/json'})
+        # User-Agent ekleyerek bot engellemesini aşmayı deniyoruz
+        headers = {'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(url, headers=headers)
+        print(f"TR Dizin Sunucu Yanıt Kodu: {response.status_code}") # Hata ayıklama için
+        
         if response.status_code == 200:
             entries = response.json().get('data', [])
             current_year = str(datetime.now().year)
-            
             for entry in entries:
                 doi = entry.get('doi', '')
-                
-                # TRDizin yılını güvenli al
                 year_raw = entry.get('year')
                 year = str(year_raw) if year_raw else current_year
-                
                 pubs.append({
                     "title": entry.get('title', ''),
                     "author": entry.get('authors', 'Erişkin, E.'),
@@ -89,8 +89,10 @@ def fetch_trdizin_data():
                     "doi": doi,
                     "trdizin_link": f"https://search.trdizin.gov.tr/en/yayin/detay/{entry.get('id', '')}"
                 })
+        else:
+            print(f"TR Dizin API Hatası Detayı: {response.text}")
     except Exception as e:
-        print(f"TR Dizin hatası: {e}")
+        print(f"TR Dizin bağlantı hatası: {e}")
     return pubs
 
 def merge_and_save(local_data, fetched_data):
@@ -120,4 +122,7 @@ if __name__ == "__main__":
     trdizin_pubs = fetch_trdizin_data()
     
     all_fetched = scopus_pubs + trdizin_pubs
-    merge_and_save(local_pubs, all_fetched)
+    if all_fetched:
+        merge_and_save(local_pubs, all_fetched)
+    else:
+        print("HİÇ YENİ VERİ ÇEKİLEMEDİ! Dosyaya dokunulmuyor.")
