@@ -6,7 +6,7 @@
     <title>Ekinhan Erişkin | AI & Transportation</title>
     <link rel="icon" href="icon.ico" type="image/x-icon">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:wght@700&family=Arizonia&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -35,8 +35,26 @@
             background: linear-gradient(rgba(13, 17, 23, 0.5), rgba(13, 17, 23, 0.7)), url('background.jpg') no-repeat center center/cover;
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
-        .hero h1 { font-size: 3.5em; color: #fff; margin-bottom: 5px; font-weight: 600; }
-        .hero h2 { font-size: 1.3em; color: var(--accent-color); font-weight: 300; margin-top: 0; margin-bottom: 30px; }
+        
+        /* İsim Fontu: Merriweather */
+        .hero h1 { 
+            font-family: 'Merriweather', serif; 
+            font-size: 4em; 
+            color: #fff; 
+            margin-bottom: 0px; 
+            font-weight: 700; 
+        }
+        
+        /* Unvan Fontu: Arizonia */
+        .hero h2 { 
+            font-family: 'Arizonia', cursive; 
+            font-size: 2.5em; 
+            color: var(--accent-color); 
+            font-weight: 400; 
+            margin-top: -10px; 
+            margin-bottom: 35px;
+            letter-spacing: 1px;
+        }
         
         .social-links { margin-bottom: 40px; display: flex; gap: 15px; }
         .social-links a {
@@ -56,23 +74,17 @@
         .bio-container { display: flex; gap: 40px; align-items: center; }
         .bio-img { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); box-shadow: 0 0 20px rgba(77, 171, 247, 0.2); }
 
-        /* Scopus Metrics Dashboard */
-        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 40px 0; }
-        .metric-card { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid #30363d; text-align: center; transition: transform 0.3s; }
-        .metric-card:hover { transform: translateY(-5px); border-color: var(--accent-color); }
-        .metric-value { font-size: 2.2em; color: #fff; font-weight: 700; display: block; }
-        .metric-label { font-size: 0.8em; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 5px; font-weight: 600; }
-
         @media (max-width: 768px) { 
             .bio-container { flex-direction: column; text-align: center; } 
-            .metrics-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3em; }
+            .hero h2 { font-size: 2em; }
         }
         
         .filter-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
         select { padding: 10px; background-color: var(--card-bg); color: #fff; border: 1px solid #30363d; border-radius: 5px; cursor: pointer; }
 
         .pub-item { background-color: var(--card-bg); padding: 25px; margin-bottom: 20px; border-radius: 8px; border-left: 4px solid var(--accent-color); position: relative; }
-        .pub-title { margin-bottom: 8px; padding-right: 80px; }
+        .pub-title { margin-bottom: 8px; padding-right: 100px; }
         .pub-link { color: #fff; text-decoration: none; transition: color 0.3s; font-weight: 600; font-size: 1.15em; line-height: 1.4; }
         .pub-link:hover { color: var(--accent-color); text-decoration: underline; }
 
@@ -128,17 +140,14 @@
     </div>
 
     <div class="content-section" id="about">
-        <h3>Bio & Academic Metrics</h3>
+        <h3>Bio</h3>
         <div class="bio-container">
             <img src="foto.jpeg" alt="Ekinhan Erişkin" class="bio-img">
             <div>
                 <p>I am an Associate Professor in Civil Engineering at Suleyman Demirel University, deeply passionate about the intersection of transportation infrastructure and artificial intelligence.</p>
-                <p>My work focuses on developing predictive models and traffic management systems using advanced machine learning algorithms.</p>
+                <p>My work focuses on developing predictive models and traffic management systems using advanced machine learning algorithms. I strive to bridge the gap between traditional civil engineering practices and modern AI-driven solutions, optimizing urban mobility, safety, and sustainability.</p>
             </div>
         </div>
-
-        <div class="metrics-grid" id="metrics-container">
-            </div>
     </div>
 
     <div class="content-section" id="publications">
@@ -163,17 +172,8 @@
         fetch('publications.json')
             .then(res => res.json())
             .then(data => {
-                // 1. METRİKLERİ YAZDIR
-                if(data.metrics) {
-                    document.getElementById('metrics-container').innerHTML = `
-                        <div class="metric-card"><span class="metric-value">${data.metrics.h_index}</span><span class="metric-label">h-index</span></div>
-                        <div class="metric-card"><span class="metric-value">${data.metrics.citation_count}</span><span class="metric-label">Total Citations</span></div>
-                        <div class="metric-card"><span class="metric-value">${data.metrics.document_count}</span><span class="metric-label">Documents</span></div>
-                    `;
-                }
-
-                // 2. YAYINLARI LİSTELE
-                const pubs = data.publications || [];
+                // Verinin 'metrics' objesi mi yoksa eski düz liste mi olduğunu kontrol et
+                const pubs = data.publications ? data.publications : data;
                 const pubList = document.getElementById('pub-list');
                 
                 // Filtreleri Oluştur
@@ -191,10 +191,10 @@
                     if (pub.trdizin_link) linksHTML += `<a href="${pub.trdizin_link}" target="_blank" class="index-badge badge-trdizin">TR Dizin</a>`;
 
                     let sdgHTML = '';
-                    if (pub.sdg) {
-                        sdgHTML = '<div class="sdg-wrapper">';
+                    if (pub.sdg && pub.sdg.length > 0) {
+                        sdgHTML = '<div class="sdg-wrapper"><span style="font-size:0.75em; color:#8b949e; margin-right:10px;">UN SDGs:</span>';
                         pub.sdg.forEach(g => {
-                            const n = g.replace(/\D/g,'');
+                            const n = g.toString().replace(/\D/g,'');
                             sdgHTML += `<div class="sdg-badge sdg-${n}" title="Goal ${n}">${n}</div>`;
                         });
                         sdgHTML += '</div>';
@@ -207,7 +207,7 @@
                             ${citBadge}
                             <div class="pub-title"><a href="https://doi.org/${pub.doi}" target="_blank" class="pub-link">${pub.title}</a></div>
                             <div class="journal-name">${pub.journal || ''}</div>
-                            <div style="font-size: 0.9em; color: #a1a1aa;">${pub.author} (${pub.year})</div>
+                            <div style="font-size: 0.9em; color: #a1a1aa; margin-bottom: 8px;">${pub.author} (${pub.year})</div>
                             <div class="links-area">
                                 ${linksHTML}
                                 <a href="https://plu.mx/plum/a/?doi=${pub.doi}" class="plumx-plum-print-popup" data-popup="right" data-size="medium"></a>
@@ -216,7 +216,6 @@
                         </div>`;
                 });
 
-                // PlumX scriptini tetikle
                 setTimeout(() => {
                     let s = document.createElement("script");
                     s.src = "https://cdn.plu.mx/widget-popup.js";
