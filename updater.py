@@ -1,9 +1,9 @@
 import json
 import requests
 import os
+from datetime import datetime
 
 # --- AYARLAR ---
-# Şifreyi GitHub Kasasından (Secrets) güvenle çekiyoruz
 SCOPUS_API_KEY = os.environ.get('SCOPUS_API_KEY')
 SCOPUS_AUTHOR_ID = '57039193000'
 TRDIZIN_AUTHOR_ID = '341496'
@@ -27,7 +27,8 @@ def load_local_data():
 
 def fetch_scopus_data():
     print("Scopus verileri çekiliyor...")
-    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=COMPLETE"
+    # count=200 ekledik: Varsayılan 25 sınırı yerine tek seferde 200 yayını çeker
+    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=COMPLETE&count=200"
     headers = {'Accept': 'application/json'}
     pubs = []
     if not SCOPUS_API_KEY:
@@ -39,12 +40,22 @@ def fetch_scopus_data():
         if response.status_code == 200:
             data = response.json()
             entries = data.get('search-results', {}).get('entry', [])
+            current_year = str(datetime.now().year) # Otomatik olarak güncel yılı alır
+            
             for entry in entries:
                 doi = entry.get('prism:doi', '')
+                
+                # Tarihi güvenli bir şekilde çek
+                cover_date = entry.get('prism:coverDate')
+                if cover_date:
+                    year = cover_date.split('-')[0]
+                else:
+                    year = current_year # Tarih yoksa bu seneyi yaz
+                    
                 pubs.append({
                     "title": entry.get('dc:title', ''),
                     "author": entry.get('dc:creator', 'Erişkin, E.'),
-                    "year": entry.get('prism:coverDate', '2024').split('-')[0],
+                    "year": year,
                     "index": "scopus",
                     "doi": doi,
                     "scopus_link": f"https://www.scopus.com/record/display.uri?eid={entry.get('eid', '')}",
@@ -61,12 +72,19 @@ def fetch_trdizin_data():
         response = requests.get(url, headers={'Accept': 'application/json'})
         if response.status_code == 200:
             entries = response.json().get('data', [])
+            current_year = str(datetime.now().year)
+            
             for entry in entries:
                 doi = entry.get('doi', '')
+                
+                # TRDizin yılını güvenli al
+                year_raw = entry.get('year')
+                year = str(year_raw) if year_raw else current_year
+                
                 pubs.append({
                     "title": entry.get('title', ''),
                     "author": entry.get('authors', 'Erişkin, E.'),
-                    "year": str(entry.get('year', '')),
+                    "year": year,
                     "index": "trdizin",
                     "doi": doi,
                     "trdizin_link": f"https://search.trdizin.gov.tr/en/yayin/detay/{entry.get('id', '')}"
