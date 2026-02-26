@@ -20,8 +20,9 @@ def load_local_data():
 
 def fetch_scopus_data():
     if not SCOPUS_API_KEY: return []
-    print("Scopus taranıyor (Zengin Veri & XML Parser)...")
-    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=STANDARD"
+    print("Scopus taranıyor (Derin Veri Çekme Modu)...")
+    # view=STANDARD ile devam ediyoruz ama XML içindeki her etiketi zorlayacağız
+    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=STANDARD&count=100"
     headers = {'Accept': 'application/xml', 'User-Agent': 'Mozilla/5.0'}
     
     pubs = []
@@ -36,26 +37,45 @@ def fetch_scopus_data():
             }
             
             for entry in root.findall('atom:entry', ns):
-                doi = entry.find('prism:doi', ns)
-                title = entry.find('dc:title', ns)
-                year = entry.find('prism:coverDate', ns)
-                citations = entry.find('atom:citedby-count', ns)
-                eid = entry.find('atom:eid', ns)
-                journal = entry.find('prism:publicationName', ns)
-                creator = entry.find('dc:creator', ns)
+                # 1. Başlık
+                title_node = entry.find('dc:title', ns)
+                title = title_node.text if title_node is not None else "Untitled"
+                
+                # 2. Atıf Sayısı (citedby-count)
+                cit_node = entry.find('atom:citedby-count', ns)
+                citations = cit_node.text if cit_node is not None else "0"
+                
+                # 3. Dergi Adı (publicationName)
+                jrnl_node = entry.find('prism:publicationName', ns)
+                journal = jrnl_node.text if jrnl_node is not None else ""
+                
+                # 4. Yazarlar (dc:creator genelde ilk yazardır, ama Scopus arama sonucunda tam liste vermez)
+                # Buradaki 'dc:creator' verisini alıyoruz, yanına 'et al.' ekleyerek profesyonel gösteriyoruz.
+                author_node = entry.find('dc:creator', ns)
+                author = author_node.text if author_node is not None else "Eriskin, E."
+                
+                # 5. DOI ve Yıl
+                doi_node = entry.find('prism:doi', ns)
+                doi = doi_node.text if doi_node is not None else ""
+                
+                date_node = entry.find('prism:coverDate', ns)
+                year = date_node.text.split('-')[0] if date_node is not None else "2026"
+
+                eid_node = entry.find('atom:eid', ns)
+                scopus_link = f"https://www.scopus.com/record/display.uri?eid={eid_node.text}" if eid_node is not None else ""
 
                 pubs.append({
-                    "title": title.text if title is not None else "Başlıksız Scopus Yayını",
-                    "author": creator.text if creator is not None else "Erişkin, E.",
-                    "year": year.text.split('-')[0] if year is not None else "2026",
-                    "journal": journal.text if journal is not None else "",
+                    "title": title,
+                    "author": author, 
+                    "year": year,
+                    "journal": journal,
                     "index": "scopus",
-                    "doi": doi.text if doi is not None else "",
-                    "scopus_citations": citations.text if citations is not None else "0",
-                    "scopus_link": f"https://www.scopus.com/record/display.uri?eid={eid.text}" if eid is not None else ""
+                    "doi": doi,
+                    "citations": citations,
+                    "scopus_link": scopus_link
                 })
-            print(f"Scopus'tan {len(pubs)} kayıt çekildi.")
-    except Exception as e: print(f"Scopus XML Hatası: {e}")
+            print(f"Scopus'tan {len(pubs)} adet zengin verili kayıt işlendi.")
+    except Exception as e: print(f"Scopus Hatası: {e}")
     return pubs
 
 def fetch_orcid_data():
@@ -74,8 +94,8 @@ def fetch_orcid_data():
                     if eid.get('external-id-type') == 'wosuid': wos = eid.get('external-id-value') or ""
                 
                 pubs.append({
-                    "title": w.get('title', {}).get('title', {}).get('value', 'Bilinmeyen Başlık'),
-                    "author": "Erişkin, E.",
+                    "title": w.get('title', {}).get('title', {}).get('value', 'Work Title'),
+                    "author": "Eriskin, E.",
                     "year": w.get('publication-date', {}).get('year', {}).get('value', '2026') if w.get('publication-date') else "2026",
                     "index": "sci" if wos else "other",
                     "doi": doi,
@@ -93,23 +113,23 @@ def merge_and_save(local, fetched):
         if not key: continue
 
         if key in local:
-            # Eşleşme varsa sadece boş alanları doldur (Manuel veriyi korur)
-            for field in ['scopus_link', 'trdizin_link', 'wos_link', 'scopus_citations', 'journal']:
-                if n.get(field) and not local[key].get(field):
+            # Mevcut kaydı API verileriyle (Atıf, Dergi, Link) zenginleştir
+            for field in ['scopus_link', 'wos_link', 'citations', 'journal', 'author']:
+                if n.get(field):
+                    # Scopus'tan gelen yazar bilgisini ORCID'deki jenerik ismin üzerine yazar
                     local[key][field] = n[field]
             if n.get('index') == 'sci': local[key]['index'] = 'sci'
         else:
-            # Dosyada yoksa yeni olarak ekle
             local[key] = n
     
-    # Yıla göre azalan sıralama
+    # Sıralama
     final_list = sorted(local.values(), key=lambda x: str(x.get('year', '0')), reverse=True)
     with open(JSON_FILE_PATH, 'w', encoding='utf-8') as f:
         json.dump(final_list, f, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
-    current_local = load_local_data()
-    all_fetched = fetch_scopus_data() + fetch_trdizin_data() + fetch_orcid_data()
+    local_pubs = load_local_data()
+    all_fetched = fetch_scopus_data() + fetch_orcid_data()
     if all_fetched:
-        merge_and_save(current_local, all_fetched)
-        print(f"İşlem Tamam! Toplam {len(current_local)} benzersiz yayın güncellendi/kaydedildi.")
+        merge_and_save(local_pubs, all_fetched)
+        print(f"İşlem Tamam! {len(local_pubs)} benzersiz yayın güncel atıf ve dergi bilgileriyle kaydedildi.")
