@@ -1,1 +1,153 @@
-[]
+{
+    "metrics": {
+        "h_index": "0",
+        "citation_count": "0",
+        "document_count": "0"
+    },
+    "publications": [
+        {
+            "title": "A Horizon-Adaptive Benchmarking Framework for Long-Term Reservoir Storage Forecasting Using Physics-Informed Transformers and Machine Learning",
+            "author": "Eriskin, E.",
+            "year": "2026",
+            "index": "other",
+            "doi": "10.1007/s11269-025-04399-w",
+            "wos_link": ""
+        },
+        {
+            "title": "Using Ensemble Machine Learning to Estimate International Roughness Index of Asphalt Pavements",
+            "author": "Eriskin, E.",
+            "year": "2024",
+            "index": "other",
+            "doi": "10.1007/s40996-023-01320-6",
+            "wos_link": ""
+        },
+        {
+            "title": "Predicting Hydrological Droughts of Long-Narrow Type Drainage Basin Using Monte Carlo Technique",
+            "author": "Eriskin, E.",
+            "year": "2024",
+            "index": "other",
+            "doi": "10.1061/JHYEFF.HEENG-6144",
+            "wos_link": ""
+        },
+        {
+            "title": "Collaborative Game-Theoretic Optimization of Public Transport Fare Policies: A Global Framework for Sustainable Urban Mobility",
+            "author": "Eriskin, E.",
+            "year": "2024",
+            "index": "sci",
+            "doi": "10.3390/SU162411199",
+            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001386540200001"
+        },
+        {
+            "title": "Replacement of signalized traffic network design with Hamiltonian roads: delay? Nevermind",
+            "author": "Eriskin, E.",
+            "year": "2023",
+            "index": "other",
+            "doi": "10.1007/s00500-022-07735-z",
+            "wos_link": ""
+        },
+        {
+            "title": "Importance of A-pillars of vehicles during intersection approach",
+            "author": "Eriskin, E.",
+            "year": "2023",
+            "index": "other",
+            "doi": "10.51513/jitsa.1104161",
+            "wos_link": ""
+        },
+        {
+            "title": "Accident Severity Prediction in Big Data Using Auto-Machine Learning",
+            "author": "Eriskin, E.",
+            "year": "2023",
+            "index": "other",
+            "doi": "10.24200/sci.2023.60144.6626",
+            "wos_link": ""
+        },
+        {
+            "title": "Investigation of waste quartz sand as filler in hot-mix asphalt",
+            "author": "Eriskin, E.",
+            "year": "2022",
+            "index": "other",
+            "doi": "10.1016/j.conbuildmat.2022.128004",
+            "wos_link": ""
+        },
+        {
+            "title": "Prediction of Road Visibility Based on Meteorological Parameters by Machine Learning Methods",
+            "author": "Eriskin, E.",
+            "year": "2022",
+            "index": "other",
+            "doi": "10.31590/ejosat.1082868",
+            "wos_link": ""
+        },
+        {
+            "title": "Development of dynamic traffic signal control based on Monte Carlo simulation approach",
+            "author": "Eriskin, E.",
+            "year": "2022",
+            "index": "sci",
+            "doi": "10.1016/J.MEASUREMENT.2021.110591",
+            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000742841900008"
+        },
+        {
+            "title": "Bitumen expanding using bio-oil product of rose pulp’s pyrolysis process",
+            "author": "Eriskin, E.",
+            "year": "2020",
+            "index": "other",
+            "doi": "10.1016/j.conbuildmat.2020.118721",
+            "wos_link": ""
+        },
+        {
+            "title": "Evaluating mechanical properties of bitumen and hot mix asphalt modified with nano ferric oxide",
+            "author": "Eriskin, E.",
+            "year": "2020",
+            "index": "other",
+            "doi": "10.1016/j.conbuildmat.2019.117381",
+            "wos_link": ""
+        },
+        {
+            "title": "Increasing the visibility of roads using phosphorous paint",
+            "author": "Eriskin, E.",
+            "year": "2019",
+            "index": "other",
+            "doi": "10.1080/14680629.2017.1374999",
+            "wos_link": ""
+        },
+        {
+            "title": "Examination of the Effect of Superhydrophobic Coated Pavement under Wet Conditions",
+            "author": "Eriskin, E.",
+            "year": "2017",
+            "index": "other",
+            "doi": "10.1016/j.proeng.2017.04.411",
+            "wos_link": ""
+        },
+        {
+            "title": "Optimization of Traffic Signal Timing at Oversaturated Intersections Using Elimination Pairing System",
+            "author": "Eriskin, E.",
+            "year": "2017",
+            "index": "other",
+            "doi": "10.1016/j.proeng.2017.04.378",
+            "wos_link": ""
+        },
+        {
+            "title": "Waste frying oil modified bitumen usage for sustainable hot mix asphalt pavement",
+            "author": "Eriskin, E.",
+            "year": "2017",
+            "index": "other",
+            "doi": "10.1016/j.acme.2017.03.006",
+            "wos_link": ""
+        },
+        {
+            "title": "Utility of polyparaphenylene terephtalamide fiber in hot mix asphalt as a fiber",
+            "author": "Eriskin, E.",
+            "year": "2016",
+            "index": "other",
+            "doi": "10.1016/j.conbuildmat.2015.12.193",
+            "wos_link": ""
+        },
+        {
+            "title": "Utilization of Arundo donax in Hot Mix Asphalt as a fiber",
+            "author": "Eriskin, E.",
+            "year": "2016",
+            "index": "sci",
+            "doi": "10.1016/J.CONBUILDMAT.2016.08.147",
+            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000385600100098"
+        }
+    ]
+}
