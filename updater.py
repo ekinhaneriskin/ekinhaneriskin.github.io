@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 # --- AYARLAR ---
-SCOPUS_API_KEY = os.environ.get('SCOPUS_API_KEY')
+SCOPUS_API_KEY = 'a5210b26f0964c067ea0ed118b6df34c' # Anahtarı buraya tırnak içinde yapıştırdık
 SCOPUS_AUTHOR_ID = '57039193000'
 TRDIZIN_AUTHOR_ID = '341496'
 ORCID_ID = '0000-0002-0087-0933'
