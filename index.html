@@ -220,13 +220,6 @@
 
         }
 
-        .sdg-9 { background-color: #fd6925; }
-
-        .sdg-11 { background-color: #fd9d24; }
-
-        .sdg-13 { background-color: #3f7e44; }
-
-
 
         .contact-card { background-color: var(--card-bg); padding: 30px; border-radius: 8px; border: 1px solid #30363d; }
 
@@ -504,24 +497,21 @@
 
 
 
+                    // SADECE BU BLOĞU GÜNCELLE
                     let sdgHTML = '';
-
                     if (pub.sdg && pub.sdg.length > 0) {
-
-                        sdgHTML = '<div class="sdg-wrapper"><span style="font-size:0.75em; color:#8b949e; margin-right:10px;">UN SDGs:</span>';
-
-                        pub.sdg.forEach(g => {
-
-                            const n = g.toString().replace(/\D/g,'');
-
-                            sdgHTML += `<div class="sdg-badge sdg-${n}" title="Goal ${n}">${n}</div>`;
-
+                        sdgHTML = '<div class="sdg-wrapper"><span style="font-size:0.75em; color:#8b949e; margin-right:10px;">Global Goals:</span>';
+                        pub.sdg.forEach(val => {
+                            const num = val.toString().replace(/\D/g, ""); // "Goal 9" yazsan bile sadece 9'u alır
+                            // Resmi UNDP Assetlerinden ikonları çekiyoruz
+                            sdgHTML += `<img src="https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E_SDG_Icons-${num}.jpg" 
+                                             style="width: 45px; height: 45px; object-fit: contain; border-radius: 4px; transition: transform 0.2s;" 
+                                             title="Goal ${num}" 
+                                             onmouseover="this.style.transform='scale(1.1)'" 
+                                             onmouseout="this.style.transform='scale(1)'">`;
                         });
-
                         sdgHTML += '</div>';
-
                     }
-
 
 
                     let citBadge = (pub.citations && pub.citations !== "0") ? `<div class="citations-count">Cited: ${pub.citations}</div>` : '';
