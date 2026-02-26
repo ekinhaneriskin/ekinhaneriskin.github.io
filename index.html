@@ -50,6 +50,12 @@
 
         .content-section { padding: 80px 10%; max-width: 900px; margin: auto; }
         .content-section h3 { color: var(--accent-color); font-size: 2em; border-bottom: 1px solid #30363d; padding-bottom: 10px; margin-bottom: 30px; font-weight: 500; }
+        p, li { font-size: 1.1em; line-height: 1.8; color: #8b949e; }
+        .highlight { color: #fff; font-weight: 500; }
+
+        .bio-container { display: flex; gap: 40px; align-items: center; }
+        .bio-img { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); box-shadow: 0 0 20px rgba(77, 171, 247, 0.2); }
+        @media (max-width: 768px) { .bio-container { flex-direction: column; text-align: center; } }
         
         .filter-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
         select { padding: 10px; background-color: var(--card-bg); color: #fff; border: 1px solid #30363d; border-radius: 5px; cursor: pointer; }
@@ -88,6 +94,7 @@
     <header>
         <a href="#home">Home</a>
         <a href="#about">Bio</a>
+        <a href="#research">Research & AI</a>
         <a href="#publications">Publications</a>
         <a href="#contact">Contact</a>
     </header>
@@ -96,10 +103,33 @@
         <h1>Ekinhan Erişkin</h1>
         <h2>Assoc. Prof. | Civil Engineering & AI Modeling</h2>
         <div class="social-links">
-            <a href="https://scholar.google.com/citations?user=L8vpWnUAAAAJ&hl=en" target="_blank"><i class="fa-brands fa-google"></i></a>
-            <a href="https://www.webofscience.com/wos/author/record/N-1821-2016" target="_blank"><i class="fa-solid fa-atom"></i></a>
-            <a href="https://www.scopus.com/authid/detail.uri?authorId=57039193000" target="_blank"><i class="fa-solid fa-book-open"></i></a>
-            <a href="https://www.linkedin.com/in/ekinhaneriskin/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://scholar.google.com/citations?user=L8vpWnUAAAAJ&hl=en" target="_blank" title="Google Scholar"><i class="fa-brands fa-google"></i></a>
+            <a href="https://www.webofscience.com/wos/author/record/N-1821-2016" target="_blank" title="Web of Science"><i class="fa-solid fa-atom"></i></a>
+            <a href="https://www.scopus.com/authid/detail.uri?authorId=57039193000" target="_blank" title="Scopus"><i class="fa-solid fa-book-open"></i></a>
+            <a href="https://orcid.org/0000-0002-0087-0933" target="_blank" title="ORCID"><i class="fa-brands fa-orcid"></i></a>
+            <a href="https://www.linkedin.com/in/ekinhaneriskin/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://www.researchgate.net/profile/Ekinhan-Eriskin" target="_blank" title="ResearchGate"><i class="fa-brands fa-researchgate"></i></a>
+            <a href="https://w3.sdu.edu.tr/personel/05437" target="_blank" title="SDU Profile"><i class="fa-solid fa-university"></i></a>
+        </div>
+    </div>
+
+    <div class="content-section" id="about">
+        <h3>Bio</h3>
+        <div class="bio-container">
+            <img src="foto.jpeg" alt="Ekinhan Erişkin" class="bio-img">
+            <div>
+                <p>I am an Associate Professor in Civil Engineering at Suleyman Demirel University, deeply passionate about the intersection of transportation infrastructure and artificial intelligence.</p>
+                <p>My work focuses on developing predictive models and traffic management systems using advanced machine learning algorithms. I strive to bridge the gap between traditional civil engineering practices and modern AI-driven solutions, optimizing urban mobility, safety, and sustainability.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section" id="research">
+        <h3>Research & Citations</h3>
+        <p>Active research areas include <span class="highlight">Traffic Flow Optimization</span>, <span class="highlight">Pavement Condition AI Modeling</span>, and <span class="highlight">Crash Severity Prediction</span>.</p>
+        
+        <div style="margin-top: 30px; background-color: var(--card-bg); padding: 10px; border-radius: 8px;">
+            <iframe src="https://www.jung.ms/citations.php?id=L8vpWnUAAAAJ&lang=en" frameborder="0" width="100%" height="200px" scrolling="no" style="border-radius: 5px;"></iframe>
         </div>
     </div>
 
@@ -116,24 +146,28 @@
         <h3>Get in Touch</h3>
         <div class="contact-card">
             <p><i class="fa-solid fa-building-columns"></i> Suleyman Demirel University, Isparta, Turkey.</p>
+            <p><i class="fa-solid fa-phone"></i> +90 246 211 4649</p>
             <p><i class="fa-solid fa-envelope"></i> <a href="mailto:ekinhaneriskin@sdu.edu.tr" style="color: #8b949e; text-decoration: none;">ekinhaneriskin@sdu.edu.tr</a></p>
         </div>
     </div>
 
     <script>
         // HİBRİT SİSTEM: publications.json dosyasından verileri çeker
-        // (Bu dosya senin Python botun tarafından otomatik güncelleniyor)
         fetch('publications.json')
             .then(res => res.json())
             .then(data => {
                 const pubList = document.getElementById('pub-list');
                 
                 // Sıralama: Önce Yıl (Azalan), Sonra Başlık (Alfabetik)
-                data.sort((a, b) => b.year.localeCompare(a.year) || a.title.localeCompare(b.title));
+                data.sort((a, b) => {
+                    const yearA = a.year || "0";
+                    const yearB = b.year || "0";
+                    return yearB.localeCompare(yearA) || a.title.localeCompare(b.title);
+                });
 
                 // Filtreleri Otomatik Oluştur
-                const years = [...new Set(data.map(p => p.year))].sort((a, b) => b - a);
-                const indices = [...new Set(data.map(p => p.index))];
+                const years = [...new Set(data.map(p => p.year).filter(y => y))].sort((a, b) => b - a);
+                const indices = [...new Set(data.map(p => p.index).filter(i => i))];
                 years.forEach(y => document.getElementById('yearFilter').innerHTML += `<option value="${y}">${y}</option>`);
                 
                 const labels = {"sci":"SCI-E", "ssci":"SSCI", "scopus":"Scopus", "trdizin":"TR Dizin"};
@@ -171,6 +205,10 @@
                     s.src = "https://cdn.plu.mx/widget-popup.js";
                     document.body.appendChild(s);
                 }, 500);
+            })
+            .catch(err => {
+                console.error("JSON okuma hatası:", err);
+                document.getElementById('pub-list').innerHTML = '<p style="color:red;">Yayınlar yüklenirken bir hata oluştu. Lütfen publications.json dosyasını kontrol edin.</p>';
             });
 
         function filterPubs() {
