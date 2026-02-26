@@ -59,8 +59,7 @@ def fetch_scopus_data():
     return pubs
 
 def fetch_trdizin_data():
-    print("TR Dizin taranıyor (Filtresiz Ham Veri)...")
-    # Hiçbir ID kontrolü yapmadan doğrudan verdiğiniz linki kullanıyoruz
+    print("TR Dizin taranıyor...")
     url = "https://search.trdizin.gov.tr/api/defaultSearch/publication/?q=Ekinhan+Eriskin&order=publicationYear-DESC&limit=100"
     headers = {'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://search.trdizin.gov.tr/'}
     pubs = []
@@ -70,22 +69,36 @@ def fetch_trdizin_data():
             hits = res.json().get('hits', {}).get('hits', [])
             for hit in hits:
                 s = hit.get('_source', {})
-                doi = s.get('doi', '')
-                authors_list = s.get('authors', [])
+                if not s: continue # Boş kaynak kontrolü
                 
+                doi = s.get('doi', '')
+                title = s.get('title', 'Başlıksız Yayın')
+                year = s.get('publicationYear', '2026')
+                
+                # Yazar listesini güvenli bir şekilde çekelim
+                authors_raw = s.get('authors', [])
+                author_names = []
+                if authors_raw:
+                    for a in authors_raw:
+                        if a and a.get('fullName'):
+                            author_names.append(a.get('fullName'))
+                
+                # Dergi ismini güvenli çekelim
+                journal_data = s.get('journal')
+                j_name = journal_data.get('name', '') if journal_data else ''
+
                 pubs.append({
-                    "title": s.get('title', 'Başlıksız Yayın'),
-                    "author": ", ".join([a.get('fullName', '') for a in authors_list]) if authors_list else "Erişkin, E.",
-                    "year": str(s.get('publicationYear', '2026')),
-                    "journal": s.get('journal', {}).get('name', ''),
+                    "title": title,
+                    "author": ", ".join(author_names) if author_names else "Erişkin, E.",
+                    "year": str(year),
+                    "journal": j_name,
                     "index": "trdizin",
                     "doi": doi if doi else "",
                     "trdizin_link": f"https://search.trdizin.gov.tr/tr/yayin/detay/{hit.get('_id', '')}"
                 })
-            print(f"TR Dizin'den {len(pubs)} ham kayıt çekildi.")
+            print(f"TR Dizin'den {len(pubs)} kayıt çekildi.")
     except Exception as e: print(f"TR Dizin Hatası: {e}")
     return pubs
-
 def fetch_orcid_data():
     print("ORCID taranıyor...")
     url = f"https://pub.orcid.org/v3.0/{ORCID_ID}/works"
