@@ -27,43 +27,54 @@ def load_local_data():
     return local_pubs
 
 def fetch_scopus_data():
-    print("Scopus verileri çekiliyor...")
-    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&apiKey={SCOPUS_API_KEY}&view=COMPLETE&sort=-coverDate"
-    headers = {'Accept': 'application/json'}
-    pubs = []
+    print("Scopus taranıyor (Gelişmiş Erişim)...")
+    # API Key'i URL'den çıkardık, başlık (header) içine koyacağız
+    url = f"https://api.elsevier.com/content/search/scopus?query=AU-ID({SCOPUS_AUTHOR_ID})&view=COMPLETE&sort=-coverDate&count=25"
     
-    if not SCOPUS_API_KEY:
-        print("HATA: Scopus API Anahtarı bulunamadı!")
-        return pubs
-        
+    headers = {
+        'X-ELS-APIKey': SCOPUS_API_KEY, # Elsevier'in tercih ettiği yöntem
+        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
+    
+    pubs = []
     try:
-        response = requests.get(url, headers=headers)
-        print(f"Scopus Yanıt Kodu: {response.status_code}")
+        res = requests.get(url, headers=headers)
+        print(f"Scopus Yanıt Kodu: {res.status_code}")
         
-        if response.status_code == 200:
-            entries = response.json().get('search-results', {}).get('entry', [])
-            current_year = str(datetime.now().year)
-            for entry in entries:
-                doi = entry.get('prism:doi', '')
-                cover_date = entry.get('prism:coverDate')
-                year = cover_date.split('-')[0] if cover_date else current_year
-                    
+        if res.status_code == 200:
+            data = res.json()
+            entries = data.get('search-results', {}).get('entry', [])
+            print(f"Scopus'tan {len(entries)} adet yayın çekildi.")
+            
+            for e in entries:
+                doi = e.get('prism:doi', '')
+                cover_date = e.get('prism:coverDate')
+                year = cover_date.split('-')[0] if cover_date else "2026"
+                
                 pubs.append({
-                    "title": entry.get('dc:title', ''),
-                    "author": entry.get('dc:creator', 'Erişkin, E.'),
+                    "title": e.get('dc:title', 'Başlıksız Scopus Yayını'),
+                    "author": e.get('dc:creator', 'Erişkin, E.'),
                     "year": year,
                     "index": "scopus",
                     "doi": doi,
-                    "scopus_link": f"https://www.scopus.com/record/display.uri?eid={entry.get('eid', '')}",
+                    "scopus_link": f"https://www.scopus.com/record/display.uri?eid={e.get('eid', '')}"
                 })
+        elif res.status_code == 401:
+            print("HATA: Scopus API Anahtarı yetkisiz (401)! Lütfen anahtarı Elsevier portalından kontrol edin.")
+            # Hata detayını görebilmek için:
+            print(f"Elsevier Yanıtı: {res.text}")
+        else:
+            print(f"Scopus Beklenmedik Hata: {res.status_code}")
+            
     except Exception as e:
-        print(f"Scopus bağlantı hatası: {e}")
+        print(f"Scopus Bağlantı Hatası: {e}")
     return pubs
 
 def fetch_trdizin_data():
-    print("TR Dizin taranıyor (Kesin Sorgu)...")
-    # İsmini hem arama terimi hem de kesin filtre (facet) olarak ekledik
-    url = f"https://search.trdizin.gov.tr/api/defaultSearch/publication/?q=Ekinhan+Eriskin&facet-authorName=Ekinhan+Eriskin&order=publicationYear-DESC&limit=100"
+    print("TR Dizin taranıyor (Nihai Form)...")
+    # Sorguyu en kararlı hale getirdik
+    url = "https://search.trdizin.gov.tr/api/defaultSearch/publication/?q=Ekinhan+Eriskin&order=publicationYear-DESC&limit=100"
     
     headers = {
         'Accept': 'application/json',
@@ -73,30 +84,25 @@ def fetch_trdizin_data():
     pubs = []
     try:
         res = requests.get(url, headers=headers)
-        print(f"TR Dizin Yanıt Kodu: {res.status_code}")
-        
         if res.status_code == 200:
-            data = res.json()
-            # Senin paylaştığın JSON'da veriler hits -> hits içindeydi
-            hits_list = data.get('hits', {}).get('hits', [])
-            print(f"TR Dizin'den {len(hits_list)} aday yayın yakalandı.")
+            hits_list = res.json().get('hits', {}).get('hits', [])
+            print(f"TR Dizin'den {len(hits_list)} yayın yakalandı.")
             
             for hit in hits_list:
                 source = hit.get('_source', {})
-                # Yazarları kontrol edip senin ID'nle (341496) eşleşenleri alıyoruz
-                authors = source.get('authors', [])
-                is_mine = any(str(a.get('id')) == str(TRDIZIN_AUTHOR_ID) for a in authors)
+                authors_list = source.get('authors', [])
+                # Yazar isimlerini birleştiriyoruz
+                author_names = ", ".join([a.get('fullName', 'Erişkin, E.') for a in authors_list])
                 
-                if is_mine:
-                    pubs.append({
-                        "title": source.get('title', ''),
-                        "author": ", ".join([a.get('fullName', '') for a in authors]),
-                        "year": str(source.get('publicationYear', '2025')),
-                        "index": "trdizin",
-                        "doi": source.get('doi', ''),
-                        "trdizin_link": f"https://search.trdizin.gov.tr/tr/yayin/detay/{hit.get('_id', '')}"
-                    })
-            print(f"Doğrulanan yayın sayısı: {len(pubs)}")
+                pubs.append({
+                    "title": source.get('title', 'Başlıksız Yayın'),
+                    "author": author_names if author_names else "Erişkin, E.",
+                    "year": str(source.get('publicationYear', '2026')),
+                    "index": "trdizin",
+                    "doi": source.get('doi', ''),
+                    "trdizin_link": f"https://search.trdizin.gov.tr/tr/yayin/detay/{hit.get('_id', '')}"
+                })
+            print(f"Listeye eklenen TR Dizin yayını: {len(pubs)}")
         else:
             print(f"TR Dizin API Hatası: {res.status_code}")
     except Exception as e:
