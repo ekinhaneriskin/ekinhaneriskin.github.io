@@ -32,7 +32,7 @@ def fetch_scopus_data():
         'query': f'AU-ID({SCOPUS_AUTHOR_ID})',
         'apiKey': SCOPUS_API_KEY,
         'view': 'STANDARD',
-        'count': 100
+        'sort': '-coverDate' # '-' işareti en yeniden en eskiye sıralar
     }
     
     headers = {'Accept': 'application/xml'}
