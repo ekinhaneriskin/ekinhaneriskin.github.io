@@ -4,7 +4,7 @@ import os
 import xml.etree.ElementTree as ET
 
 # --- AYARLAR ---
-SCOPUS_API_KEY = os.environ.get('SCOPUS_API_KEY') or 'a5210b26f0964c067ea0ed118b6df34c'
+SCOPUS_API_KEY = os.environ.get('SCOPUS_API_KEY')
 SCOPUS_AUTHOR_ID = '57039193000'
 ORCID_ID = '0000-0002-0087-0933'
 JSON_FILE_PATH = 'publications.json'
@@ -32,44 +32,37 @@ def fetch_scopus_data():
         if res.status_code == 200:
             root = ET.fromstring(res.content)
             
-            # XML Ad Alanları (Namespace)
-            # ÖNEMLİ: Entry etiketinin kendisi default namespace'dedir (ön eksiz)
-            ns = {
-                'dns': 'http://www.w3.org/2005/Atom', # Default namespace için 'dns' takısı verdik
-                'dc': 'http://purl.org/dc/elements/1.1/',
-                'prism': 'http://prismstandard.org/namespaces/basic/2.0/'
-            }
-            
-            # 'entry' etiketlerini bul (dns:entry olarak arıyoruz)
-            for entry in root.findall('dns:entry', ns):
-                title_node = entry.find('dc:title', ns)
+            # Scopus XML'inde namespace karmaşasını aşmak için wildcard (*) kullanıyoruz
+            for entry in root.findall('.//{*}entry'):
+                # Başlık: dc:title (Namespace içinde dc olanı bul)
+                title_node = entry.find('.//{http://purl.org/dc/elements/1.1/}title')
                 title = title_node.text if title_node is not None else ""
                 
-                if not title: continue # Başlıksız veriyi atla
+                if not title: continue
 
-                doi_node = entry.find('prism:doi', ns)
+                # DOI: prism:doi
+                doi_node = entry.find('.//{http://prismstandard.org/namespaces/basic/2.0/}doi')
                 doi = doi_node.text if doi_node is not None else ""
                 
-                # Atıf sayısı (prefix'siz düz etiket)
-                cit_node = entry.find('dns:citedby-count', ns)
+                # Atıf Sayısı (Ön eksiz veya atom namespace'inde olabilir)
+                cit_node = entry.find('.//{*}citedby-count')
                 citations = cit_node.text if cit_node is not None else "0"
 
-                eid_node = entry.find('dns:eid', ns)
-                scopus_link = ""
-                if eid_node is not None:
-                    scopus_link = f"https://www.scopus.com/record/display.uri?eid={eid_node.text}"
+                # EID ve Link
+                eid_node = entry.find('.//{*}eid')
+                scopus_link = f"https://www.scopus.com/record/display.uri?eid={eid_node.text}" if eid_node is not None else ""
 
                 pubs.append({
                     "title": title,
-                    "author": (entry.find('dc:creator', ns).text if entry.find('dc:creator', ns) is not None else "Eriskin, E."),
-                    "year": (entry.find('prism:coverDate', ns).text.split('-')[0] if entry.find('prism:coverDate', ns) is not None else ""),
-                    "journal": (entry.find('prism:publicationName', ns).text if entry.find('prism:publicationName', ns) is not None else ""),
+                    "author": "Eriskin, E.", # dc:creator da aranabilir
+                    "year": entry.find('.//{http://prismstandard.org/namespaces/basic/2.0/}coverDate').text.split('-')[0] if entry.find('.//{http://prismstandard.org/namespaces/basic/2.0/}coverDate') is not None else "",
+                    "journal": entry.find('.//{http://prismstandard.org/namespaces/basic/2.0/}publicationName').text if entry.find('.//{http://prismstandard.org/namespaces/basic/2.0/}publicationName') is not None else "",
                     "index": "scopus",
                     "doi": doi,
                     "citations": citations,
                     "scopus_link": scopus_link
                 })
-            print(f"Scopus'tan {len(pubs)} adet kayıt başarıyla okundu.")
+            print(f"Scopus'tan {len(pubs)} kayıt başarıyla çekildi.")
     except Exception as e: 
         print(f"Scopus Hatası: {e}")
     return pubs
