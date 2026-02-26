@@ -1,0 +1,39 @@
+name: Otomatik Yayin Guncelleyici
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Her gece 00:00'da çalışır (UTC)
+  workflow_dispatch: # Bizim manuel olarak "Şimdi Çalıştır" dememize izin verir
+
+jobs:
+  update-publications:
+    runs-on: ubuntu-latest
+    
+    # Depoya yazma izni veriyoruz
+    permissions:
+      contents: write 
+
+    steps:
+      - name: Depoyu Klonla
+        uses: actions/checkout@v3
+
+      - name: Python Kur
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Gerekli Kütüphaneleri Yükle
+        run: pip install requests
+
+      - name: Güncelleyiciyi Çalıştır
+        env:
+          SCOPUS_API_KEY: ${{ secrets.SCOPUS_API_KEY }}
+        run: python updater.py
+
+      - name: Değişiklikleri GitHub'a Kaydet (Commit)
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add publications.json
+          git commit -m "Otomatik yayın güncellemesi" || echo "Yeni yayın yok, commit atlandı."
+          git push
