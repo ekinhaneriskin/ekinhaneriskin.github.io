@@ -4,116 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ekinhan Erişkin | AI & Transportation</title>
-    
     <link rel="icon" href="icon.ico" type="image/x-icon">
     
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
-            --accent-color: #00ffcc; /* Teknolojik yeşil vurgu rengi */
-            --text-color: #e0e0e0;
-            --bg-color: #121212;
+            --accent-color: #4dabf7; /* Yeni Teknolojik Çelik Mavisi */
+            --bg-color: #0d1117; /* GitHub tarzı daha yumuşak bir karanlık arka plan */
+            --text-color: #c9d1d9;
+            --card-bg: #161b22;
         }
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            scroll-behavior: smooth; /* Menüye tıklayınca yumuşak kaydırma efekti */
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color); color: var(--text-color);
+            scroll-behavior: smooth;
         }
         
-        /* Şeffaf ve Sade Üst Menü */
+        /* Şeffaf Üst Menü */
         header {
-            position: absolute;
-            width: 100%;
-            padding: 30px 0;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            z-index: 10;
+            position: absolute; width: 100%; padding: 30px 0;
+            display: flex; justify-content: center; gap: 30px; z-index: 10;
         }
-        header a {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1em;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-        }
-        header a:hover {
-            color: var(--accent-color);
-        }
+        header a { color: #fff; text-decoration: none; font-weight: 500; font-size: 1.05em; transition: color 0.3s; }
+        header a:hover { color: var(--accent-color); }
 
-        /* Tam Ekran Arka Plan Fotoğrafı Alanı */
+        /* Arka Plan ve Karşılama Alanı */
         .hero {
             height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('background.jpg') no-repeat center center/cover;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
+            background: linear-gradient(rgba(13, 17, 23, 0.8), rgba(13, 17, 23, 0.95)), url('background.jpg') no-repeat center center/cover;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
-        .hero h1 {
-            font-size: 4em;
-            color: #ffffff;
-            margin-bottom: 5px;
-            letter-spacing: 2px;
+        .hero h1 { font-size: 3.5em; color: #fff; margin-bottom: 5px; font-weight: 600; }
+        .hero h2 { font-size: 1.3em; color: var(--accent-color); font-weight: 300; margin-top: 0; margin-bottom: 30px; }
+        
+        /* Profil Linkleri (Yuvarlak İkonlar) */
+        .social-links { margin-bottom: 40px; display: flex; gap: 15px; }
+        .social-links a {
+            display: inline-flex; justify-content: center; align-items: center;
+            width: 45px; height: 45px; border-radius: 50%;
+            background-color: var(--card-bg); color: var(--text-color);
+            text-decoration: none; border: 1px solid #30363d;
+            transition: all 0.3s; font-size: 1.2em;
         }
-        .hero h2 {
-            font-size: 1.5em;
-            color: var(--accent-color);
-            font-weight: 300;
-            margin-top: 0;
-            margin-bottom: 40px;
-        }
+        .social-links a:hover { border-color: var(--accent-color); color: var(--accent-color); transform: translateY(-3px); }
 
-        /* İnce ve Şık Buton */
-        .btn {
-            padding: 12px 35px;
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-        }
-        .btn:hover {
-            background-color: var(--accent-color);
-            color: #000;
-        }
+        /* İçerik Bölümleri */
+        .content-section { padding: 80px 10%; max-width: 900px; margin: auto; }
+        .content-section h3 { color: var(--accent-color); font-size: 2em; border-bottom: 1px solid #30363d; padding-bottom: 10px; margin-bottom: 30px; font-weight: 500; }
+        p, li { font-size: 1.1em; line-height: 1.8; color: #8b949e; }
+        .highlight { color: #fff; font-weight: 500; }
 
-        /* Yeni Eklenen İçerik Bölümleri (Aşağı kaydırınca çıkacak kısımlar) */
-        .content-section {
-            padding: 80px 15%;
-            max-width: 900px;
-            margin: auto;
-        }
-        .content-section h3 {
-            color: var(--accent-color);
-            font-size: 2em;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-        }
-        .content-section p {
-            font-size: 1.1em;
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-        .content-section ul {
-            font-size: 1.1em;
-            line-height: 1.8;
-        }
-        .content-section li {
-            margin-bottom: 10px;
-        }
-        .highlight {
-            color: #ffffff;
-            font-weight: 600;
-        }
+        /* Bio Bölümü (Fotoğraf + Metin) */
+        .bio-container { display: flex; gap: 40px; align-items: center; }
+        .bio-img { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); box-shadow: 0 0 20px rgba(77, 171, 247, 0.2); }
+        @media (max-width: 768px) { .bio-container { flex-direction: column; text-align: center; } }
+
+        /* Dinamik Yayınlar Filtresi */
+        .filter-bar { display: flex; gap: 15px; margin-bottom: 20px; }
+        select { padding: 10px; background-color: var(--card-bg); color: #fff; border: 1px solid #30363d; border-radius: 5px; font-family: 'Inter', sans-serif; cursor: pointer; }
+        .pub-item { background-color: var(--card-bg); padding: 20px; margin-bottom: 15px; border-radius: 6px; border-left: 3px solid var(--accent-color); }
+        .pub-title { color: #fff; font-weight: 500; margin-bottom: 5px; font-size: 1.1em; }
+        .pub-meta { font-size: 0.9em; color: var(--accent-color); }
+        
+        /* İletişim Kartı */
+        .contact-card { background-color: var(--card-bg); padding: 30px; border-radius: 8px; border: 1px solid #30363d; }
+        .contact-card p { margin: 10px 0; display: flex; align-items: center; gap: 15px; }
+        .contact-card i { color: var(--accent-color); font-size: 1.2em; width: 20px; }
     </style>
 </head>
 <body>
@@ -123,29 +82,102 @@
         <a href="#about">Bio</a>
         <a href="#research">Research & AI</a>
         <a href="#publications">Publications</a>
+        <a href="#contact">Contact</a>
     </header>
 
     <div class="hero" id="home">
         <h1>Ekinhan Erişkin</h1>
         <h2>Assoc. Prof. | Civil Engineering & AI Modeling</h2>
-        <a href="#about" class="btn">Explore My Journey</a>
+        
+        <div class="social-links">
+            <a href="https://scholar.google.com/citations?user=L8vpWnUAAAAJ&hl=en" target="_blank" title="Google Scholar"><i class="fa-brands fa-google"></i></a>
+            <a href="https://www.webofscience.com/wos/author/record/N-1821-2016" target="_blank" title="Web of Science"><i class="fa-solid fa-atom"></i></a>
+            <a href="https://www.scopus.com/authid/detail.uri?authorId=57039193000" target="_blank" title="Scopus"><i class="fa-solid fa-book-open"></i></a>
+            <a href="https://orcid.org/0000-0002-0087-0933" target="_blank" title="ORCID"><i class="fa-brands fa-orcid"></i></a>
+            <a href="https://www.linkedin.com/in/ekinhaneriskin/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://www.researchgate.net/profile/Ekinhan-Eriskin" target="_blank" title="ResearchGate"><i class="fa-brands fa-researchgate"></i></a>
+            <a href="https://w3.sdu.edu.tr/personel/05437" target="_blank" title="SDU Profile"><i class="fa-solid fa-university"></i></a>
+        </div>
     </div>
 
     <div class="content-section" id="about">
         <h3>Bio</h3>
-        <p>I am an Associate Professor in Civil Engineering, deeply passionate about the intersection of transportation infrastructure and artificial intelligence. My work focuses on developing predictive models and traffic management systems using Python, Colab, and advanced machine learning algorithms.</p>
-        <p>I strive to bridge the gap between traditional civil engineering practices and modern AI-driven solutions, optimizing urban mobility, safety, and sustainability.</p>
+        <div class="bio-container">
+            <img src="foto.jpeg" alt="Ekinhan Erişkin" class="bio-img">
+            <div>
+                <p>I am an Associate Professor in Civil Engineering at Suleyman Demirel University, deeply passionate about the intersection of transportation infrastructure and artificial intelligence.</p>
+                <p>My work focuses on developing predictive models and traffic management systems using advanced machine learning algorithms. I strive to bridge the gap between traditional civil engineering practices and modern AI-driven solutions, optimizing urban mobility, safety, and sustainability.</p>
+            </div>
+        </div>
     </div>
 
     <div class="content-section" id="research">
-        <h3>Research & AI Modeling</h3>
-        <p>Here are some of my active research areas and computational models:</p>
-        <ul>
-            <li><span class="highlight">Traffic Flow Optimization:</span> SUMO-based simulations combined with AI methodologies.</li>
-            <li><span class="highlight">Pavement Condition & AI:</span> Predictive maintenance models analyzing roughness and driving quality using advanced algorithms.</li>
-            <li><span class="highlight">Crash Severity Prediction:</span> Utilizing data science and deep learning to achieve Vision Zero goals in urban networks.</li>
-        </ul>
+        <h3>Research & Citations</h3>
+        <p>Active research areas include <span class="highlight">Traffic Flow Optimization</span>, <span class="highlight">Pavement Condition AI Modeling</span>, and <span class="highlight">Crash Severity Prediction</span>.</p>
+        
+        <div style="margin-top: 30px; background-color: var(--card-bg); padding: 10px; border-radius: 8px;">
+            <iframe src="https://www.jung.ms/citations.php?id=L8vpWnUAAAAJ&lang=en" frameborder="0" width="100%" height="200px" scrolling="no" style="border-radius: 5px;"></iframe>
+        </div>
     </div>
 
+    <div class="content-section" id="publications">
+        <h3>Selected Publications</h3>
+        <p>Sisteme yeni yayın eklemek için HTML içindeki listeye sadece kopyala-yapıştır yapman yeterlidir. Filtreleme otomatik çalışır.</p>
+        
+        <div class="filter-bar">
+            <select id="yearFilter" onchange="filterPubs()">
+                <option value="all">All Years</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+            </select>
+            <select id="indexFilter" onchange="filterPubs()">
+                <option value="all">All Indices</option>
+                <option value="sci">SCI / SCI-E</option>
+                <option value="trdizin">TR Dizin</option>
+            </select>
+        </div>
+
+        <div id="pub-list">
+            <div class="pub-item" data-year="2024" data-index="sci">
+                <div class="pub-title">Example AI-Driven Traffic Prediction Model Paper</div>
+                <div class="pub-meta"><i class="fa-solid fa-calendar"></i> 2024 | <i class="fa-solid fa-tag"></i> SCI-E</div>
+            </div>
+            <div class="pub-item" data-year="2023" data-index="trdizin">
+                <div class="pub-title">Türkiye Karayolları Esnek Üstyapı Bozulmaları Analizi</div>
+                <div class="pub-meta"><i class="fa-solid fa-calendar"></i> 2023 | <i class="fa-solid fa-tag"></i> TR Dizin</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section" id="contact">
+        <h3>Get in Touch</h3>
+        <div class="contact-card">
+            <p><i class="fa-solid fa-building-columns"></i> Suleyman Demirel University, Isparta Vocational School of Health Services, Office 135, Çünür, Merkez, Isparta, Turkey.</p>
+            <p><i class="fa-solid fa-phone"></i> +90 246 211 4649</p>
+            <p><i class="fa-solid fa-envelope"></i> <a href="mailto:ekinhaneriskin@sdu.edu.tr" style="color: #8b949e; text-decoration: none;">ekinhaneriskin@sdu.edu.tr</a></p>
+        </div>
+    </div>
+
+    <script>
+        function filterPubs() {
+            let year = document.getElementById("yearFilter").value;
+            let index = document.getElementById("indexFilter").value;
+            let pubs = document.getElementsByClassName("pub-item");
+            
+            for (let i = 0; i < pubs.length; i++) {
+                let pYear = pubs[i].getAttribute("data-year");
+                let pIndex = pubs[i].getAttribute("data-index");
+                
+                let yearMatch = (year === "all" || year === pYear);
+                let indexMatch = (index === "all" || index === pIndex);
+                
+                if (yearMatch && indexMatch) {
+                    pubs[i].style.display = "block";
+                } else {
+                    pubs[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 </body>
 </html>
