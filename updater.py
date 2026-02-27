@@ -10,14 +10,38 @@ ORCID_ID = '0000-0002-0087-0933'
 JSON_FILE_PATH = 'publications.json'
 
 def load_local_data():
-    if not os.path.exists(JSON_FILE_PATH): return {}
+    if not os.path.exists(JSON_FILE_PATH): 
+        return {"metrics": {}, "publications": []}
     with open(JSON_FILE_PATH, 'r', encoding='utf-8') as f:
         try:
             data = json.load(f)
-            # Sadece geçerli başlığı olanları yükle (TR Dizin kirliliğini temizlemek için)
-            return { (p.get('doi') or p.get('title') or "").lower().strip(): p 
-                     for p in data if p and len(p.get('title', '')) > 5 }
-        except: return {}
+            # Eğer dosya eski formattaysa (sadece listeyse)
+            if isinstance(data, list):
+                return {"metrics": {}, "publications": data}
+            return data
+        except: 
+            return {"metrics": {}, "publications": []}
+
+def fetch_scopus_metrics():
+    """H-Index ve Toplam Atıf verilerini çeker."""
+    if not SCOPUS_API_KEY: return {"h_index": "0", "citation_count": "0", "document_count": "0"}
+    print("Scopus metrikleri çekiliyor...")
+    url = f"https://api.elsevier.com/content/author/author_id/{SCOPUS_AUTHOR_ID}"
+    params = {'apiKey': SCOPUS_API_KEY}
+    headers = {'Accept': 'application/json'}
+    metrics = {"h_index": "0", "citation_count": "0", "document_count": "0"}
+    try:
+        res = requests.get(url, headers=headers, params=params)
+        if res.status_code == 200:
+            coredata = res.json().get('author-retrieval-response', [{}])[0].get('coredata', {})
+            metrics = {
+                "h_index": coredata.get('h-index', '0'),
+                "citation_count": coredata.get('citation-count', '0'),
+                "document_count": coredata.get('document-count', '0')
+            }
+            print(f"Metrikler güncellendi: h-index {metrics['h_index']}")
+    except: pass
+    return metrics
 
 def fetch_scopus_data():
     if not SCOPUS_API_KEY: 
