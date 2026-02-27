@@ -109,13 +109,28 @@
 
         /* --- PUBLICATIONS LIST ITEMS --- */
         .pub-item { background-color: var(--card-bg); padding: 25px; margin-bottom: 20px; border-radius: 8px; border-left: 4px solid var(--accent-color); position: relative; }
-        .pub-link { color: #fff; text-decoration: none; font-weight: 600; font-size: 1.15em; transition: 0.3s; }
+        
+        /* Başlık Çakışması Çözümü (Sağdan boşluk bırakır) */
+        .pub-title { margin-bottom: 8px; padding-right: 120px; }
+        .pub-link { color: #fff; text-decoration: none; font-weight: 600; font-size: 1.15em; line-height: 1.5; transition: 0.3s; display: block; }
         .pub-link:hover { color: var(--accent-color); text-decoration: underline; }
-        .citations-count { position: absolute; top: 25px; right: 25px; background: #238636; color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.85em; font-weight: 700; }
+        
+        .journal-name { font-style: italic; color: var(--accent-color); font-size: 0.95em; display: block; margin-bottom: 5px; }
+        
+        /* Atıf Sayacı */
+        .citations-count { position: absolute; top: 25px; right: 25px; background: #238636; color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.85em; font-weight: 700; z-index: 2; }
+        
+        /* Renkli WoS ve Scopus Butonları (Geri Getirildi) */
+        .index-badge { font-size: 0.85em; padding: 5px 14px; border-radius: 20px; text-decoration: none; color: #fff !important; font-weight: 600; display: inline-flex; align-items: center; letter-spacing: 0.5px; }
+        .badge-wos { background-color: #5e35b1; } /* Koyu Mor/Mavi */
+        .badge-scopus { background-color: #ef6c00; } /* Turuncu */
+        .badge-trdizin { background-color: #c62828; } /* Kırmızı */
+        
+        /* SDG İkonları */
         .sdg-wrapper { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; border-top: 1px solid #30363d; padding-top: 15px; }
         .sdg-icon { width: 45px; height: 45px; object-fit: contain; border-radius: 4px; transition: 0.2s; cursor: pointer; }
         .sdg-icon:hover { transform: scale(1.15); }
-
+        
         /* --- UI ELEMENTS --- */
         #backToTop {
             position: fixed; bottom: 30px; right: 30px;
@@ -226,9 +241,12 @@
                 <p class="card-impact">Novel Monte Carlo approach for real-time optimization.</p>
                 <div class="card-footer">
                     <div class="card-meta">Measurement (2022)</div>
-                    <div class="pub-indices">
-                        <a href="https://www.webofscience.com/wos/woscc/full-record/WOS:000742841900008" target="_blank"><i class="fa-solid fa-atom"></i></a>
-                        <a href="https://www.scopus.com/record/display.uri?eid=2-s2.0-85121217597" target="_blank"><i class="fa-solid fa-book-open"></i></a>
+                    <div class="card-actions">
+                        <a href="https://youtu.be/HMA9HIPryPw" target="_blank" class="btn-video"><i class="fa-solid fa-play"></i> Video Overview</a>
+                        <div class="pub-indices">
+                            <a href="https://www.webofscience.com/wos/woscc/full-record/WOS:000742841900008" target="_blank"><i class="fa-solid fa-atom"></i></a>
+                            <a href="https://www.scopus.com/record/display.uri?eid=2-s2.0-85121217597" target="_blank"><i class="fa-solid fa-book-open"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -238,9 +256,12 @@
                 <p class="card-impact">Promoting circular economy in road infrastructure.</p>
                 <div class="card-footer">
                     <div class="card-meta">ACME (2017)</div>
-                    <div class="pub-indices">
-                        <a href="https://www.webofscience.com/wos/woscc/full-record/WOS:000416528900013" target="_blank"><i class="fa-solid fa-atom"></i></a>
-                        <a href="https://www.scopus.com/record/display.uri?eid=2-s2.0-85018634577" target="_blank"><i class="fa-solid fa-book-open"></i></a>
+                    <div class="card-actions">
+                        <a href="https://youtu.be/4kfl_mhKsA8" target="_blank" class="btn-video"><i class="fa-solid fa-play"></i> Video Overview</a>
+                        <div class="pub-indices">
+                            <a href="https://www.webofscience.com/wos/woscc/full-record/WOS:000416528900013" target="_blank"><i class="fa-solid fa-atom"></i></a>
+                            <a href="https://www.scopus.com/record/display.uri?eid=2-s2.0-85018634577" target="_blank"><i class="fa-solid fa-book-open"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
