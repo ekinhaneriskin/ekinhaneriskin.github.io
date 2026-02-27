@@ -306,38 +306,45 @@
 
                 pubList.innerHTML = '';
                 pubs.forEach(pub => {
-                    let linksHTML = '';
-                    if (pub.wos_link) linksHTML += `<a href="${pub.wos_link}" target="_blank" class="index-badge badge-wos">WoS</a>`;
-                    if (pub.scopus_link) linksHTML += `<a href="${pub.scopus_link}" target="_blank" class="index-badge badge-scopus">Scopus</a>`;
-                    if (pub.trdizin_link) linksHTML += `<a href="${pub.trdizin_link}" target="_blank" class="index-badge badge-trdizin">TR Dizin</a>`;
-
-                    let sdgHTML = '';
-                    if (pub.sdg && pub.sdg.length > 0) {
-                        sdgHTML = `
-                            <div class="sdg-wrapper">
-                                <span style="font-size:0.75em; color:#8b949e; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Global Development Goals:</span>
-                                <div style="display:flex; gap:8px; align-items:center;">
-                        `;
-                        pub.sdg.forEach(val => {
-                            const num = val.toString().padStart(2, '0');
-                            sdgHTML += `<img src="https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Inverted-Icons_WEB-${num}-1024x1024.png" class="sdg-icon" title="Goal ${val}" onerror="this.style.display='none'">`;
-                        });
-                        sdgHTML += '</div></div>';
-                    }
-
-                    pubList.innerHTML += `
-                        <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
-                            ${pub.citations && pub.citations !== "0" ? `<div class="citations-count">Cited: ${pub.citations}</div>` : ''}
-                            <div class="pub-title"><a href="https://doi.org/${pub.doi}" target="_blank" class="pub-link">${pub.title}</a></div>
-                            <div class="journal-name">${pub.journal || ''}</div>
-                            <div style="font-size: 0.9em; color: #a1a1aa; margin-bottom: 12px;">${pub.author} (${pub.year})</div>
-                            <div class="links-area" style="display:flex; align-items:center; gap:12px;">
-                                ${linksHTML}
-                                <a href="https://plu.mx/plum/a/?doi=${pub.doi}" class="plumx-plum-print-popup" data-popup="right" data-size="medium"></a>
-                            </div>
-                            ${sdgHTML}
-                        </div>`;
-                });
+                let linksHTML = '';
+                if (pub.wos_link) linksHTML += `<a href="${pub.wos_link}" target="_blank" class="index-badge badge-wos">WoS</a>`;
+                if (pub.scopus_link) linksHTML += `<a href="${pub.scopus_link}" target="_blank" class="index-badge badge-scopus">Scopus</a>`;
+                if (pub.trdizin_link) linksHTML += `<a href="${pub.trdizin_link}" target="_blank" class="index-badge badge-trdizin">TR Dizin</a>`;
+            
+                // SDG ikonlarının üzerindeki o ifadeyi geri ekliyoruz
+                let sdgHTML = '';
+                if (pub.sdg && pub.sdg.length > 0) {
+                    sdgHTML = `
+                        <div class="sdg-wrapper">
+                            <span style="font-size:0.75em; color:#8b949e; margin-right:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Global Development Goals:</span>
+                            <div style="display:flex; gap:8px; align-items:center;">
+                    `;
+                    pub.sdg.forEach(val => {
+                        const num = val.toString().padStart(2, '0');
+                        sdgHTML += `<img src="https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Inverted-Icons_WEB-${num}-1024x1024.png" class="sdg-icon" title="Goal ${val}" onerror="this.style.display='none'">`;
+                    });
+                    sdgHTML += '</div></div>';
+                }
+            
+                pubList.innerHTML += `
+                    <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
+                        ${pub.citations && pub.citations !== "0" ? `<div class="citations-count">Cited: ${pub.citations}</div>` : ''}
+                        <div class="pub-title"><a href="https://doi.org/${pub.doi}" target="_blank" class="pub-link">${pub.title}</a></div>
+                        <div class="journal-name">${pub.journal || ''}</div>
+                        <div style="font-size: 0.9em; color: #a1a1aa; margin-bottom: 12px;">${pub.author} (${pub.year})</div>
+                        
+                        <div class="links-area" style="display:flex; align-items:center; gap:12px;">
+                            ${linksHTML}
+                            <a href="https://plu.mx/plum/a/?doi=${pub.doi}" 
+                               class="plumx-plum-print-popup" 
+                               data-popup="right" 
+                               data-size="medium" 
+                               style="margin-left: 5px;"></a>
+                        </div>
+            
+                        ${sdgHTML}
+                    </div>`;
+            });
 
                 // PlumX scriptini DOM yüklendikten sonra bir kez ekle
                 let s = document.createElement("script");
