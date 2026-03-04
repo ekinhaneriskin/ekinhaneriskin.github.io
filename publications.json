@@ -109,6 +109,7 @@
             "index": "trdizin",
             "doi": "10.51513/jitsa.1104161",
             "trdizin_link": "https://search.trdizin.gov.tr/en/yayin/detay/1162079/importance-of-a-pillars-of-vehicles-during-intersection-approach",
+            "journal": "Journal of Intelligent Transportation Systems and Applications"
             "citations": "0"
         },
         {
@@ -135,11 +136,12 @@
         },
         {
             "title": "Prediction of Road Visibility Based on Meteorological Parameters by Machine Learning Methods",
-            "author": "Eriskin, E.",
+            "author": "Baykal, T., Ergezer, F., Eriskin, E. & Terzi, S.",
             "year": "2022",
             "index": "other",
             "doi": "10.31590/ejosat.1082868",
             "wos_link": "",
+            "journal": "Avrupa Bilim ve Teknoloji Dergisi",
             "citations": "0"
         },
         {
