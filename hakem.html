@@ -3,49 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hakem Paneli - Dinamik Turnuva</title>
+  <title>Hakem Paneli - Çoklu Kategori Turnuva</title>
   <style>
     body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
-    .box { background: white; max-width: 550px; margin: 30px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    input[type="text"], input[type="number"], input[type="file"] { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
+    .box { background: white; max-width: 600px; margin: 20px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    input[type="text"], input[type="number"], input[type="file"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; box-sizing: border-box; }
     .row { display: flex; gap: 15px; margin-top: 15px; text-align: left;}
     .col { flex: 1; }
     .col label { font-size: 14px; font-weight: bold; color: #333; }
+    
     button { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 15px; transition: 0.2s; }
     button:hover { background: #1557b0; }
-    .btn-green { background: #28a745; margin-top: 5px;} .btn-green:hover { background: #218838; }
-    #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; border-radius: 5px; display: none; font-weight: bold; border: 1px solid #cce0ff; color: #1a73e8;}
-    .bilgi { font-size: 13px; color: #666; text-align: left; display: block; margin-bottom: 10px; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-green { background: #28a745; margin-top: 10px;} .btn-green:hover { background: #218838; }
+    .btn-outline { background: transparent; color: #1a73e8; border: 2px solid #1a73e8; padding: 10px; margin-top: 5px; }
     
-    /* XML Akordeon */
+    #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; border-radius: 5px; display: none; text-align: left; border: 1px solid #cce0ff; color: #1a73e8;}
+    .bilgi { font-size: 13px; color: #666; text-align: left; display: block; margin-bottom: 5px; }
+    
+    /* XML Sepet Stilleri */
     .xml-panel { border: 2px dashed #28a745; background: #f8fff9; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; }
-    .xml-panel h3 { color: #28a745; margin-top: 0; font-size: 18px; }
+    .xml-panel h3 { color: #28a745; margin-top: 0; font-size: 18px; margin-bottom: 5px;}
+    .sepet-listesi { background: white; border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-top: 15px; font-size: 14px; display: none; }
+    .sepet-item { border-bottom: 1px solid #eee; padding: 5px 0; display: flex; justify-content: space-between; color: #333; font-weight: bold;}
     .loading-btn { opacity: 0.7; pointer-events: none; }
   </style>
 </head>
 <body>
 
   <div class="box">
-    <h2 style="color: #1a73e8; margin-top:0;">Turnuva Kurulum Paneli</h2>
+    <h2 style="color: #1a73e8; margin-top:0;">Merkezi Turnuva Kurulumu</h2>
     
     <div style="text-align: left; margin-bottom: 20px;">
-      <label style="font-weight:bold;">1. Google Sheet Linki (veya ID'si) <span style="color:red">*</span></label>
+      <label style="font-weight:bold;">1. Google Sheet Linki (Sıfır Tablo) <span style="color:red">*</span></label>
       <input type="text" id="sheetId" placeholder="Örn: https://docs.google.com/spreadsheets/d/...">
     </div>
 
-    <!-- YENİ: XML YÜKLEME ALANI -->
+    <!-- YENİ: ÇOKLU KATEGORİ SEPETİ -->
     <div class="xml-panel">
-      <h3>🚀 Otomatik Kurulum (Swiss Manager XML)</h3>
-      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Google Sheet'inizi elle doldurmak yerine Swiss Manager XML dosyalarınızı yükleyerek saniyeler içinde veritabanını oluşturabilirsiniz.</p>
+      <h3>🚀 Çoklu Kategori XML Sepeti</h3>
+      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Farklı kategorilerin XML dosyalarını sırayla sepete ekleyin. Sistem isim çakışmalarını ve takım adlarını otomatik düzenler.</p>
       
-      <label>Takımlar XML Dosyası:</label>
-      <input type="file" id="teamXml" accept=".xml">
-      
-      <label>Sporcular XML Dosyası:</label>
-      <input type="file" id="playerXml" accept=".xml">
-      
-      <button class="btn-green" id="btn-xml" onclick="xmlVeritabaniKur()">XML'den Veritabanını Kur</button>
-      <div id="xml-sonuc" style="margin-top: 10px; font-weight: bold; color: #28a745; display: none;"></div>
+      <div style="background: #eafaf1; padding: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">
+        <label style="font-weight:bold; color:#155724;">Kategori Adı <span style="color:red">*</span></label>
+        <input type="text" id="kategoriAdi" placeholder="Örn: U12, Genel, Kadınlar vb.">
+        
+        <label style="font-size:13px; font-weight:bold; margin-top:5px; display:block;">Takımlar XML:</label>
+        <input type="file" id="teamXml" accept=".xml" style="padding: 5px;">
+        
+        <label style="font-size:13px; font-weight:bold; margin-top:5px; display:block;">Sporcular XML:</label>
+        <input type="file" id="playerXml" accept=".xml" style="padding: 5px;">
+        
+        <button class="btn-outline" onclick="kategoriSepeteEkle()">Kategoriyi Sepete Ekle 🛒</button>
+      </div>
+
+      <div id="sepet-kutusu" class="sepet-listesi">
+        <div style="color: #666; font-size: 12px; margin-bottom: 5px;">SEPETTEKİ KATEGORİLER:</div>
+        <div id="sepet-icerik"></div>
+      </div>
     </div>
 
     <div style="text-align: left; margin-bottom: 20px;">
@@ -54,8 +69,7 @@
     </div>
 
     <div style="border-top: 2px dashed #eee; padding-top: 20px;">
-      <h3 style="margin: 0 0 10px 0; color: #333; font-size:18px; text-align: left;">3. Masa Yapılandırması</h3>
-      <span class="bilgi">Kaptan linkinde geçerli olacak kuralları belirleyin.</span>
+      <h3 style="margin: 0 0 10px 0; color: #333; font-size:18px; text-align: left;">3. Masa Yapılandırması (Tüm Kategoriler İçin)</h3>
       <div class="row">
         <div class="col"><label>Genel</label><input type="number" id="m-ana" value="4" min="0"></div>
         <div class="col"><label>Kadın</label><input type="number" id="m-kadin" value="0" min="0"></div>
@@ -63,14 +77,18 @@
       </div>
     </div>
     
-    <button onclick="linkOlustur()">Sistemi Kaydet & Kaptan Linkini Üret</button>
+    <button class="btn-green" id="btn-kur" onclick="tumSepetiKur()" disabled>Tüm Sepeti Kur & Kaptan Linkini Üret</button>
     <div id="sonuc"></div>
   </div>
 
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzkan8o6Hif6Ihhcy68OlrL-sETi8X1tKABPyJxlZ0vC6ygWqA7QcJssMFqfwz9nm2Y/exec";
+    
+    // Sepet Hafızası
+    let turnuvaSepeti = { takimlar: [], sporcular: [] };
+    let eklenenKategoriler = [];
 
-    // --- 1. XML DOSYA OKUMA VE AYRIŞTIRMA ---
+    // Dosya Okuyucu Promise
     function dosyaOku(file) {
       return new Promise((resolve, reject) => {
         if(!file) return resolve(null);
@@ -81,22 +99,15 @@
       });
     }
 
-    async function xmlVeritabaniKur() {
-      const sheetIdInput = document.getElementById("sheetId").value.trim();
-      const tFile = document.getElementById("teamXml").files[0];
-      const pFile = document.getElementById("playerXml").files[0];
+    // 1. AŞAMA: KATEGORİYİ SEPETE EKLEME
+    async function kategoriSepeteEkle() {
+      let katAdi = document.getElementById("kategoriAdi").value.trim().toUpperCase();
+      let tFile = document.getElementById("teamXml").files[0];
+      let pFile = document.getElementById("playerXml").files[0];
 
-      if(!sheetIdInput) { alert("Önce Google Sheet linkinizi (1. Adım) girmelisiniz!"); return; }
-      if(!tFile || !pFile) { alert("Lütfen hem takım hem de sporcu XML dosyasını seçin."); return; }
-
-      let sheetId = sheetIdInput;
-      const urlEslenme = sheetIdInput.match(/\/d\/([a-zA-Z0-9-_]+)/);
-      if (urlEslenme && urlEslenme[1]) sheetId = urlEslenme[1];
-
-      let btn = document.getElementById("btn-xml");
-      let sonuc = document.getElementById("xml-sonuc");
-      btn.innerText = "XML'ler İşleniyor, Lütfen Bekleyin...";
-      btn.classList.add("loading-btn");
+      if(!katAdi) return alert("Lütfen kategori adını girin (Örn: U12).");
+      if(!tFile || !pFile) return alert("Lütfen hem takım hem sporcu XML'ini seçin.");
+      if(eklenenKategoriler.includes(katAdi)) return alert("Bu kategori adını zaten eklediniz!");
 
       try {
         const teamXmlText = await dosyaOku(tFile);
@@ -106,74 +117,126 @@
         const teamDoc = parser.parseFromString(teamXmlText, "text/xml");
         const playerDoc = parser.parseFromString(playerXmlText, "text/xml");
 
-        let turnuvaData = { takimlar: [], sporcular: [] };
+        let tCount = 0;
+        let pCount = 0;
 
-        // TAKIMLARI AYRIŞTIR (Swiss Manager genellikle <Team> veya <Club> kullanır)
-        // Eğer XML etiketi farklıysa "Team" yazan yerleri o etikete göre değiştirmelisiniz.
+        // TAKIMLARI AYRIŞTIR VE KATEGORİ ETİKETİ EKLE
         let teams = teamDoc.getElementsByTagName("Team");
         for (let i = 0; i < teams.length; i++) {
           let tName = teams[i].getAttribute("Name") || teams[i].textContent;
-          let tId = teams[i].getAttribute("ID") || teams[i].getAttribute("UniqueTeamID") || i.toString();
-          if(tName) turnuvaData.takimlar.push({ ad: tName.trim(), id: tId });
+          let tId = teams[i].getAttribute("ID") || teams[i].getAttribute("UniqueTeamID") || `${katAdi}_${i}`;
+          if(tName) {
+            let formatliTakimAdi = `${tName.trim()} (${katAdi})`;
+            turnuvaSepeti.takimlar.push({ ad: formatliTakimAdi, id: tId, orjAd: tName.trim() });
+            tCount++;
+          }
         }
 
-        // SPORCULARI AYRIŞTIR (Swiss Manager genellikle <Player> kullanır)
+        // SPORCULARI AYRIŞTIR VE TAKIMLARINI GÜNCELLE
         let players = playerDoc.getElementsByTagName("Player");
         for (let i = 0; i < players.length; i++) {
           let pName = players[i].getAttribute("Name") || "";
           let pSex = players[i].getAttribute("Sex") || players[i].getAttribute("Gender") || "";
           let pYear = players[i].getAttribute("Birthday") || players[i].getAttribute("Year") || "";
           let pTeam = players[i].getAttribute("Club") || players[i].getAttribute("Team") || "";
-          let pId = players[i].getAttribute("ID") || players[i].getAttribute("UniquePlayerID") || "";
+          let pId = players[i].getAttribute("ID") || players[i].getAttribute("UniquePlayerID") || `P_${Math.floor(Math.random()*10000)}`;
           
           if(pName) {
-             turnuvaData.sporcular.push({ isim: pName.trim(), cinsiyet: pSex, yil: pYear, takim: pTeam.trim(), playerId: pId, teamId: "" });
+             let formatliTakimAdi = `${pTeam.trim()} (${katAdi})`;
+             turnuvaSepeti.sporcular.push({ 
+                 isim: pName.trim(), cinsiyet: pSex, yil: pYear, 
+                 takim: formatliTakimAdi, playerId: pId, teamId: "" 
+             });
+             pCount++;
           }
         }
 
-        // GAS Sunucusuna Gönder
-        btn.innerText = "Google Sheet'e Yazılıyor...";
-        const response = await fetch(GAS_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "kurulumYap", data: turnuvaData, sheetId: sheetId })
-        });
-        const res = await response.json();
+        // Sepet Arayüzünü Güncelle
+        eklenenKategoriler.push(katAdi);
+        document.getElementById("sepet-kutusu").style.display = "block";
+        document.getElementById("sepet-icerik").innerHTML += `
+            <div class="sepet-item">
+                <span>📁 ${katAdi}</span>
+                <span style="color:#28a745; font-size:12px;">${tCount} Takım | ${pCount} Sporcu</span>
+            </div>`;
         
-        sonuc.innerText = res.mesaj || res.hata;
-        sonuc.style.display = "block";
-        btn.innerText = "Kurulum Tamamlandı";
-        btn.style.background = "#155724";
+        // Inputları Temizle
+        document.getElementById("kategoriAdi").value = "";
+        document.getElementById("teamXml").value = "";
+        document.getElementById("playerXml").value = "";
+        
+        // Kurulum Butonunu Aktif Et
+        document.getElementById("btn-kur").disabled = false;
 
       } catch(e) {
-        alert("XML ayrıştırma veya sunucu bağlantı hatası: " + e.message);
-        btn.innerText = "XML'den Veritabanını Kur";
-        btn.classList.remove("loading-btn");
+        alert("XML ayrıştırma hatası! Dosyalarınızın doğruluğunu kontrol edin. Detay: " + e.message);
       }
     }
 
-    // --- 2. KAPTAN LİNKİ ÜRETME (Önceki kodun aynısı) ---
-    function linkOlustur() {
-      let hamGiris = document.getElementById("sheetId").value.trim();
-      const logo = document.getElementById("logoUrl").value.trim();
-      const b_ana = parseInt(document.getElementById("m-ana").value) || 0;
-      const b_kadin = parseInt(document.getElementById("m-kadin").value) || 0;
-      const b_u20 = parseInt(document.getElementById("m-u20").value) || 0;
-      
-      if(!hamGiris) { alert("Lütfen tablonun linkini girin!"); return; }
-      
-      let sheetId = hamGiris;
-      const urlEslenme = hamGiris.match(/\/d\/([a-zA-Z0-9-_]+)/);
+    // 2. AŞAMA: TÜM SEPETİ GOOGLE SHEET'E GÖNDER VE LİNK ÜRET
+    async function tumSepetiKur() {
+      const sheetIdInput = document.getElementById("sheetId").value.trim();
+      if(!sheetIdInput) { alert("Lütfen 1. Adımdaki Google Sheet linkini girin!"); return; }
+
+      let sheetId = sheetIdInput;
+      const urlEslenme = sheetIdInput.match(/\/d\/([a-zA-Z0-9-_]+)/);
       if (urlEslenme && urlEslenme[1]) sheetId = urlEslenme[1];
-      
-      const payload = { i: sheetId, l: logo, b: { a: b_ana, k: b_kadin, u: b_u20 } };
-      const sifreliId = btoa(encodeURIComponent(JSON.stringify(payload)));
-      
-      const seninSiten = window.location.origin + window.location.pathname.replace("hakem.html", "kaptan.html"); 
-      const paylasimLinki = `${seninSiten}?ref=${sifreliId}`;
-      
-      document.getElementById("sonuc").style.display = "block";
-      document.getElementById("sonuc").innerHTML = `<b>Sistem Hazır!</b> Kaptanlara göndereceğiniz Link:<br><br>
-      <a href="${paylasimLinki}" target="_blank" style="color:#1a73e8;">${paylasimLinki}</a>`;
+
+      // --- İSİM ÇAKIŞMA KALKANI (DUPLICATE HANDLER) ---
+      let isimSayaci = {};
+      turnuvaSepeti.sporcular.forEach(s => {
+          isimSayaci[s.isim] = (isimSayaci[s.isim] || 0) + 1;
+      });
+      turnuvaSepeti.sporcular.forEach(s => {
+          if(isimSayaci[s.isim] > 1) {
+              // Eğer isimden sistemde 1'den fazla varsa yanına ID'sini ekle
+              s.isim = `${s.isim} (${s.playerId})`;
+          }
+      });
+      // --------------------------------------------------
+
+      let btn = document.getElementById("btn-kur");
+      let sonuc = document.getElementById("sonuc");
+      btn.innerText = "Tüm Kategoriler Google Sheet'e Yazılıyor...";
+      btn.classList.add("loading-btn");
+
+      try {
+        // Arka Plana (Google Apps Script) Gönderim
+        const response = await fetch(GAS_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "kurulumYap", data: turnuvaSepeti, sheetId: sheetId })
+        });
+        const res = await response.json();
+        
+        // 3. AŞAMA: KAPTAN LİNKİNİ OLUŞTUR
+        const logo = document.getElementById("logoUrl").value.trim();
+        const b_ana = parseInt(document.getElementById("m-ana").value) || 0;
+        const b_kadin = parseInt(document.getElementById("m-kadin").value) || 0;
+        const b_u20 = parseInt(document.getElementById("m-u20").value) || 0;
+        
+        const payload = { i: sheetId, l: logo, b: { a: b_ana, k: b_kadin, u: b_u20 } };
+        const sifreliId = btoa(encodeURIComponent(JSON.stringify(payload)));
+        
+        const seninSiten = window.location.origin + window.location.pathname.replace("hakem.html", "kaptan.html"); 
+        const paylasimLinki = `${seninSiten}?ref=${sifreliId}`;
+
+        // Sonucu Göster
+        sonuc.innerHTML = `
+          <div style="color:#155724; margin-bottom:10px;">✅ ${res.mesaj}</div>
+          <div style="color:#333; font-weight:normal; margin-bottom:15px; font-size:13px;">Eklenen Toplam Kategori: ${eklenenKategoriler.length}<br>Toplam Takım: ${turnuvaSepeti.takimlar.length}<br>Toplam Sporcu: ${turnuvaSepeti.sporcular.length}</div>
+          <b>Kaptanlara Gönderilecek Link:</b><br><br>
+          <a href="${paylasimLinki}" target="_blank" style="color:#1a73e8; word-break: break-all;">${paylasimLinki}</a>
+        `;
+        sonuc.style.display = "block";
+        
+        btn.innerText = "Kurulum Başarıyla Tamamlandı";
+        btn.style.background = "#155724";
+
+      } catch(e) {
+        alert("Sunucu bağlantı hatası: " + e.message);
+        btn.innerText = "Tüm Sepeti Kur & Kaptan Linkini Üret";
+        btn.classList.remove("loading-btn");
+      }
     }
   </script>
 </body>
