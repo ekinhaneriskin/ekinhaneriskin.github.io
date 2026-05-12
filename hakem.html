@@ -7,62 +7,151 @@
   <style>
     body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
     .box { background: white; max-width: 550px; margin: 30px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    input[type="text"], input[type="number"] { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
+    input[type="text"], input[type="number"], input[type="file"] { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
     .row { display: flex; gap: 15px; margin-top: 15px; text-align: left;}
     .col { flex: 1; }
     .col label { font-size: 14px; font-weight: bold; color: #333; }
-    button { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 25px; transition: 0.2s; }
+    button { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 15px; transition: 0.2s; }
     button:hover { background: #1557b0; }
-    #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; word-break: break-all; border-radius: 5px; display: none; font-weight: bold; border: 1px solid #cce0ff; color: #1a73e8;}
+    .btn-green { background: #28a745; margin-top: 5px;} .btn-green:hover { background: #218838; }
+    #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; border-radius: 5px; display: none; font-weight: bold; border: 1px solid #cce0ff; color: #1a73e8;}
     .bilgi { font-size: 13px; color: #666; text-align: left; display: block; margin-bottom: 10px; }
-    #qr-alani { margin-top: 25px; display: none; animation: fadeIn 0.5s; }
-    #qr-resim { border: 8px solid white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 200px; height: 200px; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* XML Akordeon */
+    .xml-panel { border: 2px dashed #28a745; background: #f8fff9; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; }
+    .xml-panel h3 { color: #28a745; margin-top: 0; font-size: 18px; }
+    .loading-btn { opacity: 0.7; pointer-events: none; }
   </style>
 </head>
 <body>
 
   <div class="box">
-    <h2 style="color: #1a73e8; margin-top:0;">Dinamik Turnuva Kurulumu</h2>
+    <h2 style="color: #1a73e8; margin-top:0;">Turnuva Kurulum Paneli</h2>
     
     <div style="text-align: left; margin-bottom: 20px;">
-      <label style="font-weight:bold;">1. Google Sheet Linki (veya ID'si)</label>
+      <label style="font-weight:bold;">1. Google Sheet Linki (veya ID'si) <span style="color:red">*</span></label>
       <input type="text" id="sheetId" placeholder="Örn: https://docs.google.com/spreadsheets/d/...">
+    </div>
+
+    <!-- YENİ: XML YÜKLEME ALANI -->
+    <div class="xml-panel">
+      <h3>🚀 Otomatik Kurulum (Swiss Manager XML)</h3>
+      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Google Sheet'inizi elle doldurmak yerine Swiss Manager XML dosyalarınızı yükleyerek saniyeler içinde veritabanını oluşturabilirsiniz.</p>
       
-      <label style="font-weight:bold; margin-top:10px; display:block;">2. Turnuva Görsel Linki (İsteğe Bağlı)</label>
+      <label>Takımlar XML Dosyası:</label>
+      <input type="file" id="teamXml" accept=".xml">
+      
+      <label>Sporcular XML Dosyası:</label>
+      <input type="file" id="playerXml" accept=".xml">
+      
+      <button class="btn-green" id="btn-xml" onclick="xmlVeritabaniKur()">XML'den Veritabanını Kur</button>
+      <div id="xml-sonuc" style="margin-top: 10px; font-weight: bold; color: #28a745; display: none;"></div>
+    </div>
+
+    <div style="text-align: left; margin-bottom: 20px;">
+      <label style="font-weight:bold;">2. Turnuva Görsel Linki (İsteğe Bağlı)</label>
       <input type="text" id="logoUrl" placeholder="Sonu .jpg veya .png biten link">
     </div>
 
     <div style="border-top: 2px dashed #eee; padding-top: 20px;">
-      <h3 style="margin: 0 0 10px 0; color: #333; font-size:18px;">3. Masa Yapılandırması</h3>
-      <span class="bilgi">Turnuvanın sistemini belirleyin (Olmayan masalara 0 giriniz).</span>
-      
+      <h3 style="margin: 0 0 10px 0; color: #333; font-size:18px; text-align: left;">3. Masa Yapılandırması</h3>
+      <span class="bilgi">Kaptan linkinde geçerli olacak kuralları belirleyin.</span>
       <div class="row">
-        <div class="col">
-          <label>Genel Masa Sayısı</label>
-          <input type="number" id="m-ana" value="4" min="0">
-        </div>
-        <div class="col">
-          <label>Kadın Masa Sayısı</label>
-          <input type="number" id="m-kadin" value="0" min="0">
-        </div>
-        <div class="col">
-          <label>U20 Masa Sayısı</label>
-          <input type="number" id="m-u20" value="0" min="0">
-        </div>
+        <div class="col"><label>Genel</label><input type="number" id="m-ana" value="4" min="0"></div>
+        <div class="col"><label>Kadın</label><input type="number" id="m-kadin" value="0" min="0"></div>
+        <div class="col"><label>U20</label><input type="number" id="m-u20" value="0" min="0"></div>
       </div>
     </div>
     
-    <button onclick="linkOlustur()">Sistemi Kur & Kaptan Linkini Üret</button>
-
+    <button onclick="linkOlustur()">Sistemi Kaydet & Kaptan Linkini Üret</button>
     <div id="sonuc"></div>
-    <div id="qr-alani">
-      <p style="font-size: 14px; color: #555; font-weight: bold;">Kaptanların Taraması İçin QR Kod:</p>
-      <img id="qr-resim" src="" alt="Turnuva QR Kodu">
-    </div>
   </div>
 
   <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzkan8o6Hif6Ihhcy68OlrL-sETi8X1tKABPyJxlZ0vC6ygWqA7QcJssMFqfwz9nm2Y/exec";
+
+    // --- 1. XML DOSYA OKUMA VE AYRIŞTIRMA ---
+    function dosyaOku(file) {
+      return new Promise((resolve, reject) => {
+        if(!file) return resolve(null);
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result);
+        reader.onerror = e => reject(e);
+        reader.readAsText(file);
+      });
+    }
+
+    async function xmlVeritabaniKur() {
+      const sheetIdInput = document.getElementById("sheetId").value.trim();
+      const tFile = document.getElementById("teamXml").files[0];
+      const pFile = document.getElementById("playerXml").files[0];
+
+      if(!sheetIdInput) { alert("Önce Google Sheet linkinizi (1. Adım) girmelisiniz!"); return; }
+      if(!tFile || !pFile) { alert("Lütfen hem takım hem de sporcu XML dosyasını seçin."); return; }
+
+      let sheetId = sheetIdInput;
+      const urlEslenme = sheetIdInput.match(/\/d\/([a-zA-Z0-9-_]+)/);
+      if (urlEslenme && urlEslenme[1]) sheetId = urlEslenme[1];
+
+      let btn = document.getElementById("btn-xml");
+      let sonuc = document.getElementById("xml-sonuc");
+      btn.innerText = "XML'ler İşleniyor, Lütfen Bekleyin...";
+      btn.classList.add("loading-btn");
+
+      try {
+        const teamXmlText = await dosyaOku(tFile);
+        const playerXmlText = await dosyaOku(pFile);
+        
+        const parser = new DOMParser();
+        const teamDoc = parser.parseFromString(teamXmlText, "text/xml");
+        const playerDoc = parser.parseFromString(playerXmlText, "text/xml");
+
+        let turnuvaData = { takimlar: [], sporcular: [] };
+
+        // TAKIMLARI AYRIŞTIR (Swiss Manager genellikle <Team> veya <Club> kullanır)
+        // Eğer XML etiketi farklıysa "Team" yazan yerleri o etikete göre değiştirmelisiniz.
+        let teams = teamDoc.getElementsByTagName("Team");
+        for (let i = 0; i < teams.length; i++) {
+          let tName = teams[i].getAttribute("Name") || teams[i].textContent;
+          let tId = teams[i].getAttribute("ID") || teams[i].getAttribute("UniqueTeamID") || i.toString();
+          if(tName) turnuvaData.takimlar.push({ ad: tName.trim(), id: tId });
+        }
+
+        // SPORCULARI AYRIŞTIR (Swiss Manager genellikle <Player> kullanır)
+        let players = playerDoc.getElementsByTagName("Player");
+        for (let i = 0; i < players.length; i++) {
+          let pName = players[i].getAttribute("Name") || "";
+          let pSex = players[i].getAttribute("Sex") || players[i].getAttribute("Gender") || "";
+          let pYear = players[i].getAttribute("Birthday") || players[i].getAttribute("Year") || "";
+          let pTeam = players[i].getAttribute("Club") || players[i].getAttribute("Team") || "";
+          let pId = players[i].getAttribute("ID") || players[i].getAttribute("UniquePlayerID") || "";
+          
+          if(pName) {
+             turnuvaData.sporcular.push({ isim: pName.trim(), cinsiyet: pSex, yil: pYear, takim: pTeam.trim(), playerId: pId, teamId: "" });
+          }
+        }
+
+        // GAS Sunucusuna Gönder
+        btn.innerText = "Google Sheet'e Yazılıyor...";
+        const response = await fetch(GAS_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "kurulumYap", data: turnuvaData, sheetId: sheetId })
+        });
+        const res = await response.json();
+        
+        sonuc.innerText = res.mesaj || res.hata;
+        sonuc.style.display = "block";
+        btn.innerText = "Kurulum Tamamlandı";
+        btn.style.background = "#155724";
+
+      } catch(e) {
+        alert("XML ayrıştırma veya sunucu bağlantı hatası: " + e.message);
+        btn.innerText = "XML'den Veritabanını Kur";
+        btn.classList.remove("loading-btn");
+      }
+    }
+
+    // --- 2. KAPTAN LİNKİ ÜRETME (Önceki kodun aynısı) ---
     function linkOlustur() {
       let hamGiris = document.getElementById("sheetId").value.trim();
       const logo = document.getElementById("logoUrl").value.trim();
@@ -71,13 +160,11 @@
       const b_u20 = parseInt(document.getElementById("m-u20").value) || 0;
       
       if(!hamGiris) { alert("Lütfen tablonun linkini girin!"); return; }
-      if(b_ana === 0 && b_kadin === 0 && b_u20 === 0) { alert("En az 1 masa tanımlamalısınız!"); return; }
       
       let sheetId = hamGiris;
       const urlEslenme = hamGiris.match(/\/d\/([a-zA-Z0-9-_]+)/);
       if (urlEslenme && urlEslenme[1]) sheetId = urlEslenme[1];
       
-      // Masa yapılandırmasını (b objesi) linkin içine gömüyoruz
       const payload = { i: sheetId, l: logo, b: { a: b_ana, k: b_kadin, u: b_u20 } };
       const sifreliId = btoa(encodeURIComponent(JSON.stringify(payload)));
       
@@ -85,11 +172,8 @@
       const paylasimLinki = `${seninSiten}?ref=${sifreliId}`;
       
       document.getElementById("sonuc").style.display = "block";
-      document.getElementById("sonuc").innerHTML = `Sistem Hazır! Lütfen bu linki kaptanlara gönderin:<br><br>
+      document.getElementById("sonuc").innerHTML = `<b>Sistem Hazır!</b> Kaptanlara göndereceğiniz Link:<br><br>
       <a href="${paylasimLinki}" target="_blank" style="color:#1a73e8;">${paylasimLinki}</a>`;
-
-      document.getElementById("qr-resim").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(paylasimLinki)}`;
-      document.getElementById("qr-alani").style.display = "block";
     }
   </script>
 </body>
