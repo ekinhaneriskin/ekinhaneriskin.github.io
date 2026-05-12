@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Satranç Kadro Bildirimi</title>
+  <style>
+    body { font-family: sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
+    .container { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    select, input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box;}
+    button { width: 100%; padding: 12px; background: #1a73e8; color: white; border: none; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top:10px;}
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    #hata { color: red; margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<div class="container" id="main-box">
+  <h2 style="color:#1a73e8;">Takım Girişi</h2>
+  <p>Lütfen takımınızı seçin ve şifrenizi girin.</p>
+
+  <div id="login-area">
+    <select id="takimSec">
+      <option value="">Takımlar Yükleniyor...</option>
+    </select>
+    <input type="password" id="sifreGiris" placeholder="Takım Şifresi">
+    <button id="btn-giris" onclick="sistemeGir()" disabled>Giriş Yap</button>
+  </div>
+  
+  <div id="hata"></div>
+</div>
+
+<script>
+  // Senin Google Script URL'n
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbzkan8o6Hif6Ihhcy68OlrL-sETi8X1tKABPyJxlZ0vC6ygWqA7QcJssMFqfwz9nm2Y/exec";
+  let gercekSheetId = "";
+
+  window.onload = function() {
+    // URL'den şifreli ref kodunu al
+    const urlParams = new URLSearchParams(window.location.search);
+    const sifreliRef = urlParams.get('ref');
+
+    if(!sifreliRef) {
+      document.getElementById("main-box").innerHTML = "<h3 style='color:red;'>Geçersiz Link! Lütfen hakeminizden doğru linki talep edin.</h3>";
+      return;
+    }
+
+    try {
+      // Şifreli kodu normal Sheet ID'ye çeviriyoruz
+      gercekSheetId = atob(sifreliRef);
+      takimlariGetir();
+    } catch(e) {
+      document.getElementById("main-box").innerHTML = "<h3 style='color:red;'>Link bozuk. Lütfen linki tam kopyaladığınızdan emin olun.</h3>";
+    }
+  };
+
+  async function takimlariGetir() {
+    try {
+      const response = await fetch(`${GAS_URL}?action=getInitialData&sheetId=${gercekSheetId}`);
+      const data = await response.json();
+      
+      if(data.hata) {
+        document.getElementById("hata").innerText = data.hata;
+        return;
+      }
+
+      const select = document.getElementById("takimSec");
+      select.innerHTML = "<option value=''>-- Takımınızı Seçin --</option>";
+      
+      data.teams.forEach(takim => {
+        select.innerHTML += `<option value="${takim}">${takim}</option>`;
+      });
+
+      document.getElementById("btn-giris").disabled = false;
+
+    } catch(e) {
+      document.getElementById("hata").innerText = "Takımlar yüklenirken hata oluştu. Bağlantıyı kontrol edin.";
+    }
+  }
+
+  async function sistemeGir() {
+    const takim = document.getElementById("takimSec").value;
+    const sifre = document.getElementById("sifreGiris").value;
+    const btn = document.getElementById("btn-giris");
+
+    if(!takim || !sifre) { alert("Lütfen takımı seçin ve şifreyi girin!"); return; }
+
+    btn.innerText = "Kontrol Ediliyor...";
+    btn.disabled = true;
+
+    try {
+      const response = await fetch(`${GAS_URL}?action=sporculariGetir&takim=${encodeURIComponent(takim)}&sifre=${encodeURIComponent(sifre)}&sheetId=${gercekSheetId}`);
+      const data = await response.json();
+
+      btn.innerText = "Giriş Yap";
+      btn.disabled = false;
+
+      if(data.hata) {
+        document.getElementById("hata").innerText = data.hata;
+      } else {
+        // GİRİŞ BAŞARILI!
+        // Burada mevcut sisteminizdeki gibi sporcuları ekrana dökme fonksiyonunu çağıracaksınız.
+        console.log("Gelen Veri:", data);
+        document.getElementById("hata").style.color = "green";
+        document.getElementById("hata").innerText = "Giriş Başarılı! Konsola bakınız.";
+        // ... Checkboxları oluşturma kodları buraya gelecek ...
+      }
+    } catch(e) {
+      document.getElementById("hata").innerText = "Giriş yapılamadı.";
+      btn.innerText = "Giriş Yap";
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>
