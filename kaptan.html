@@ -11,12 +11,20 @@
     .tur-baslik { font-size: 24px; font-weight: 800; color: #1a73e8; text-transform: uppercase; margin-bottom: 15px; }
     #timer-box { background: #e8f0fe; border: 1px solid #cce0ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; color: #1a73e8; display:none; }
     
-    select, input[type="password"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+    input[type="text"], input[type="password"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
     button { width: 100%; padding: 15px; background: #1a73e8; color: white; border: none; cursor: pointer; border-radius: 8px; font-size: 16px; font-weight: bold; margin-top: 10px; transition: 0.3s;}
     button:disabled { background: #ccc; color: #666; cursor: not-allowed; }
     .loading-btn { animation: pulse 1.5s infinite; background: #5c9df5 !important; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
     
+    /* Arama Kutusu (Autocomplete) Stilleri */
+    .autocomplete-wrapper { position: relative; }
+    .autocomplete-wrapper::after { content: '▼'; position: absolute; right: 15px; top: 20px; font-size: 14px; color: #888; pointer-events: none; }
+    #t-input { padding-right: 35px; cursor: pointer; } 
+    .autocomplete-items { border: 1px solid #d4d4d4; border-top: none; position: absolute; z-index: 99; top: 100%; left: 0; right: 0; background: #fff; max-height: 250px; overflow-y: auto; text-align: left; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 0 0 8px 8px; }
+    .autocomplete-items div { padding: 12px; cursor: pointer; border-bottom: 1px solid #eee; font-size: 15px; }
+    .autocomplete-items div:hover { background: #f0f8ff; color: #1a73e8; font-weight: bold; }
+
     .checkbox-group { text-align: left; margin: 15px 0; background: #fafafa; padding: 15px; border-radius: 10px; border: 1px solid #eee; }
     .row { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #e1e1e1; }
     .row input[type="checkbox"] { width: auto; margin-right: 15px; transform: scale(1.4); }
@@ -31,7 +39,10 @@
   <div id="timer-box"><span id="timer">Bağlantı Kuruluyor...</span></div>
 
   <div id="login">
-    <select id="t-input"><option value="">Takımlar Yükleniyor, Lütfen Bekleyin...</option></select>
+    <div class="autocomplete-wrapper">
+      <input type="text" id="t-input" placeholder="Takımlar Yükleniyor, Bekleyin..." autocomplete="off" disabled>
+      <div id="t-liste" class="autocomplete-items" style="display:none;"></div>
+    </div>
     <input type="password" id="s-input" placeholder="Takım Şifreniz">
     <button id="l-btn" onclick="giris()" disabled class="loading-btn">Sistem Yükleniyor...</button>
   </div>
@@ -60,6 +71,7 @@
   let locked = false;
   let currentT = "";
   let currentS = "";
+  let allT = []; // Tüm takımları hafızada tutacağımız dizi
 
   window.onload = async function() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -71,21 +83,59 @@
     }
 
     try {
-      // Şifreyi Çöz ve Logoyu Ayarla
       const decodedStr = decodeURIComponent(atob(sifreliRef));
       try {
         const payload = JSON.parse(decodedStr);
         gercekSheetId = payload.i;
         if(payload.l) document.getElementById("ust-logo").src = payload.l;
       } catch(parseErr) {
-        gercekSheetId = atob(sifreliRef); // Eski linklerle uyumluluk
+        gercekSheetId = atob(sifreliRef); 
       }
-
+      
+      initAutocomplete(); // Arama kutusu olaylarını başlat
       await baslangicVerileriniCek();
     } catch(e) {
       document.getElementById("err").innerHTML = "<div style='color:red;'>Link bozuk veya eksik kopyalanmış.</div>";
     }
   };
+
+  // --- ARAMA (AUTOCOMPLETE) FONKSİYONLARI BAŞLANGIÇ ---
+  function fix(s) { 
+    if (!s) return "";
+    return s.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/ı/g, 'i')
+            .replace(/Ş/g, 's').replace(/ş/g, 's')
+            .replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
+            .replace(/Ü/g, 'u').replace(/ü/g, 'u')
+            .replace(/Ö/g, 'o').replace(/ö/g, 'o')
+            .replace(/Ç/g, 'c').replace(/ç/g, 'c')
+            .toLowerCase(); 
+  }
+
+  function listeyiGoster(filtreMetni) {
+    const ti = document.getElementById("t-input");
+    const tl = document.getElementById("t-liste");
+    let v = fix(filtreMetni); 
+    tl.innerHTML = "";
+    
+    let found = (!v) ? allT : allT.filter(x => fix(x).includes(v));
+    found.forEach(x => {
+      let d = document.createElement("div"); 
+      d.innerHTML = x;
+      d.onclick = () => { ti.value = x; tl.style.display="none"; };
+      tl.appendChild(d);
+    });
+    tl.style.display = found.length ? "block" : "none";
+  }
+
+  function initAutocomplete() {
+    const ti = document.getElementById("t-input");
+    const tl = document.getElementById("t-liste");
+    ti.onfocus = function() { listeyiGoster(this.value); };
+    ti.onclick = function() { listeyiGoster(this.value); };
+    ti.oninput = function() { listeyiGoster(this.value); };
+    document.addEventListener("click", function (e) { if (e.target !== ti) tl.style.display = "none"; });
+  }
+  // --- ARAMA (AUTOCOMPLETE) FONKSİYONLARI BİTİŞ ---
 
   async function baslangicVerileriniCek() {
     try {
@@ -94,7 +144,7 @@
       
       if(data.hata) {
         document.getElementById("err").innerText = data.hata;
-        document.getElementById("t-input").innerHTML = "<option value=''>Bağlantı Başarısız</option>";
+        document.getElementById("t-input").placeholder = "Bağlantı Başarısız";
         document.getElementById("l-btn").classList.remove("loading-btn");
         document.getElementById("l-btn").innerText = "Hata";
         return;
@@ -117,9 +167,11 @@
 
       setInterval(sayaciGuncelle, 1000);
 
-      const select = document.getElementById("t-input");
-      select.innerHTML = "<option value=''>-- Takımınızı Seçin --</option>";
-      data.teams.forEach(t => { select.innerHTML += `<option value="${t}">${t}</option>`; });
+      // Takımları değişkene alıp inputu aktif ediyoruz
+      allT = data.teams;
+      let ti = document.getElementById("t-input");
+      ti.disabled = false;
+      ti.placeholder = "Takımınızı Seçin veya Arayın...";
       
       let btn = document.getElementById("l-btn");
       btn.disabled = false;
@@ -163,6 +215,8 @@
     currentT = document.getElementById("t-input").value; 
     currentS = document.getElementById("s-input").value;
     
+    // Girilen takım veritabanında var mı kontrolü
+    if(!allT.includes(currentT)) { alert("Lütfen listede bulunan geçerli bir takım seçin."); return; }
     if(!currentT || !currentS) { alert("Lütfen takımı seçin ve şifreyi girin."); return; }
 
     let btn = document.getElementById("l-btn");
