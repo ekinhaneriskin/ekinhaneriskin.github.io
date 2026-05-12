@@ -5,21 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hakem Paneli - Link Oluşturucu</title>
   <style>
-    body { font-family: sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
     .box { background: white; max-width: 500px; margin: 50px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    input { width: 90%; padding: 12px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
-    button { background: #1a73e8; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
-    #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; word-break: break-all; border-radius: 5px; display: none; font-weight: bold;}
+    input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
+    button { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px;}
+    button:hover { background: #1557b0; }
+    #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; word-break: break-all; border-radius: 5px; display: none; font-weight: bold; border: 1px solid #cce0ff; color: #1a73e8;}
   </style>
 </head>
 <body>
 
   <div class="box">
-    <h2>Satranç Yönetim Paneli</h2>
-    <p>Kaptanlara göndermek üzere gizli link oluşturun.</p>
+    <h2 style="color: #1a73e8; margin-top:0;">Satranç Yönetim Paneli</h2>
+    <p style="color: #555;">Kaptanlara göndermek üzere sisteme özel linkinizi oluşturun.</p>
     
-    <input type="text" id="sheetId" placeholder="Google Sheet ID'sini buraya yapıştırın">
-    <br>
+    <input type="text" id="sheetId" placeholder="1. Google Sheet ID">
+    <input type="text" id="logoUrl" placeholder="2. Turnuva Görsel Linki (İsteğe Bağlı)">
+    
     <button onclick="linkOlustur()">Kaptan Linki Üret</button>
 
     <div id="sonuc"></div>
@@ -28,19 +30,20 @@
   <script>
     function linkOlustur() {
       const id = document.getElementById("sheetId").value.trim();
-      if(!id) { alert("Lütfen bir ID girin!"); return; }
+      const logo = document.getElementById("logoUrl").value.trim();
+      if(!id) { alert("Lütfen en azından Sheet ID'yi girin!"); return; }
       
-      // Güvenlik için ID'yi Base64 ile şifreliyoruz (kaptanlar ham ID'yi anlamaz)
-      const sifreliId = btoa(id);
+      // Veriyi birleştirip şifreliyoruz
+      const payload = { i: id, l: logo };
+      const sifreliId = btoa(encodeURIComponent(JSON.stringify(payload)));
       
-      // Kendi web sitenizin kaptan sayfasının linkini buraya yazın:
-      const seninSiten = window.location.origin + "/kaptan.html"; 
+      const seninSiten = window.location.origin + window.location.pathname.replace("hakem.html", "kaptan.html"); 
       const paylasimLinki = `${seninSiten}?ref=${sifreliId}`;
       
       const sonucDiv = document.getElementById("sonuc");
       sonucDiv.style.display = "block";
       sonucDiv.innerHTML = `Lütfen bu linki kopyalayıp kaptanlara gönderin:<br><br>
-      <a href="${paylasimLinki}" target="_blank">${paylasimLinki}</a>`;
+      <a href="${paylasimLinki}" target="_blank" style="color:#1a73e8;">${paylasimLinki}</a>`;
     }
   </script>
 </body>
