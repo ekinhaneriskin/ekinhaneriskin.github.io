@@ -5,110 +5,228 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Satranç Kadro Bildirimi</title>
   <style>
-    body { font-family: sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
-    .container { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    select, input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box;}
-    button { width: 100%; padding: 12px; background: #1a73e8; color: white; border: none; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top:10px;}
-    button:disabled { background: #ccc; cursor: not-allowed; }
-    #hata { color: red; margin-top: 15px; font-weight: bold; }
+    body { font-family: 'Segoe UI', sans-serif; padding: 15px; text-align: center; background: #f0f2f5; color: #333; }
+    .container { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+    .logo { max-width: 100%; margin-bottom: 15px; border-radius: 8px; }
+    .tur-baslik { font-size: 24px; font-weight: 800; color: #1a73e8; text-transform: uppercase; margin-bottom: 15px; }
+    #timer-box { background: #e8f0fe; border: 1px solid #cce0ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; color: #1a73e8; display:none; }
+    
+    select, input[type="password"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+    button { width: 100%; padding: 15px; background: #1a73e8; color: white; border: none; cursor: pointer; border-radius: 8px; font-size: 16px; font-weight: bold; margin-top: 10px; transition: 0.2s;}
+    button:disabled { background: #ccc; color: #666; cursor: not-allowed; }
+    
+    .checkbox-group { text-align: left; margin: 15px 0; background: #fafafa; padding: 15px; border-radius: 10px; border: 1px solid #eee; }
+    .row { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #e1e1e1; }
+    .row input[type="checkbox"] { width: auto; margin-right: 15px; transform: scale(1.4); }
   </style>
 </head>
 <body>
 
-<div class="container" id="main-box">
-  <h2 style="color:#1a73e8;">Takım Girişi</h2>
-  <p>Lütfen takımınızı seçin ve şifrenizi girin.</p>
+<div class="container">
+  <img src="https://okulsporlari.tsf.org.tr/images/stories/banners/ustresim.jpg" class="logo">
+  <div class="tur-baslik" id="tur-adi">Yükleniyor...</div>
+  
+  <div id="timer-box"><span id="timer">Bağlantı Kuruluyor...</span></div>
 
-  <div id="login-area">
-    <select id="takimSec">
-      <option value="">Takımlar Yükleniyor...</option>
-    </select>
-    <input type="password" id="sifreGiris" placeholder="Takım Şifresi">
-    <button id="btn-giris" onclick="sistemeGir()" disabled>Giriş Yap</button>
+  <div id="login">
+    <select id="t-input"><option value="">Takımlar Yükleniyor...</option></select>
+    <input type="password" id="s-input" placeholder="Şifre">
+    <button id="l-btn" onclick="giris()" disabled>Giriş Yap</button>
+  </div>
+
+  <div id="form" style="display:none;">
+    <h3 id="t-ad" style="margin-bottom: 10px; color: #1a73e8;"></h3>
+    
+    <div id="status-dashboard" style="display:none;"></div>
+
+    <div style="font-size: 0.9em; color: #555; text-align: left; margin-top: 20px;">
+      <b>Listeyi Güncelle:</b> Değişiklik yapmak istiyorsanız aşağıdaki kutucuklardan tam 4 kişi seçip tekrar gönderin.
+    </div>
+    <div id="s-liste" class="checkbox-group"></div>
+    <button id="s-btn" onclick="gonder()" disabled>Listeyi Gönder</button>
   </div>
   
-  <div id="hata"></div>
+  <div id="err"></div>
 </div>
 
 <script>
-  // Senin Google Script URL'n
   const GAS_URL = "https://script.google.com/macros/s/AKfycbzkan8o6Hif6Ihhcy68OlrL-sETi8X1tKABPyJxlZ0vC6ygWqA7QcJssMFqfwz9nm2Y/exec";
   let gercekSheetId = "";
+  let deadline = 0;
+  let sistemDurumu = "";
+  let aktifTurAdi_JS = "";
+  let locked = false;
+  let currentT = "";
+  let currentS = "";
 
-  window.onload = function() {
-    // URL'den şifreli ref kodunu al
+  window.onload = async function() {
     const urlParams = new URLSearchParams(window.location.search);
     const sifreliRef = urlParams.get('ref');
 
     if(!sifreliRef) {
-      document.getElementById("main-box").innerHTML = "<h3 style='color:red;'>Geçersiz Link! Lütfen hakeminizden doğru linki talep edin.</h3>";
+      document.getElementById("err").innerHTML = "<div style='color:red; font-weight:bold;'>Lütfen hakeminizden aldığınız linkle giriş yapın.</div>";
       return;
     }
 
     try {
-      // Şifreli kodu normal Sheet ID'ye çeviriyoruz
       gercekSheetId = atob(sifreliRef);
-      takimlariGetir();
+      await baslangicVerileriniCek();
     } catch(e) {
-      document.getElementById("main-box").innerHTML = "<h3 style='color:red;'>Link bozuk. Lütfen linki tam kopyaladığınızdan emin olun.</h3>";
+      document.getElementById("err").innerHTML = "<div style='color:red;'>Link bozuk.</div>";
     }
   };
 
-  async function takimlariGetir() {
+  async function baslangicVerileriniCek() {
     try {
       const response = await fetch(`${GAS_URL}?action=getInitialData&sheetId=${gercekSheetId}`);
       const data = await response.json();
       
       if(data.hata) {
-        document.getElementById("hata").innerText = data.hata;
+        document.getElementById("err").innerText = data.hata;
         return;
       }
 
-      const select = document.getElementById("takimSec");
-      select.innerHTML = "<option value=''>-- Takımınızı Seçin --</option>";
-      
-      data.teams.forEach(takim => {
-        select.innerHTML += `<option value="${takim}">${takim}</option>`;
-      });
+      // Ayarları Al
+      aktifTurAdi_JS = data.settings.aktifTur || "Tur Bilgisi Yok";
+      deadline = data.settings.deadline || 0;
+      sistemDurumu = data.settings.durum || "KAPALI";
 
-      document.getElementById("btn-giris").disabled = false;
+      document.getElementById("tur-adi").innerText = aktifTurAdi_JS;
+      document.getElementById("timer-box").style.display = "block";
+
+      if(sistemDurumu !== "AÇIK") {
+        locked = true;
+        document.getElementById("login").style.display = "none";
+        document.getElementById("timer-box").style.display = "none";
+        document.getElementById("err").innerHTML = `<div style="background: #fff3cd; color: #856404; padding: 25px; border-radius: 8px; margin-top: 15px; font-weight: bold; border: 2px solid #ffeeba; font-size: 18px;">${sistemDurumu}</div>`;
+        return;
+      }
+
+      setInterval(sayaciGuncelle, 1000);
+
+      // Takımları Select'e Doldur
+      const select = document.getElementById("t-input");
+      select.innerHTML = "<option value=''>-- Takımınızı Seçin --</option>";
+      data.teams.forEach(t => { select.innerHTML += `<option value="${t}">${t}</option>`; });
+      
+      document.getElementById("l-btn").disabled = false;
 
     } catch(e) {
-      document.getElementById("hata").innerText = "Takımlar yüklenirken hata oluştu. Bağlantıyı kontrol edin.";
+      document.getElementById("err").innerText = "Sisteme bağlanılamadı.";
     }
   }
 
-  async function sistemeGir() {
-    const takim = document.getElementById("takimSec").value;
-    const sifre = document.getElementById("sifreGiris").value;
-    const btn = document.getElementById("btn-giris");
+  function sayaciGuncelle() {
+    if (locked && sistemDurumu !== "AÇIK") return;
+    
+    let timerEl = document.getElementById("timer");
+    let timerBox = document.getElementById("timer-box");
+    let d = deadline - new Date().getTime();
+    
+    if (d < 0) { 
+      locked = true; 
+      timerEl.innerHTML = "SÜRE DOLDU! SİSTEM KAPALI.";
+      timerBox.style.background = "#ffdce0"; timerBox.style.color = "#dc3545";
+      document.getElementById("l-btn").disabled = true;
+      let sBtn = document.getElementById("s-btn"); if(sBtn) sBtn.disabled = true;
+      return;
+    }
 
-    if(!takim || !sifre) { alert("Lütfen takımı seçin ve şifreyi girin!"); return; }
+    let gun = Math.floor(d / (1000 * 60 * 60 * 24));
+    let h = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let m = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
+    let s = Math.floor((d % (1000 * 60)) / 1000);
+    
+    let text = "Kapanışa Kalan: ";
+    if(gun > 0) text += gun + "g ";
+    text += h + "s " + m + "dk " + s + "sn";
+    timerEl.innerHTML = text;
+  }
 
-    btn.innerText = "Kontrol Ediliyor...";
-    btn.disabled = true;
+  async function giris() {
+    if(locked) return;
+    currentT = document.getElementById("t-input").value; 
+    currentS = document.getElementById("s-input").value;
+    
+    if(!currentT || !currentS) { alert("Lütfen takımı seçin ve şifreyi girin."); return; }
 
+    let btn = document.getElementById("l-btn");
+    btn.innerText = "Kontrol Ediliyor..."; btn.disabled = true;
+    
     try {
-      const response = await fetch(`${GAS_URL}?action=sporculariGetir&takim=${encodeURIComponent(takim)}&sifre=${encodeURIComponent(sifre)}&sheetId=${gercekSheetId}`);
-      const data = await response.json();
+      const response = await fetch(`${GAS_URL}?action=sporculariGetir&takim=${encodeURIComponent(currentT)}&sifre=${encodeURIComponent(currentS)}&sheetId=${gercekSheetId}`);
+      const r = await response.json();
+      
+      btn.innerText = "Giriş Yap"; btn.disabled = false;
+      
+      if(r.hata) { alert(r.hata); return; }
+      
+      document.getElementById("login").style.display="none";
+      document.getElementById("form").style.display="block";
+      document.getElementById("t-ad").innerText = currentT;
+      
+      // DASHBOARD MANTIĞI
+      let dash = document.getElementById("status-dashboard");
+      dash.style.display = "block";
+      let kadroDolu = r.mevcutKadro && r.mevcutKadro[0] !== "";
 
-      btn.innerText = "Giriş Yap";
-      btn.disabled = false;
-
-      if(data.hata) {
-        document.getElementById("hata").innerText = data.hata;
+      if (!kadroDolu) {
+          dash.innerHTML = `<div style="background:#e8f0fe; color:#1a73e8; padding:15px; border-radius:8px; border: 1px solid #cce0ff; text-align:left; line-height:1.4;"><b>Bilgi:</b> Sisteme henüz liste girmediniz.</div>`;
+      } else if (r.kayitTuru === aktifTurAdi_JS) {
+          dash.innerHTML = `<div style="background:#d4edda; color:#155724; padding:15px; border-radius:8px; border: 1px solid #c3e6cb; text-align:left;">
+              <div style="font-weight:bold; margin-bottom:8px;">✅ Bu tur için listenizi verdiniz.</div>
+              <div style="font-size:0.85em; margin-bottom:10px; opacity:0.8;">(Son İşlem: ${r.zamanDamgasi})</div>
+              <ul style="margin:0; padding-left:20px;"><li>1. ${r.mevcutKadro[0]}</li><li>2. ${r.mevcutKadro[1]}</li><li>3. ${r.mevcutKadro[2]}</li><li>4. ${r.mevcutKadro[3]}</li></ul></div>`;
       } else {
-        // GİRİŞ BAŞARILI!
-        // Burada mevcut sisteminizdeki gibi sporcuları ekrana dökme fonksiyonunu çağıracaksınız.
-        console.log("Gelen Veri:", data);
-        document.getElementById("hata").style.color = "green";
-        document.getElementById("hata").innerText = "Giriş Başarılı! Konsola bakınız.";
-        // ... Checkboxları oluşturma kodları buraya gelecek ...
+          dash.innerHTML = `<div style="background:#fff3cd; color:#856404; padding:15px; border-radius:8px; border: 1px solid #ffeeba; text-align:left;">
+              <div style="font-weight:bold; margin-bottom:8px;">⚠️ Yeni liste vermediniz. Eski liste geçerli:</div>
+              <ul style="margin:0; padding-left:20px;"><li>1. ${r.mevcutKadro[0]}</li><li>2. ${r.mevcutKadro[1]}</li><li>3. ${r.mevcutKadro[2]}</li><li>4. ${r.mevcutKadro[3]}</li></ul></div>`;
       }
+
+      // KUTUCUKLAR
+      let sl = document.getElementById("s-liste");
+      sl.innerHTML = "";
+      r.sporcular.forEach((sp, i) => { 
+        if(sp) { 
+          let isChecked = (kadroDolu && r.mevcutKadro.includes(sp)) ? "checked" : "";
+          sl.innerHTML += `<div class="row"><input type="checkbox" id="c${i}" name="sp" value="${sp}" onchange="kutuKontrol()" ${isChecked}><label for="c${i}">${sp}</label></div>`; 
+        } 
+      });
+      kutuKontrol();
+      
     } catch(e) {
-      document.getElementById("hata").innerText = "Giriş yapılamadı.";
-      btn.innerText = "Giriş Yap";
-      btn.disabled = false;
+      alert("Bağlantı hatası!");
+      btn.innerText = "Giriş Yap"; btn.disabled = false;
+    }
+  }
+
+  function kutuKontrol() {
+    let n = document.querySelectorAll('input[name="sp"]:checked').length;
+    let b = document.getElementById("s-btn");
+    if (locked) { b.disabled = true; return; }
+    b.disabled = (n !== 4);
+    b.innerText = n === 4 ? "Listeyi Gönder" : n + " / 4 Kişi Seçildi";
+  }
+
+  async function gonder() {
+    if(locked) return;
+    let b = document.getElementById("s-btn");
+    b.disabled = true; b.innerText = "Sisteme Yazılıyor...";
+    
+    let list = Array.from(document.querySelectorAll('input[name="sp"]:checked')).map(x => x.value);
+    
+    try {
+      const response = await fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify({ takim: currentT, sifre: currentS, kadro: list, sheetId: gercekSheetId })
+      });
+      const res = await response.json();
+      
+      alert(res.mesaj || res.hata);
+      giris(); // Ekranı güncelle
+    } catch(e) {
+      alert("Hata oluştu, veri gönderilemedi.");
+      b.disabled = false; b.innerText = "Listeyi Gönder";
     }
   }
 </script>
