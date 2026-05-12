@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hakem Paneli - Link Oluşturucu</title>
+  <style>
+    body { font-family: sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
+    .box { background: white; max-width: 500px; margin: 50px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    input { width: 90%; padding: 12px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
+    button { background: #1a73e8; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
+    #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; word-break: break-all; border-radius: 5px; display: none; font-weight: bold;}
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h2>Satranç Yönetim Paneli</h2>
+    <p>Kaptanlara göndermek üzere gizli link oluşturun.</p>
+    
+    <input type="text" id="sheetId" placeholder="Google Sheet ID'sini buraya yapıştırın">
+    <br>
+    <button onclick="linkOlustur()">Kaptan Linki Üret</button>
+
+    <div id="sonuc"></div>
+  </div>
+
+  <script>
+    function linkOlustur() {
+      const id = document.getElementById("sheetId").value.trim();
+      if(!id) { alert("Lütfen bir ID girin!"); return; }
+      
+      // Güvenlik için ID'yi Base64 ile şifreliyoruz (kaptanlar ham ID'yi anlamaz)
+      const sifreliId = btoa(id);
+      
+      // Kendi web sitenizin kaptan sayfasının linkini buraya yazın:
+      const seninSiten = window.location.origin + "/kaptan.html"; 
+      const paylasimLinki = `${seninSiten}?ref=${sifreliId}`;
+      
+      const sonucDiv = document.getElementById("sonuc");
+      sonucDiv.style.display = "block";
+      sonucDiv.innerHTML = `Lütfen bu linki kopyalayıp kaptanlara gönderin:<br><br>
+      <a href="${paylasimLinki}" target="_blank">${paylasimLinki}</a>`;
+    }
+  </script>
+</body>
+</html>
