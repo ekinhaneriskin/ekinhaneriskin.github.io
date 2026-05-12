@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hakem Paneli - Link Oluşturucu</title>
+  <title>Hakem Paneli - Dinamik Turnuva</title>
   <style>
     body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
-    .box { background: white; max-width: 500px; margin: 50px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
-    button { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+    .box { background: white; max-width: 550px; margin: 30px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    input[type="text"], input[type="number"] { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
+    .row { display: flex; gap: 15px; margin-top: 15px; text-align: left;}
+    .col { flex: 1; }
+    .col label { font-size: 14px; font-weight: bold; color: #333; }
+    button { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 25px; transition: 0.2s; }
     button:hover { background: #1557b0; }
     #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; word-break: break-all; border-radius: 5px; display: none; font-weight: bold; border: 1px solid #cce0ff; color: #1a73e8;}
-    .bilgi { font-size: 13px; color: #666; text-align: left; margin-left: 5%; margin-bottom: 10px; display: block; }
-    
-    /* QR Kod Alanı Stilleri */
+    .bilgi { font-size: 13px; color: #666; text-align: left; display: block; margin-bottom: 10px; }
     #qr-alani { margin-top: 25px; display: none; animation: fadeIn 0.5s; }
     #qr-resim { border: 8px solid white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 200px; height: 200px; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -22,23 +23,42 @@
 <body>
 
   <div class="box">
-    <h2 style="color: #1a73e8; margin-top:0;">Satranç Yönetim Paneli</h2>
-    <p style="color: #555;">Kaptanlara göndermek üzere sisteme özel linkinizi ve QR kodunuzu oluşturun.</p>
+    <h2 style="color: #1a73e8; margin-top:0;">Dinamik Turnuva Kurulumu</h2>
     
-    <input type="text" id="sheetId" placeholder="1. Google Sheet Linkini (veya ID'sini) Yapıştırın">
-    <span class="bilgi">Örn: https://docs.google.com/spreadsheets/d/.../edit</span>
+    <div style="text-align: left; margin-bottom: 20px;">
+      <label style="font-weight:bold;">1. Google Sheet Linki (veya ID'si)</label>
+      <input type="text" id="sheetId" placeholder="Örn: https://docs.google.com/spreadsheets/d/...">
+      
+      <label style="font-weight:bold; margin-top:10px; display:block;">2. Turnuva Görsel Linki (İsteğe Bağlı)</label>
+      <input type="text" id="logoUrl" placeholder="Sonu .jpg veya .png biten link">
+    </div>
+
+    <div style="border-top: 2px dashed #eee; padding-top: 20px;">
+      <h3 style="margin: 0 0 10px 0; color: #333; font-size:18px;">3. Masa Yapılandırması</h3>
+      <span class="bilgi">Turnuvanın sistemini belirleyin (Olmayan masalara 0 giriniz).</span>
+      
+      <div class="row">
+        <div class="col">
+          <label>Genel Masa Sayısı</label>
+          <input type="number" id="m-ana" value="4" min="0">
+        </div>
+        <div class="col">
+          <label>Kadın Masa Sayısı</label>
+          <input type="number" id="m-kadin" value="0" min="0">
+        </div>
+        <div class="col">
+          <label>U20 Masa Sayısı</label>
+          <input type="number" id="m-u20" value="0" min="0">
+        </div>
+      </div>
+    </div>
     
-    <input type="text" id="logoUrl" placeholder="2. Turnuva Görsel Linki (İsteğe Bağlı)">
-    <span class="bilgi">Sonu .jpg veya .png ile biten bir resim linki ekleyebilirsiniz.</span>
-    
-    <button onclick="linkOlustur()">Link ve QR Kod Üret</button>
+    <button onclick="linkOlustur()">Sistemi Kur & Kaptan Linkini Üret</button>
 
     <div id="sonuc"></div>
-    
     <div id="qr-alani">
       <p style="font-size: 14px; color: #555; font-weight: bold;">Kaptanların Taraması İçin QR Kod:</p>
       <img id="qr-resim" src="" alt="Turnuva QR Kodu">
-      <p style="font-size: 12px; color: #888;">(Sağ tıklayıp resmi kaydedebilir veya yazdırabilirsiniz)</p>
     </div>
   </div>
 
@@ -46,40 +66,30 @@
     function linkOlustur() {
       let hamGiris = document.getElementById("sheetId").value.trim();
       const logo = document.getElementById("logoUrl").value.trim();
+      const b_ana = parseInt(document.getElementById("m-ana").value) || 0;
+      const b_kadin = parseInt(document.getElementById("m-kadin").value) || 0;
+      const b_u20 = parseInt(document.getElementById("m-u20").value) || 0;
       
-      if(!hamGiris) { alert("Lütfen tablonun linkini veya ID'sini girin!"); return; }
+      if(!hamGiris) { alert("Lütfen tablonun linkini girin!"); return; }
+      if(b_ana === 0 && b_kadin === 0 && b_u20 === 0) { alert("En az 1 masa tanımlamalısınız!"); return; }
       
       let sheetId = hamGiris;
-      
       const urlEslenme = hamGiris.match(/\/d\/([a-zA-Z0-9-_]+)/);
-      if (urlEslenme && urlEslenme[1]) {
-        sheetId = urlEslenme[1];
-      }
+      if (urlEslenme && urlEslenme[1]) sheetId = urlEslenme[1];
       
-      if (sheetId.length < 20) {
-        alert("Girdiğiniz link veya ID geçersiz görünüyor. Lütfen kontrol edin.");
-        return;
-      }
-      
-      const payload = { i: sheetId, l: logo };
+      // Masa yapılandırmasını (b objesi) linkin içine gömüyoruz
+      const payload = { i: sheetId, l: logo, b: { a: b_ana, k: b_kadin, u: b_u20 } };
       const sifreliId = btoa(encodeURIComponent(JSON.stringify(payload)));
       
       const seninSiten = window.location.origin + window.location.pathname.replace("hakem.html", "kaptan.html"); 
       const paylasimLinki = `${seninSiten}?ref=${sifreliId}`;
       
-      // Linki Ekrana Yazdır
-      const sonucDiv = document.getElementById("sonuc");
-      sonucDiv.style.display = "block";
-      sonucDiv.innerHTML = `Lütfen bu linki kopyalayıp kaptanlara gönderin:<br><br>
+      document.getElementById("sonuc").style.display = "block";
+      document.getElementById("sonuc").innerHTML = `Sistem Hazır! Lütfen bu linki kaptanlara gönderin:<br><br>
       <a href="${paylasimLinki}" target="_blank" style="color:#1a73e8;">${paylasimLinki}</a>`;
 
-      // QR Kodu Oluştur ve Göster
-      const qrAlani = document.getElementById("qr-alani");
-      const qrResim = document.getElementById("qr-resim");
-      
-      // API'ye linki gönderip resmi alıyoruz (200x200 piksel)
-      qrResim.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(paylasimLinki)}`;
-      qrAlani.style.display = "block";
+      document.getElementById("qr-resim").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(paylasimLinki)}`;
+      document.getElementById("qr-alani").style.display = "block";
     }
   </script>
 </body>
