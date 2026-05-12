@@ -7,13 +7,15 @@
   <style>
     body { font-family: 'Segoe UI', sans-serif; padding: 15px; text-align: center; background: #f0f2f5; color: #333; }
     .container { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-    .logo { max-width: 100%; margin-bottom: 15px; border-radius: 8px; }
+    .logo { max-width: 100%; margin-bottom: 15px; border-radius: 8px; max-height: 180px; object-fit: cover; }
     .tur-baslik { font-size: 24px; font-weight: 800; color: #1a73e8; text-transform: uppercase; margin-bottom: 15px; }
     #timer-box { background: #e8f0fe; border: 1px solid #cce0ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; color: #1a73e8; display:none; }
     
     select, input[type="password"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-    button { width: 100%; padding: 15px; background: #1a73e8; color: white; border: none; cursor: pointer; border-radius: 8px; font-size: 16px; font-weight: bold; margin-top: 10px; transition: 0.2s;}
+    button { width: 100%; padding: 15px; background: #1a73e8; color: white; border: none; cursor: pointer; border-radius: 8px; font-size: 16px; font-weight: bold; margin-top: 10px; transition: 0.3s;}
     button:disabled { background: #ccc; color: #666; cursor: not-allowed; }
+    .loading-btn { animation: pulse 1.5s infinite; background: #5c9df5 !important; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
     
     .checkbox-group { text-align: left; margin: 15px 0; background: #fafafa; padding: 15px; border-radius: 10px; border: 1px solid #eee; }
     .row { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #e1e1e1; }
@@ -23,15 +25,15 @@
 <body>
 
 <div class="container">
-  <img src="https://okulsporlari.tsf.org.tr/images/stories/banners/ustresim.jpg" class="logo">
-  <div class="tur-baslik" id="tur-adi">Yükleniyor...</div>
+  <img id="ust-logo" src="https://okulsporlari.tsf.org.tr/images/stories/banners/ustresim.jpg" class="logo">
+  <div class="tur-baslik" id="tur-adi">Sistem Hazırlanıyor...</div>
   
   <div id="timer-box"><span id="timer">Bağlantı Kuruluyor...</span></div>
 
   <div id="login">
-    <select id="t-input"><option value="">Takımlar Yükleniyor...</option></select>
-    <input type="password" id="s-input" placeholder="Şifre">
-    <button id="l-btn" onclick="giris()" disabled>Giriş Yap</button>
+    <select id="t-input"><option value="">Takımlar Yükleniyor, Lütfen Bekleyin...</option></select>
+    <input type="password" id="s-input" placeholder="Takım Şifreniz">
+    <button id="l-btn" onclick="giris()" disabled class="loading-btn">Sistem Yükleniyor...</button>
   </div>
 
   <div id="form" style="display:none;">
@@ -40,7 +42,7 @@
     <div id="status-dashboard" style="display:none;"></div>
 
     <div style="font-size: 0.9em; color: #555; text-align: left; margin-top: 20px;">
-      <b>Listeyi Güncelle:</b> Değişiklik yapmak istiyorsanız aşağıdaki kutucuklardan tam 4 kişi seçip tekrar gönderin.
+      <b>Listeyi Güncelle:</b> Oynamasını istediğiniz 4 kişiyi seçip gönderin.
     </div>
     <div id="s-liste" class="checkbox-group"></div>
     <button id="s-btn" onclick="gonder()" disabled>Listeyi Gönder</button>
@@ -64,15 +66,24 @@
     const sifreliRef = urlParams.get('ref');
 
     if(!sifreliRef) {
-      document.getElementById("err").innerHTML = "<div style='color:red; font-weight:bold;'>Lütfen hakeminizden aldığınız linkle giriş yapın.</div>";
+      document.getElementById("err").innerHTML = "<div style='color:red; font-weight:bold; margin-top:20px;'>Geçersiz bağlantı. Hakeminizden linki isteyin.</div>";
       return;
     }
 
     try {
-      gercekSheetId = atob(sifreliRef);
+      // Şifreyi Çöz ve Logoyu Ayarla
+      const decodedStr = decodeURIComponent(atob(sifreliRef));
+      try {
+        const payload = JSON.parse(decodedStr);
+        gercekSheetId = payload.i;
+        if(payload.l) document.getElementById("ust-logo").src = payload.l;
+      } catch(parseErr) {
+        gercekSheetId = atob(sifreliRef); // Eski linklerle uyumluluk
+      }
+
       await baslangicVerileriniCek();
     } catch(e) {
-      document.getElementById("err").innerHTML = "<div style='color:red;'>Link bozuk.</div>";
+      document.getElementById("err").innerHTML = "<div style='color:red;'>Link bozuk veya eksik kopyalanmış.</div>";
     }
   };
 
@@ -83,10 +94,12 @@
       
       if(data.hata) {
         document.getElementById("err").innerText = data.hata;
+        document.getElementById("t-input").innerHTML = "<option value=''>Bağlantı Başarısız</option>";
+        document.getElementById("l-btn").classList.remove("loading-btn");
+        document.getElementById("l-btn").innerText = "Hata";
         return;
       }
 
-      // Ayarları Al
       aktifTurAdi_JS = data.settings.aktifTur || "Tur Bilgisi Yok";
       deadline = data.settings.deadline || 0;
       sistemDurumu = data.settings.durum || "KAPALI";
@@ -104,15 +117,17 @@
 
       setInterval(sayaciGuncelle, 1000);
 
-      // Takımları Select'e Doldur
       const select = document.getElementById("t-input");
       select.innerHTML = "<option value=''>-- Takımınızı Seçin --</option>";
       data.teams.forEach(t => { select.innerHTML += `<option value="${t}">${t}</option>`; });
       
-      document.getElementById("l-btn").disabled = false;
+      let btn = document.getElementById("l-btn");
+      btn.disabled = false;
+      btn.innerText = "Giriş Yap";
+      btn.classList.remove("loading-btn");
 
     } catch(e) {
-      document.getElementById("err").innerText = "Sisteme bağlanılamadı.";
+      document.getElementById("err").innerText = "Sunucuya ulaşılamadı. İnternetinizi kontrol edin.";
     }
   }
 
@@ -151,13 +166,17 @@
     if(!currentT || !currentS) { alert("Lütfen takımı seçin ve şifreyi girin."); return; }
 
     let btn = document.getElementById("l-btn");
-    btn.innerText = "Kontrol Ediliyor..."; btn.disabled = true;
+    btn.innerText = "Sisteme Bağlanılıyor..."; 
+    btn.disabled = true;
+    btn.classList.add("loading-btn");
     
     try {
       const response = await fetch(`${GAS_URL}?action=sporculariGetir&takim=${encodeURIComponent(currentT)}&sifre=${encodeURIComponent(currentS)}&sheetId=${gercekSheetId}`);
       const r = await response.json();
       
-      btn.innerText = "Giriş Yap"; btn.disabled = false;
+      btn.innerText = "Giriş Yap"; 
+      btn.disabled = false;
+      btn.classList.remove("loading-btn");
       
       if(r.hata) { alert(r.hata); return; }
       
@@ -165,7 +184,6 @@
       document.getElementById("form").style.display="block";
       document.getElementById("t-ad").innerText = currentT;
       
-      // DASHBOARD MANTIĞI
       let dash = document.getElementById("status-dashboard");
       dash.style.display = "block";
       let kadroDolu = r.mevcutKadro && r.mevcutKadro[0] !== "";
@@ -183,7 +201,6 @@
               <ul style="margin:0; padding-left:20px;"><li>1. ${r.mevcutKadro[0]}</li><li>2. ${r.mevcutKadro[1]}</li><li>3. ${r.mevcutKadro[2]}</li><li>4. ${r.mevcutKadro[3]}</li></ul></div>`;
       }
 
-      // KUTUCUKLAR
       let sl = document.getElementById("s-liste");
       sl.innerHTML = "";
       r.sporcular.forEach((sp, i) => { 
@@ -196,7 +213,9 @@
       
     } catch(e) {
       alert("Bağlantı hatası!");
-      btn.innerText = "Giriş Yap"; btn.disabled = false;
+      btn.innerText = "Giriş Yap"; 
+      btn.disabled = false;
+      btn.classList.remove("loading-btn");
     }
   }
 
@@ -211,7 +230,9 @@
   async function gonder() {
     if(locked) return;
     let b = document.getElementById("s-btn");
-    b.disabled = true; b.innerText = "Sisteme Yazılıyor...";
+    b.disabled = true; 
+    b.innerText = "Google Sheet'e İşleniyor...";
+    b.classList.add("loading-btn");
     
     let list = Array.from(document.querySelectorAll('input[name="sp"]:checked')).map(x => x.value);
     
@@ -223,10 +244,13 @@
       const res = await response.json();
       
       alert(res.mesaj || res.hata);
-      giris(); // Ekranı güncelle
+      b.classList.remove("loading-btn");
+      giris(); 
     } catch(e) {
       alert("Hata oluştu, veri gönderilemedi.");
-      b.disabled = false; b.innerText = "Listeyi Gönder";
+      b.disabled = false; 
+      b.innerText = "Listeyi Gönder";
+      b.classList.remove("loading-btn");
     }
   }
 </script>
