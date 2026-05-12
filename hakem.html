@@ -12,13 +12,18 @@
     button:hover { background: #1557b0; }
     #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; word-break: break-all; border-radius: 5px; display: none; font-weight: bold; border: 1px solid #cce0ff; color: #1a73e8;}
     .bilgi { font-size: 13px; color: #666; text-align: left; margin-left: 5%; margin-bottom: 10px; display: block; }
+    
+    /* QR Kod Alanı Stilleri */
+    #qr-alani { margin-top: 25px; display: none; animation: fadeIn 0.5s; }
+    #qr-resim { border: 8px solid white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 200px; height: 200px; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 
   <div class="box">
     <h2 style="color: #1a73e8; margin-top:0;">Satranç Yönetim Paneli</h2>
-    <p style="color: #555;">Kaptanlara göndermek üzere sisteme özel linkinizi oluşturun.</p>
+    <p style="color: #555;">Kaptanlara göndermek üzere sisteme özel linkinizi ve QR kodunuzu oluşturun.</p>
     
     <input type="text" id="sheetId" placeholder="1. Google Sheet Linkini (veya ID'sini) Yapıştırın">
     <span class="bilgi">Örn: https://docs.google.com/spreadsheets/d/.../edit</span>
@@ -26,9 +31,15 @@
     <input type="text" id="logoUrl" placeholder="2. Turnuva Görsel Linki (İsteğe Bağlı)">
     <span class="bilgi">Sonu .jpg veya .png ile biten bir resim linki ekleyebilirsiniz.</span>
     
-    <button onclick="linkOlustur()">Kaptan Linki Üret</button>
+    <button onclick="linkOlustur()">Link ve QR Kod Üret</button>
 
     <div id="sonuc"></div>
+    
+    <div id="qr-alani">
+      <p style="font-size: 14px; color: #555; font-weight: bold;">Kaptanların Taraması İçin QR Kod:</p>
+      <img id="qr-resim" src="" alt="Turnuva QR Kodu">
+      <p style="font-size: 12px; color: #888;">(Sağ tıklayıp resmi kaydedebilir veya yazdırabilirsiniz)</p>
+    </div>
   </div>
 
   <script>
@@ -40,31 +51,35 @@
       
       let sheetId = hamGiris;
       
-      // Eğer kullanıcı tam URL girdiyse ID'yi regex ile ayıkla
       const urlEslenme = hamGiris.match(/\/d\/([a-zA-Z0-9-_]+)/);
       if (urlEslenme && urlEslenme[1]) {
         sheetId = urlEslenme[1];
       }
       
-      // Ayıklanan ID'nin uzunluğunu kontrol et (Google Sheet ID'leri genelde 44 karakterdir)
       if (sheetId.length < 20) {
         alert("Girdiğiniz link veya ID geçersiz görünüyor. Lütfen kontrol edin.");
         return;
       }
       
-      // Veriyi birleştirip şifreliyoruz (Base64)
       const payload = { i: sheetId, l: logo };
       const sifreliId = btoa(encodeURIComponent(JSON.stringify(payload)));
       
-      // Otomatik alan adı algılama
       const seninSiten = window.location.origin + window.location.pathname.replace("hakem.html", "kaptan.html"); 
       const paylasimLinki = `${seninSiten}?ref=${sifreliId}`;
       
-      // Sonucu ekrana yazdır
+      // Linki Ekrana Yazdır
       const sonucDiv = document.getElementById("sonuc");
       sonucDiv.style.display = "block";
       sonucDiv.innerHTML = `Lütfen bu linki kopyalayıp kaptanlara gönderin:<br><br>
       <a href="${paylasimLinki}" target="_blank" style="color:#1a73e8;">${paylasimLinki}</a>`;
+
+      // QR Kodu Oluştur ve Göster
+      const qrAlani = document.getElementById("qr-alani");
+      const qrResim = document.getElementById("qr-resim");
+      
+      // API'ye linki gönderip resmi alıyoruz (200x200 piksel)
+      qrResim.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(paylasimLinki)}`;
+      qrAlani.style.display = "block";
     }
   </script>
 </body>
