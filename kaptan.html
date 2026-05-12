@@ -6,18 +6,17 @@
   <title>Satranç Kadro Bildirimi</title>
   <style>
     body { font-family: 'Segoe UI', sans-serif; padding: 15px; text-align: center; background: #f0f2f5; color: #333; }
-    .container { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+    .container { max-width: 500px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
     .logo { max-width: 100%; margin-bottom: 15px; border-radius: 8px; max-height: 180px; object-fit: cover; }
     .tur-baslik { font-size: 24px; font-weight: 800; color: #1a73e8; text-transform: uppercase; margin-bottom: 15px; }
     #timer-box { background: #e8f0fe; border: 1px solid #cce0ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; color: #1a73e8; display:none; }
     
     input[type="text"], input[type="password"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
     button { width: 100%; padding: 15px; background: #1a73e8; color: white; border: none; cursor: pointer; border-radius: 8px; font-size: 16px; font-weight: bold; margin-top: 10px; transition: 0.3s;}
-    button:disabled { background: #ccc; color: #666; cursor: not-allowed; }
+    button:disabled { background: #ccc !important; color: #666 !important; cursor: not-allowed; }
     .loading-btn { animation: pulse 1.5s infinite; background: #5c9df5 !important; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
     
-    /* Arama Kutusu (Autocomplete) Stilleri */
     .autocomplete-wrapper { position: relative; }
     .autocomplete-wrapper::after { content: '▼'; position: absolute; right: 15px; top: 20px; font-size: 14px; color: #888; pointer-events: none; }
     #t-input { padding-right: 35px; cursor: pointer; } 
@@ -25,9 +24,17 @@
     .autocomplete-items div { padding: 12px; cursor: pointer; border-bottom: 1px solid #eee; font-size: 15px; }
     .autocomplete-items div:hover { background: #f0f8ff; color: #1a73e8; font-weight: bold; }
 
-    .checkbox-group { text-align: left; margin: 15px 0; background: #fafafa; padding: 15px; border-radius: 10px; border: 1px solid #eee; }
-    .row { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #e1e1e1; }
-    .row input[type="checkbox"] { width: auto; margin-right: 15px; transform: scale(1.4); }
+    /* Dinamik Kategori Kartları */
+    .category-card { background: #fafafa; border: 1px solid #eee; border-radius: 10px; margin: 15px 0; overflow: hidden; text-align: left; }
+    .category-header { background: #1a73e8; color: white; padding: 10px 15px; font-weight: bold; font-size: 1.1em; }
+    .category-header.kadin { background: #e83e8c; }
+    .category-header.u20 { background: #28a745; }
+    .desc { font-size: 0.85em; color: #666; padding: 5px 15px; margin: 0; background: #fdfdfd; border-bottom: 1px solid #eee; }
+    .checkbox-group { padding: 10px 15px; }
+    .row { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1f1f1; }
+    .row:last-child { border-bottom: none; }
+    .row input { width: auto; margin-right: 15px; transform: scale(1.4); cursor: pointer; }
+    .row label { cursor: pointer; font-size: 15px; width: 100%; }
   </style>
 </head>
 <body>
@@ -35,7 +42,6 @@
 <div class="container">
   <img id="ust-logo" src="https://okulsporlari.tsf.org.tr/images/stories/banners/ustresim.jpg" class="logo">
   <div class="tur-baslik" id="tur-adi">Sistem Hazırlanıyor...</div>
-  
   <div id="timer-box"><span id="timer">Bağlantı Kuruluyor...</span></div>
 
   <div id="login">
@@ -48,15 +54,17 @@
   </div>
 
   <div id="form" style="display:none;">
-    <h3 id="t-ad" style="margin-bottom: 10px; color: #1a73e8;"></h3>
+    <h3 id="t-ad" style="margin-bottom: 10px; color: #333;"></h3>
+    <div id="status-dashboard" style="display:none; margin-bottom: 15px;"></div>
     
-    <div id="status-dashboard" style="display:none;"></div>
-
-    <div style="font-size: 0.9em; color: #555; text-align: left; margin-top: 20px;">
-      <b>Listeyi Güncelle:</b> Oynamasını istediğiniz 4 kişiyi seçip gönderin.
+    <div style="font-size: 0.9em; color: #555; text-align: left; margin-bottom: 15px;">
+      <b>Yeni Kadro Bildirimi:</b> Lütfen oynamasını istediğiniz sporcuları kategorilere göre seçin.
     </div>
-    <div id="s-liste" class="checkbox-group"></div>
-    <button id="s-btn" onclick="gonder()" disabled>Listeyi Gönder</button>
+
+    <!-- KARTLAR DİNAMİK OLARAK BURAYA EKLENECEK -->
+    <div id="dinamik-kategoriler"></div>
+
+    <button id="s-btn" onclick="gonder()" disabled>Seçimleri Tamamla</button>
   </div>
   
   <div id="err"></div>
@@ -65,13 +73,10 @@
 <script>
   const GAS_URL = "https://script.google.com/macros/s/AKfycbzkan8o6Hif6Ihhcy68OlrL-sETi8X1tKABPyJxlZ0vC6ygWqA7QcJssMFqfwz9nm2Y/exec";
   let gercekSheetId = "";
-  let deadline = 0;
-  let sistemDurumu = "";
-  let aktifTurAdi_JS = "";
-  let locked = false;
-  let currentT = "";
-  let currentS = "";
-  let allT = []; // Tüm takımları hafızada tutacağımız dizi
+  let config = { a: 4, k: 0, u: 0 }; // Varsayılan: 4 Genel Masa
+  let toplamMasa = 4;
+  let deadline = 0, sistemDurumu = "", aktifTurAdi_JS = "", locked = false;
+  let currentT = "", currentS = "", allT = [];
 
   window.onload = async function() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -88,39 +93,34 @@
         const payload = JSON.parse(decodedStr);
         gercekSheetId = payload.i;
         if(payload.l) document.getElementById("ust-logo").src = payload.l;
-      } catch(parseErr) {
-        gercekSheetId = atob(sifreliRef); 
-      }
+        if(payload.b) {
+          config = payload.b;
+          toplamMasa = config.a + config.k + config.u;
+        }
+      } catch(parseErr) { gercekSheetId = atob(sifreliRef); } // Eski linkler için yedekleme
       
-      initAutocomplete(); // Arama kutusu olaylarını başlat
+      initAutocomplete();
       await baslangicVerileriniCek();
     } catch(e) {
-      document.getElementById("err").innerHTML = "<div style='color:red;'>Link bozuk veya eksik kopyalanmış.</div>";
+      document.getElementById("err").innerHTML = "<div style='color:red;'>Link bozuk.</div>";
     }
   };
 
-  // --- ARAMA (AUTOCOMPLETE) FONKSİYONLARI BAŞLANGIÇ ---
+  // --- ARAMA KUTUSU (AUTOCOMPLETE) FONKSİYONLARI ---
   function fix(s) { 
     if (!s) return "";
     return s.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/ı/g, 'i')
-            .replace(/Ş/g, 's').replace(/ş/g, 's')
-            .replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
-            .replace(/Ü/g, 'u').replace(/ü/g, 'u')
-            .replace(/Ö/g, 'o').replace(/ö/g, 'o')
-            .replace(/Ç/g, 'c').replace(/ç/g, 'c')
-            .toLowerCase(); 
+            .replace(/Ş/g, 's').replace(/ş/g, 's').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
+            .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ö/g, 'o').replace(/ö/g, 'o')
+            .replace(/Ç/g, 'c').replace(/ç/g, 'c').toLowerCase(); 
   }
 
   function listeyiGoster(filtreMetni) {
-    const ti = document.getElementById("t-input");
-    const tl = document.getElementById("t-liste");
-    let v = fix(filtreMetni); 
-    tl.innerHTML = "";
-    
+    const ti = document.getElementById("t-input"), tl = document.getElementById("t-liste");
+    let v = fix(filtreMetni); tl.innerHTML = "";
     let found = (!v) ? allT : allT.filter(x => fix(x).includes(v));
     found.forEach(x => {
-      let d = document.createElement("div"); 
-      d.innerHTML = x;
+      let d = document.createElement("div"); d.innerHTML = x;
       d.onclick = () => { ti.value = x; tl.style.display="none"; };
       tl.appendChild(d);
     });
@@ -128,15 +128,14 @@
   }
 
   function initAutocomplete() {
-    const ti = document.getElementById("t-input");
-    const tl = document.getElementById("t-liste");
+    const ti = document.getElementById("t-input"), tl = document.getElementById("t-liste");
     ti.onfocus = function() { listeyiGoster(this.value); };
     ti.onclick = function() { listeyiGoster(this.value); };
     ti.oninput = function() { listeyiGoster(this.value); };
     document.addEventListener("click", function (e) { if (e.target !== ti) tl.style.display = "none"; });
   }
-  // --- ARAMA (AUTOCOMPLETE) FONKSİYONLARI BİTİŞ ---
 
+  // --- ARKA PLAN BAĞLANTILARI ---
   async function baslangicVerileriniCek() {
     try {
       const response = await fetch(`${GAS_URL}?action=getInitialData&sheetId=${gercekSheetId}`);
@@ -159,153 +158,229 @@
 
       if(sistemDurumu !== "AÇIK") {
         locked = true;
-        document.getElementById("login").style.display = "none";
-        document.getElementById("timer-box").style.display = "none";
-        document.getElementById("err").innerHTML = `<div style="background: #fff3cd; color: #856404; padding: 25px; border-radius: 8px; margin-top: 15px; font-weight: bold; border: 2px solid #ffeeba; font-size: 18px;">${sistemDurumu}</div>`;
+        document.getElementById("login").style.display = "none"; document.getElementById("timer-box").style.display = "none";
+        document.getElementById("err").innerHTML = `<div style="background:#fff3cd; color:#856404; padding:25px; border-radius:8px; font-weight:bold; border:2px solid #ffeeba; font-size:18px;">${sistemDurumu}</div>`;
         return;
       }
-
       setInterval(sayaciGuncelle, 1000);
 
-      // Takımları değişkene alıp inputu aktif ediyoruz
       allT = data.teams;
       let ti = document.getElementById("t-input");
-      ti.disabled = false;
-      ti.placeholder = "Takımınızı Seçin veya Arayın...";
+      ti.disabled = false; ti.placeholder = "Takımınızı Seçin veya Arayın...";
       
       let btn = document.getElementById("l-btn");
-      btn.disabled = false;
-      btn.innerText = "Giriş Yap";
-      btn.classList.remove("loading-btn");
-
-    } catch(e) {
-      document.getElementById("err").innerText = "Sunucuya ulaşılamadı. İnternetinizi kontrol edin.";
-    }
+      btn.disabled = false; btn.innerText = "Giriş Yap"; btn.classList.remove("loading-btn");
+    } catch(e) { document.getElementById("err").innerText = "Sunucuya ulaşılamadı."; }
   }
 
   function sayaciGuncelle() {
     if (locked && sistemDurumu !== "AÇIK") return;
-    
-    let timerEl = document.getElementById("timer");
-    let timerBox = document.getElementById("timer-box");
+    let timerEl = document.getElementById("timer"), timerBox = document.getElementById("timer-box");
     let d = deadline - new Date().getTime();
-    
     if (d < 0) { 
-      locked = true; 
-      timerEl.innerHTML = "SÜRE DOLDU! SİSTEM KAPALI.";
+      locked = true; timerEl.innerHTML = "SÜRE DOLDU! SİSTEM KAPALI.";
       timerBox.style.background = "#ffdce0"; timerBox.style.color = "#dc3545";
       document.getElementById("l-btn").disabled = true;
-      let sBtn = document.getElementById("s-btn"); if(sBtn) sBtn.disabled = true;
-      return;
+      let sBtn = document.getElementById("s-btn"); if(sBtn) sBtn.disabled = true; return;
     }
-
-    let gun = Math.floor(d / (1000 * 60 * 60 * 24));
-    let h = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    let m = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
-    let s = Math.floor((d % (1000 * 60)) / 1000);
-    
-    let text = "Kapanışa Kalan: ";
-    if(gun > 0) text += gun + "g ";
-    text += h + "s " + m + "dk " + s + "sn";
-    timerEl.innerHTML = text;
+    let gun = Math.floor(d / (1000 * 60 * 60 * 24)), h = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), m = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60)), s = Math.floor((d % (1000 * 60)) / 1000);
+    timerEl.innerHTML = `Kapanışa Kalan: ${gun>0 ? gun+"g " : ""}${h}s ${m}dk ${s}sn`;
   }
 
   async function giris() {
     if(locked) return;
-    currentT = document.getElementById("t-input").value; 
-    currentS = document.getElementById("s-input").value;
-    
-    // Girilen takım veritabanında var mı kontrolü
-    if(!allT.includes(currentT)) { alert("Lütfen listede bulunan geçerli bir takım seçin."); return; }
-    if(!currentT || !currentS) { alert("Lütfen takımı seçin ve şifreyi girin."); return; }
+    currentT = document.getElementById("t-input").value; currentS = document.getElementById("s-input").value;
+    if(!allT.includes(currentT)) { alert("Lütfen geçerli bir takım seçin."); return; }
+    if(!currentT || !currentS) { alert("Takım ve şifre girin."); return; }
 
     let btn = document.getElementById("l-btn");
-    btn.innerText = "Sisteme Bağlanılıyor..."; 
-    btn.disabled = true;
-    btn.classList.add("loading-btn");
+    btn.innerText = "Bağlanılıyor..."; btn.disabled = true; btn.classList.add("loading-btn");
     
     try {
       const response = await fetch(`${GAS_URL}?action=sporculariGetir&takim=${encodeURIComponent(currentT)}&sifre=${encodeURIComponent(currentS)}&sheetId=${gercekSheetId}`);
       const r = await response.json();
       
-      btn.innerText = "Giriş Yap"; 
-      btn.disabled = false;
-      btn.classList.remove("loading-btn");
-      
+      btn.innerText = "Giriş Yap"; btn.disabled = false; btn.classList.remove("loading-btn");
       if(r.hata) { alert(r.hata); return; }
       
-      document.getElementById("login").style.display="none";
-      document.getElementById("form").style.display="block";
+      document.getElementById("login").style.display="none"; document.getElementById("form").style.display="block";
       document.getElementById("t-ad").innerText = currentT;
       
+      // DASHBOARD MANTIĞI DİNAMİK OLARAK ÇİZİLECEK
       let dash = document.getElementById("status-dashboard");
       dash.style.display = "block";
-      let kadroDolu = r.mevcutKadro && r.mevcutKadro[0] !== "";
+      let kadroDolu = r.mevcutKadro && r.mevcutKadro.length > 0;
 
       if (!kadroDolu) {
-          dash.innerHTML = `<div style="background:#e8f0fe; color:#1a73e8; padding:15px; border-radius:8px; border: 1px solid #cce0ff; text-align:left; line-height:1.4;"><b>Bilgi:</b> Sisteme henüz liste girmediniz.</div>`;
-      } else if (r.kayitTuru === aktifTurAdi_JS) {
-          dash.innerHTML = `<div style="background:#d4edda; color:#155724; padding:15px; border-radius:8px; border: 1px solid #c3e6cb; text-align:left;">
-              <div style="font-weight:bold; margin-bottom:8px;">✅ Bu tur için listenizi verdiniz.</div>
-              <div style="font-size:0.85em; margin-bottom:10px; opacity:0.8;">(Son İşlem: ${r.zamanDamgasi})</div>
-              <ul style="margin:0; padding-left:20px;"><li>1. ${r.mevcutKadro[0]}</li><li>2. ${r.mevcutKadro[1]}</li><li>3. ${r.mevcutKadro[2]}</li><li>4. ${r.mevcutKadro[3]}</li></ul></div>`;
+          dash.innerHTML = `<div style="background:#e8f0fe; color:#1a73e8; padding:15px; border-radius:8px; border:1px solid #cce0ff; text-align:left;"><b>Bilgi:</b> Sisteme henüz kadro girmediniz.</div>`;
       } else {
-          dash.innerHTML = `<div style="background:#fff3cd; color:#856404; padding:15px; border-radius:8px; border: 1px solid #ffeeba; text-align:left;">
-              <div style="font-weight:bold; margin-bottom:8px;">⚠️ Yeni liste vermediniz. Eski liste geçerli:</div>
-              <ul style="margin:0; padding-left:20px;"><li>1. ${r.mevcutKadro[0]}</li><li>2. ${r.mevcutKadro[1]}</li><li>3. ${r.mevcutKadro[2]}</li><li>4. ${r.mevcutKadro[3]}</li></ul></div>`;
+          let renk = (r.kayitTuru === aktifTurAdi_JS) ? "d4edda" : "fff3cd";
+          let yaziRenk = (r.kayitTuru === aktifTurAdi_JS) ? "155724" : "856404";
+          let cerceve = (r.kayitTuru === aktifTurAdi_JS) ? "c3e6cb" : "ffeeba";
+          let baslik = (r.kayitTuru === aktifTurAdi_JS) ? "✅ Bu tur için listenizi verdiniz." : "⚠️ Yeni liste vermediniz. Geçerli olacak listeniz:";
+          
+          let listHTML = "";
+          for(let i=0; i<toplamMasa; i++) {
+              listHTML += `<li>${i+1}. Masa: ${r.mevcutKadro[i] || "-"}</li>`;
+          }
+
+          dash.innerHTML = `<div style="background:#${renk}; color:#${yaziRenk}; padding:15px; border-radius:8px; border:1px solid #${cerceve}; text-align:left;">
+              <div style="font-weight:bold; margin-bottom:8px;">${baslik} <span style="font-size:0.8em; font-weight:normal;">(${r.zamanDamgasi})</span></div>
+              <ul style="margin:0; padding-left:20px;">${listHTML}</ul></div>`;
       }
 
-      let sl = document.getElementById("s-liste");
-      sl.innerHTML = "";
-      r.sporcular.forEach((sp, i) => { 
-        if(sp) { 
-          let isChecked = (kadroDolu && r.mevcutKadro.includes(sp)) ? "checked" : "";
-          sl.innerHTML += `<div class="row"><input type="checkbox" id="c${i}" name="sp" value="${sp}" onchange="kutuKontrol()" ${isChecked}><label for="c${i}">${sp}</label></div>`; 
-        } 
-      });
-      kutuKontrol();
-      
-    } catch(e) {
-      alert("Bağlantı hatası!");
-      btn.innerText = "Giriş Yap"; 
-      btn.disabled = false;
-      btn.classList.remove("loading-btn");
-    }
+      dinamikArayuzCiz(r);
+
+    } catch(e) { alert("Bağlantı hatası!"); btn.innerText = "Giriş Yap"; btn.disabled = false; btn.classList.remove("loading-btn"); }
   }
 
-  function kutuKontrol() {
-    let n = document.querySelectorAll('input[name="sp"]:checked').length;
-    let b = document.getElementById("s-btn");
-    if (locked) { b.disabled = true; return; }
-    b.disabled = (n !== 4);
-    b.innerText = n === 4 ? "Listeyi Gönder" : n + " / 4 Kişi Seçildi";
+  // --- DİNAMİK KATEGORİ ÇİZİCİ (EN ÖNEMLİ YER) ---
+  function dinamikArayuzCiz(r) {
+    const container = document.getElementById("dinamik-kategoriler");
+    container.innerHTML = "";
+    
+    // Masa paylaştırma mantığı (Genel -> Kadın -> U20 sırasıyla)
+    let startIndex = 0;
+
+    // 1. GENEL MASALAR
+    if(config.a > 0) {
+        let bitisIndex = config.a;
+        let baslik = config.a === 1 ? "1. Masa" : `1 ile ${bitisIndex}. Masalar`;
+        let secimSayisi = config.a;
+        let kadroDilimi = r.mevcutKadro ? r.mevcutKadro.slice(startIndex, bitisIndex) : [];
+        
+        let cardHTML = `<div class="category-card"><div class="category-header">${baslik} (Genel)</div>
+        <p class="desc">Takımdan herhangi <b>tam ${secimSayisi} sporcu</b> seçiniz.</p><div id="kat-ana" class="checkbox-group">`;
+        
+        r.sporcular.forEach((s, i) => { cardHTML += createRow(s.isim, 'ana', i, kadroDilimi.includes(s.isim)); });
+        cardHTML += `</div></div>`;
+        container.innerHTML += cardHTML;
+        startIndex = bitisIndex;
+    }
+
+    // 2. KADIN MASALARI
+    if(config.k > 0) {
+        let bitisIndex = startIndex + config.k;
+        let baslik = config.k === 1 ? `${startIndex+1}. Masa` : `${startIndex+1} ile ${bitisIndex}. Masalar`;
+        let secimSayisi = config.k;
+        let kadroDilimi = r.mevcutKadro ? r.mevcutKadro.slice(startIndex, bitisIndex) : [];
+        
+        let cardHTML = `<div class="category-card"><div class="category-header kadin">${baslik} (Sadece Kadın)</div>
+        <p class="desc">Sadece <b>${secimSayisi} kadın sporcu</b> seçiniz.</p><div id="kat-kadin" class="checkbox-group">`;
+        
+        let sayac = 0;
+        r.sporcular.forEach((s, i) => { 
+            if(s.isKadin) { cardHTML += createRow(s.isim, 'kadin', i, kadroDilimi.includes(s.isim)); sayac++; }
+        });
+        if(sayac === 0) cardHTML += `<div style='color:red;'>Uygun kadın sporcu bulunamadı!</div>`;
+        cardHTML += `</div></div>`;
+        container.innerHTML += cardHTML;
+        startIndex = bitisIndex;
+    }
+
+    // 3. U20 MASALARI
+    if(config.u > 0) {
+        let bitisIndex = startIndex + config.u;
+        let baslik = config.u === 1 ? `${startIndex+1}. Masa` : `${startIndex+1} ile ${bitisIndex}. Masalar`;
+        let secimSayisi = config.u;
+        let kadroDilimi = r.mevcutKadro ? r.mevcutKadro.slice(startIndex, bitisIndex) : [];
+        
+        let cardHTML = `<div class="category-card"><div class="category-header u20">${baslik} (20 Yaş ve Altı)</div>
+        <p class="desc">Sadece <b>${secimSayisi} U20 sporcu</b> seçiniz.</p><div id="kat-u20" class="checkbox-group">`;
+        
+        let sayac = 0;
+        r.sporcular.forEach((s, i) => { 
+            if(s.isU20) { cardHTML += createRow(s.isim, 'u20', i, kadroDilimi.includes(s.isim)); sayac++; }
+        });
+        if(sayac === 0) cardHTML += `<div style='color:red;'>Uygun U20 sporcu bulunamadı!</div>`;
+        cardHTML += `</div></div>`;
+        container.innerHTML += cardHTML;
+    }
+
+    cnt();
+  }
+
+  function createRow(isim, cat, index, isChecked) {
+      return `<div class="row">
+          <input type="checkbox" class="sp-check" data-cat="${cat}" data-name="${isim}" id="${cat}-${index}" onchange="handleSelection(this)" ${isChecked ? 'checked' : ''}>
+          <label for="${cat}-${index}">${isim}</label>
+      </div>`;
+  }
+
+  function handleSelection(el) {
+      const selectedName = el.getAttribute("data-name");
+      const cat = el.getAttribute("data-cat");
+
+      if(el.checked) {
+          // 1. KURAL: Aynı kişi başka kategoride varsa tikini kaldır (Çakışma Önleme)
+          document.querySelectorAll('.sp-check:checked').forEach(item => {
+              if(item !== el && item.getAttribute("data-name") === selectedName) item.checked = false;
+          });
+
+          // 2. KURAL: Kategori limitini aşıyorsa uyar ve iptal et
+          const currentCount = document.querySelectorAll(`.sp-check[data-cat="${cat}"]:checked`).length;
+          const limit = (cat === 'ana') ? config.a : ((cat === 'kadin') ? config.k : config.u);
+          if(currentCount > limit) {
+              el.checked = false;
+              alert(`Bu kategori için en fazla ${limit} kişi seçebilirsiniz!`);
+          }
+      }
+      cnt();
+  }
+
+  function cnt() {
+      if (locked) return;
+      let ok = true;
+      let btnStr = [];
+
+      if(config.a > 0) {
+          let c = document.querySelectorAll('.sp-check[data-cat="ana"]:checked').length;
+          if(c !== config.a) ok = false;
+          btnStr.push(`Genel(${c}/${config.a})`);
+      }
+      if(config.k > 0) {
+          let c = document.querySelectorAll('.sp-check[data-cat="kadin"]:checked').length;
+          if(c !== config.k) ok = false;
+          btnStr.push(`Kadın(${c}/${config.k})`);
+      }
+      if(config.u > 0) {
+          let c = document.querySelectorAll('.sp-check[data-cat="u20"]:checked').length;
+          if(c !== config.u) ok = false;
+          btnStr.push(`U20(${c}/${config.u})`);
+      }
+
+      const btn = document.getElementById("s-btn");
+      btn.disabled = !ok;
+      
+      if(ok) {
+          btn.innerText = `${toplamMasa} Kişilik Listeyi Gönder`;
+          btn.style.background = "#28a745";
+      } else {
+          btn.innerText = "Eksik: " + btnStr.join(" | ");
+          btn.style.background = "#ccc";
+      }
   }
 
   async function gonder() {
-    if(locked) return;
-    let b = document.getElementById("s-btn");
-    b.disabled = true; 
-    b.innerText = "Google Sheet'e İşleniyor...";
-    b.classList.add("loading-btn");
-    
-    let list = Array.from(document.querySelectorAll('input[name="sp"]:checked')).map(x => x.value);
-    
-    try {
-      const response = await fetch(GAS_URL, {
-        method: "POST",
-        body: JSON.stringify({ takim: currentT, sifre: currentS, kadro: list, sheetId: gercekSheetId })
-      });
-      const res = await response.json();
+      if(locked) return;
+      let b = document.getElementById("s-btn");
+      b.disabled = true; b.innerText = "Sisteme Kaydediliyor..."; b.classList.add("loading-btn");
+
+      let finalKadro = [];
+      if(config.a > 0) document.querySelectorAll('.sp-check[data-cat="ana"]:checked').forEach(x => finalKadro.push(x.getAttribute("data-name")));
+      if(config.k > 0) document.querySelectorAll('.sp-check[data-cat="kadin"]:checked').forEach(x => finalKadro.push(x.getAttribute("data-name")));
+      if(config.u > 0) document.querySelectorAll('.sp-check[data-cat="u20"]:checked').forEach(x => finalKadro.push(x.getAttribute("data-name")));
       
-      alert(res.mesaj || res.hata);
-      b.classList.remove("loading-btn");
-      giris(); 
-    } catch(e) {
-      alert("Hata oluştu, veri gönderilemedi.");
-      b.disabled = false; 
-      b.innerText = "Listeyi Gönder";
-      b.classList.remove("loading-btn");
-    }
+      try {
+        const response = await fetch(GAS_URL, {
+          method: "POST",
+          body: JSON.stringify({ takim: currentT, sifre: currentS, kadro: finalKadro, sheetId: gercekSheetId })
+        });
+        const res = await response.json();
+        alert(res.mesaj || res.hata);
+        b.classList.remove("loading-btn");
+        giris(); 
+      } catch(e) { alert("Veri gönderilemedi."); b.disabled = false; b.innerText = "Listeyi Gönder"; b.classList.remove("loading-btn"); }
   }
 </script>
 </body>
