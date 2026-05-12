@@ -8,9 +8,10 @@
     body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
     .box { background: white; max-width: 500px; margin: 50px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
-    button { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px;}
+    button { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
     button:hover { background: #1557b0; }
     #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; word-break: break-all; border-radius: 5px; display: none; font-weight: bold; border: 1px solid #cce0ff; color: #1a73e8;}
+    .bilgi { font-size: 13px; color: #666; text-align: left; margin-left: 5%; margin-bottom: 10px; display: block; }
   </style>
 </head>
 <body>
@@ -19,8 +20,11 @@
     <h2 style="color: #1a73e8; margin-top:0;">Satranç Yönetim Paneli</h2>
     <p style="color: #555;">Kaptanlara göndermek üzere sisteme özel linkinizi oluşturun.</p>
     
-    <input type="text" id="sheetId" placeholder="1. Google Sheet ID">
+    <input type="text" id="sheetId" placeholder="1. Google Sheet Linkini (veya ID'sini) Yapıştırın">
+    <span class="bilgi">Örn: https://docs.google.com/spreadsheets/d/.../edit</span>
+    
     <input type="text" id="logoUrl" placeholder="2. Turnuva Görsel Linki (İsteğe Bağlı)">
+    <span class="bilgi">Sonu .jpg veya .png ile biten bir resim linki ekleyebilirsiniz.</span>
     
     <button onclick="linkOlustur()">Kaptan Linki Üret</button>
 
@@ -29,17 +33,34 @@
 
   <script>
     function linkOlustur() {
-      const id = document.getElementById("sheetId").value.trim();
+      let hamGiris = document.getElementById("sheetId").value.trim();
       const logo = document.getElementById("logoUrl").value.trim();
-      if(!id) { alert("Lütfen en azından Sheet ID'yi girin!"); return; }
       
-      // Veriyi birleştirip şifreliyoruz
-      const payload = { i: id, l: logo };
+      if(!hamGiris) { alert("Lütfen tablonun linkini veya ID'sini girin!"); return; }
+      
+      let sheetId = hamGiris;
+      
+      // Eğer kullanıcı tam URL girdiyse ID'yi regex ile ayıkla
+      const urlEslenme = hamGiris.match(/\/d\/([a-zA-Z0-9-_]+)/);
+      if (urlEslenme && urlEslenme[1]) {
+        sheetId = urlEslenme[1];
+      }
+      
+      // Ayıklanan ID'nin uzunluğunu kontrol et (Google Sheet ID'leri genelde 44 karakterdir)
+      if (sheetId.length < 20) {
+        alert("Girdiğiniz link veya ID geçersiz görünüyor. Lütfen kontrol edin.");
+        return;
+      }
+      
+      // Veriyi birleştirip şifreliyoruz (Base64)
+      const payload = { i: sheetId, l: logo };
       const sifreliId = btoa(encodeURIComponent(JSON.stringify(payload)));
       
+      // Otomatik alan adı algılama
       const seninSiten = window.location.origin + window.location.pathname.replace("hakem.html", "kaptan.html"); 
       const paylasimLinki = `${seninSiten}?ref=${sifreliId}`;
       
+      // Sonucu ekrana yazdır
       const sonucDiv = document.getElementById("sonuc");
       sonucDiv.style.display = "block";
       sonucDiv.innerHTML = `Lütfen bu linki kopyalayıp kaptanlara gönderin:<br><br>
