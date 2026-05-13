@@ -249,8 +249,7 @@
         const payload = { i: sheetId, l: logo, b: { a: b_ana, k: b_kadin, u: b_u20 } };
         const sifreliId = btoa(encodeURIComponent(JSON.stringify(payload)));
         
-        const seninSiten = window.location.origin + window.location.pathname.replace("hakem.html", "kaptan.html"); 
-        const paylasimLinki = `${seninSiten}?ref=${sifreliId}`;
+        const paylasimLinki = `https://www.ekinhaneriskin.com/kaptan.html?ref=${sifreliId}`;
 
         // Arka plandan gelen etiketin adını bilmesek bile yakalayan (veya varsayılan metin basan) akıllı satır:
         let gelenMesaj = res.mesaj || res.message || res.sonuc || "Sistem kuruldu.";
