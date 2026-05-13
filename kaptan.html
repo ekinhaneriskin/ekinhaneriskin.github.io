@@ -87,7 +87,7 @@
   let gercekSheetId = "";
   let config = { a: 4, k: 0, u: 0 }; // Varsayılan: 4 Genel Masa
   let toplamMasa = 4;
-  let deadline = 0, sistemDurumu = "", aktifTurAdi_JS = "", locked = false;
+  let deadline = 0, sistemDurumu = "", aktifTurAdi_JS = "", locked = false, zamanlayici;
   let currentT = "", currentS = "", allT = [];
 
   window.onload = async function() {
@@ -174,7 +174,7 @@
         document.getElementById("err").innerHTML = `<div style="background:#fff3cd; color:#856404; padding:25px; border-radius:8px; font-weight:bold; border:2px solid #ffeeba; font-size:18px;">${sistemDurumu}</div>`;
         return;
       }
-      setInterval(sayaciGuncelle, 1000);
+      zamanlayici = setInterval(sayaciGuncelle, 1000);
 
       allT = data.teams;
       let ti = document.getElementById("t-input");
@@ -190,10 +190,9 @@
     let timerEl = document.getElementById("timer"), timerBox = document.getElementById("timer-box");
     let d = deadline - new Date().getTime();
     if (d < 0) { 
-      locked = true; timerEl.innerHTML = "SÜRE DOLDU! SİSTEM KAPALI.";
-      timerBox.style.background = "#ffdce0"; timerBox.style.color = "#dc3545";
-      document.getElementById("l-btn").disabled = true;
-      let sBtn = document.getElementById("s-btn"); if(sBtn) sBtn.disabled = true; return;
+      clearInterval(zamanlayici); // Arkada çalışan normal sayacı durdur
+      kapanisSenkronizasyonuBaslat(); // Hazırladığımız 15 saniyelik kilit ekranını çağır!
+      return;
     }
     let gun = Math.floor(d / (1000 * 60 * 60 * 24)), h = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), m = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60)), s = Math.floor((d % (1000 * 60)) / 1000);
     timerEl.innerHTML = `Kapanışa Kalan: ${gun>0 ? gun+"g " : ""}${h}s ${m}dk ${s}sn`;
@@ -393,6 +392,30 @@
         b.classList.remove("loading-btn");
         giris(); 
       } catch(e) { alert("Veri gönderilemedi."); b.disabled = false; b.innerText = "Listeyi Gönder"; b.classList.remove("loading-btn"); }
+  }
+
+  function kapanisSenkronizasyonuBaslat() {
+      // 1. Ekranı tamamen kilitleyen siyah bir perde ve uyarı mesajı oluştur
+      document.body.innerHTML += `
+      <div id="kapanisEkrani" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; font-family:sans-serif;">
+          <h1 style="color:#ff4d4d; margin-bottom:10px; font-size:36px;">SÜRE DOLDU! ⏳</h1>
+          <h3 style="font-weight:normal; text-align:center; padding:0 20px; line-height:1.5;">Kayıtlar kilitlendi.<br>Arka planda Google E-Tablo verileri turnuva için son haline getiriliyor...</h3>
+          <div style="font-size:60px; font-weight:bold; margin-top:20px; color:#4caf50;" id="geriSayim15">15</div>
+          <p style="margin-top:20px; font-size:14px; color:#aaa;">Lütfen sayfayı kapatmayın, sayfa otomatik olarak yenilenecektir.</p>
+      </div>`;
+
+      // 2. 15 Saniyelik Geri Sayımı Başlat
+      let kalan = 15;
+      let beklemeSayaci = setInterval(() => {
+          kalan--;
+          document.getElementById("geriSayim15").innerText = kalan;
+        
+          if (kalan <= 0) {
+              clearInterval(beklemeSayaci);
+              // 3. 15 Saniye bitince sayfayı kalıcı olarak yenile!
+              window.location.reload();
+          }
+      }, 1000);
   }
 </script>
 </body>
