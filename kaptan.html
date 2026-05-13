@@ -79,83 +79,167 @@
     <strong>Sistem Güvenliği:</strong> Verileriniz internete veya dışarıya açık bir ortamda <u>tutulmamaktadır</u>. Tüm kadro bildirimleriniz, uçtan uca şifreli bir bağlantı (SSL) aracılığıyla doğrudan Turnuva Başhakemi ile Başhakem tarafından yetkilendirilmiş hakem(ler)in erişimine, kapalı devre veritabanı içerisine aktarılmaktadır.
     </div>
   </div>
-  <!-- COPYRIGHT VE GİZLİLİK BÖLÜMÜ BİTİŞİ -->
 </div>
 
 <script>
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbzkan8o6Hif6Ihhcy68OlrL-sETi8X1tKABPyJxlZ0vC6ygWqA7QcJssMFqfwz9nm2Y/exec";
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbzZMZcrUGgCM_fVRxsI1gBkk8Dx0rkN0vAnBo3T75fs1a4t0rQOcMPS3kD2r-obJGcPDQ/exec";
+
   let gercekSheetId = "";
-  let config = { a: 4, k: 0, u: 0 }; // Varsayılan: 4 Genel Masa
+  let config = { a: 4, k: 0, u: 0 };
   let toplamMasa = 4;
-  let deadline = 0, sistemDurumu = "", aktifTurAdi_JS = "", locked = false, zamanlayici;
-  let currentT = "", currentS = "", allT = [];
+
+  let deadline = 0;
+  let sistemDurumu = "";
+  let aktifTurAdi_JS = "";
+  let locked = false;
+  let zamanlayici;
+
+  let currentT = "";
+  let currentS = "";
+  let allT = [];
 
   window.onload = async function() {
     const urlParams = new URLSearchParams(window.location.search);
-    const sifreliRef = urlParams.get('ref');
+    const sifreliRef = urlParams.get("ref");
 
-    if(!sifreliRef) {
-      document.getElementById("err").innerHTML = "<div style='color:red; font-weight:bold; margin-top:20px;'>Geçersiz bağlantı. Hakeminizden linki isteyin.</div>";
+    if (!sifreliRef) {
+      document.getElementById("err").innerHTML =
+        "<div style='color:red; font-weight:bold; margin-top:20px;'>Geçersiz bağlantı. Hakeminizden linki isteyin.</div>";
       return;
     }
 
     try {
       const decodedStr = decodeURIComponent(atob(sifreliRef));
+
       try {
         const payload = JSON.parse(decodedStr);
+
         gercekSheetId = payload.i;
-        if(payload.l) document.getElementById("ust-logo").src = payload.l;
-        if(payload.b) {
-          config = payload.b;
-          toplamMasa = config.a + config.k + config.u;
+
+        if (payload.l) {
+          document.getElementById("ust-logo").src = payload.l;
         }
-      } catch(parseErr) { gercekSheetId = atob(sifreliRef); } // Eski linkler için yedekleme
-      
+
+        if (payload.b) {
+          config = {
+            a: parseInt(payload.b.a) || 0,
+            k: parseInt(payload.b.k) || 0,
+            u: parseInt(payload.b.u) || 0
+          };
+
+          toplamMasa = config.a + config.k + config.u;
+
+          if (toplamMasa < 1) {
+            config = { a: 4, k: 0, u: 0 };
+            toplamMasa = 4;
+          }
+        }
+      } catch (parseErr) {
+        gercekSheetId = atob(sifreliRef);
+      }
+
       initAutocomplete();
       await baslangicVerileriniCek();
-    } catch(e) {
-      document.getElementById("err").innerHTML = "<div style='color:red;'>Link bozuk.</div>";
+
+    } catch (e) {
+      document.getElementById("err").innerHTML =
+        "<div style='color:red;'>Link bozuk veya okunamadı.</div>";
     }
   };
 
-  // --- ARAMA KUTUSU (AUTOCOMPLETE) FONKSİYONLARI ---
-  function fix(s) { 
+
+  function fix(s) {
     if (!s) return "";
-    return s.replace(/İ/g, 'i').replace(/I/g, 'i').replace(/ı/g, 'i')
-            .replace(/Ş/g, 's').replace(/ş/g, 's').replace(/Ğ/g, 'g').replace(/ğ/g, 'g')
-            .replace(/Ü/g, 'u').replace(/ü/g, 'u').replace(/Ö/g, 'o').replace(/ö/g, 'o')
-            .replace(/Ç/g, 'c').replace(/ç/g, 'c').toLowerCase(); 
+
+    return s
+      .replace(/İ/g, "i")
+      .replace(/I/g, "i")
+      .replace(/ı/g, "i")
+      .replace(/Ş/g, "s")
+      .replace(/ş/g, "s")
+      .replace(/Ğ/g, "g")
+      .replace(/ğ/g, "g")
+      .replace(/Ü/g, "u")
+      .replace(/ü/g, "u")
+      .replace(/Ö/g, "o")
+      .replace(/ö/g, "o")
+      .replace(/Ç/g, "c")
+      .replace(/ç/g, "c")
+      .toLowerCase();
   }
 
+
+  function normalizeNameJS(name) {
+    return (name || "")
+      .toString()
+      .trim()
+      .replace(/\s+/g, " ")
+      .toLocaleLowerCase("tr-TR");
+  }
+
+
+  function initAutocomplete() {
+    const ti = document.getElementById("t-input");
+    const tl = document.getElementById("t-liste");
+
+    ti.onfocus = function() {
+      listeyiGoster(this.value);
+    };
+
+    ti.onclick = function() {
+      listeyiGoster(this.value);
+    };
+
+    ti.oninput = function() {
+      listeyiGoster(this.value);
+    };
+
+    document.addEventListener("click", function(e) {
+      if (e.target !== ti) {
+        tl.style.display = "none";
+      }
+    });
+  }
+
+
   function listeyiGoster(filtreMetni) {
-    const ti = document.getElementById("t-input"), tl = document.getElementById("t-liste");
-    let v = fix(filtreMetni); tl.innerHTML = "";
-    let found = (!v) ? allT : allT.filter(x => fix(x).includes(v));
-    found.forEach(x => {
-      let d = document.createElement("div"); d.innerHTML = x;
-      d.onclick = () => { ti.value = x; tl.style.display="none"; };
+    const ti = document.getElementById("t-input");
+    const tl = document.getElementById("t-liste");
+
+    const v = fix(filtreMetni);
+    tl.innerHTML = "";
+
+    const found = !v ? allT : allT.filter(function(x) {
+      return fix(x).includes(v);
+    });
+
+    found.forEach(function(x) {
+      const d = document.createElement("div");
+      d.innerHTML = x;
+
+      d.onclick = function() {
+        ti.value = x;
+        tl.style.display = "none";
+      };
+
       tl.appendChild(d);
     });
+
     tl.style.display = found.length ? "block" : "none";
   }
 
-  function initAutocomplete() {
-    const ti = document.getElementById("t-input"), tl = document.getElementById("t-liste");
-    ti.onfocus = function() { listeyiGoster(this.value); };
-    ti.onclick = function() { listeyiGoster(this.value); };
-    ti.oninput = function() { listeyiGoster(this.value); };
-    document.addEventListener("click", function (e) { if (e.target !== ti) tl.style.display = "none"; });
-  }
 
-  // --- ARKA PLAN BAĞLANTILARI ---
   async function baslangicVerileriniCek() {
     try {
-      const response = await fetch(`${GAS_URL}?action=getInitialData&sheetId=${gercekSheetId}`);
+      const response = await fetch(
+        `${GAS_URL}?action=getInitialData&sheetId=${encodeURIComponent(gercekSheetId)}`
+      );
+
       const data = await response.json();
-      
-      if(data.hata) {
+
+      if (data.hata) {
         document.getElementById("err").innerText = data.hata;
-        document.getElementById("t-input").placeholder = "Bağlantı Başarısız";
+        document.getElementById("t-input").placeholder = "Bağlantı başarısız";
         document.getElementById("l-btn").classList.remove("loading-btn");
         document.getElementById("l-btn").innerText = "Hata";
         return;
@@ -165,257 +249,502 @@
       deadline = data.settings.deadline || 0;
       sistemDurumu = data.settings.durum || "KAPALI";
 
+      if (data.settings.toplamMasa) {
+        toplamMasa = parseInt(data.settings.toplamMasa) || toplamMasa;
+      }
+
       document.getElementById("tur-adi").innerText = aktifTurAdi_JS;
       document.getElementById("timer-box").style.display = "block";
 
-      if(sistemDurumu !== "AÇIK") {
+      if (sistemDurumu !== "AÇIK") {
         locked = true;
-        document.getElementById("login").style.display = "none"; document.getElementById("timer-box").style.display = "none";
-        document.getElementById("err").innerHTML = `<div style="background:#fff3cd; color:#856404; padding:25px; border-radius:8px; font-weight:bold; border:2px solid #ffeeba; font-size:18px;">${sistemDurumu}</div>`;
+
+        document.getElementById("login").style.display = "none";
+        document.getElementById("timer-box").style.display = "none";
+
+        document.getElementById("err").innerHTML =
+          `<div style="background:#fff3cd; color:#856404; padding:25px; border-radius:8px; font-weight:bold; border:2px solid #ffeeba; font-size:18px;">${sistemDurumu}</div>`;
+
         return;
       }
+
       zamanlayici = setInterval(sayaciGuncelle, 1000);
 
-      allT = data.teams;
-      let ti = document.getElementById("t-input");
-      ti.disabled = false; ti.placeholder = "Takımınızı Seçin veya Arayın...";
-      
-      let btn = document.getElementById("l-btn");
-      btn.disabled = false; btn.innerText = "Giriş Yap"; btn.classList.remove("loading-btn");
-    } catch(e) { document.getElementById("err").innerText = "Sunucuya ulaşılamadı."; }
+      allT = data.teams || [];
+
+      const ti = document.getElementById("t-input");
+      ti.disabled = false;
+      ti.placeholder = "Takımınızı seçin veya arayın...";
+
+      const btn = document.getElementById("l-btn");
+      btn.disabled = false;
+      btn.innerText = "Giriş Yap";
+      btn.classList.remove("loading-btn");
+
+    } catch (e) {
+      document.getElementById("err").innerText = "Sunucuya ulaşılamadı.";
+    }
   }
+
 
   function sayaciGuncelle() {
     if (locked && sistemDurumu !== "AÇIK") return;
-    let timerEl = document.getElementById("timer"), timerBox = document.getElementById("timer-box");
-    let d = deadline - new Date().getTime();
-    if (d < 0) { 
-      clearInterval(zamanlayici); // Arkada çalışan normal sayacı durdur
-      kapanisSenkronizasyonuBaslat(); // Hazırladığımız 15 saniyelik kilit ekranını çağır!
+
+    const timerEl = document.getElementById("timer");
+    const d = deadline - new Date().getTime();
+
+    if (d < 0) {
+      clearInterval(zamanlayici);
+      kapanisSenkronizasyonuBaslat();
       return;
     }
-    let gun = Math.floor(d / (1000 * 60 * 60 * 24)), h = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), m = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60)), s = Math.floor((d % (1000 * 60)) / 1000);
-    timerEl.innerHTML = `Kapanışa Kalan: ${gun>0 ? gun+"g " : ""}${h}s ${m}dk ${s}sn`;
+
+    const gun = Math.floor(d / (1000 * 60 * 60 * 24));
+    const h = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((d % (1000 * 60)) / 1000);
+
+    timerEl.innerHTML =
+      `Kapanışa Kalan: ${gun > 0 ? gun + "g " : ""}${h}s ${m}dk ${s}sn`;
   }
 
-  async function giris() {
-    if(locked) return;
-    currentT = document.getElementById("t-input").value; currentS = document.getElementById("s-input").value;
-    if(!allT.includes(currentT)) { alert("Lütfen geçerli bir takım seçin."); return; }
-    if(!currentT || !currentS) { alert("Takım ve şifre girin."); return; }
 
-    let btn = document.getElementById("l-btn");
-    btn.innerText = "Bağlanılıyor..."; btn.disabled = true; btn.classList.add("loading-btn");
-    
+  async function giris() {
+    if (locked) return;
+
+    currentT = document.getElementById("t-input").value;
+    currentS = document.getElementById("s-input").value;
+
+    if (!allT.includes(currentT)) {
+      alert("Lütfen geçerli bir takım seçin.");
+      return;
+    }
+
+    if (!currentT || !currentS) {
+      alert("Takım ve şifre girin.");
+      return;
+    }
+
+    const btn = document.getElementById("l-btn");
+    btn.innerText = "Bağlanılıyor...";
+    btn.disabled = true;
+    btn.classList.add("loading-btn");
+
     try {
-      const response = await fetch(`${GAS_URL}?action=sporculariGetir&takim=${encodeURIComponent(currentT)}&sifre=${encodeURIComponent(currentS)}&sheetId=${gercekSheetId}`);
+      const response = await fetch(
+        `${GAS_URL}?action=sporculariGetir&takim=${encodeURIComponent(currentT)}&sifre=${encodeURIComponent(currentS)}&sheetId=${encodeURIComponent(gercekSheetId)}`
+      );
+
       const r = await response.json();
-      
-      btn.innerText = "Giriş Yap"; btn.disabled = false; btn.classList.remove("loading-btn");
-      if(r.hata) { alert(r.hata); return; }
-      
-      document.getElementById("login").style.display="none"; document.getElementById("form").style.display="block";
+
+      btn.innerText = "Giriş Yap";
+      btn.disabled = false;
+      btn.classList.remove("loading-btn");
+
+      if (r.hata) {
+        alert(r.hata);
+        return;
+      }
+
+      document.getElementById("login").style.display = "none";
+      document.getElementById("form").style.display = "block";
       document.getElementById("t-ad").innerText = currentT;
-      
-      // DASHBOARD MANTIĞI DİNAMİK OLARAK ÇİZİLECEK
-      let dash = document.getElementById("status-dashboard");
+
+      const dash = document.getElementById("status-dashboard");
       dash.style.display = "block";
-      let kadroDolu = r.mevcutKadro && r.mevcutKadro.length > 0;
+
+      const kadroDolu = r.mevcutKadro &&
+        r.mevcutKadro.filter(function(x) {
+          return x && x.toString().trim() !== "";
+        }).length > 0;
 
       if (!kadroDolu) {
-          dash.innerHTML = `<div style="background:#e8f0fe; color:#1a73e8; padding:15px; border-radius:8px; border:1px solid #cce0ff; text-align:left;"><b>Bilgi:</b> Sisteme henüz kadro girmediniz.</div>`;
+        dash.innerHTML =
+          `<div style="background:#e8f0fe; color:#1a73e8; padding:15px; border-radius:8px; border:1px solid #cce0ff; text-align:left;">
+            <b>Bilgi:</b> Sisteme henüz kadro girmediniz.
+          </div>`;
       } else {
-          let renk = (r.kayitTuru === aktifTurAdi_JS) ? "d4edda" : "fff3cd";
-          let yaziRenk = (r.kayitTuru === aktifTurAdi_JS) ? "155724" : "856404";
-          let cerceve = (r.kayitTuru === aktifTurAdi_JS) ? "c3e6cb" : "ffeeba";
-          let baslik = (r.kayitTuru === aktifTurAdi_JS) ? "✅ Bu tur için listenizi verdiniz." : "⚠️ Yeni liste vermediniz. Geçerli olacak listeniz:";
-          
-          let listHTML = "";
-          for(let i=0; i<toplamMasa; i++) {
-              listHTML += `<li>${i+1}. Masa: ${r.mevcutKadro[i] || "-"}</li>`;
-          }
+        const onayli = r.kayitTuru === aktifTurAdi_JS;
 
-          dash.innerHTML = `<div style="background:#${renk}; color:#${yaziRenk}; padding:15px; border-radius:8px; border:1px solid #${cerceve}; text-align:left;">
-              <div style="font-weight:bold; margin-bottom:8px;">${baslik} <span style="font-size:0.8em; font-weight:normal;">(${r.zamanDamgasi})</span></div>
-              <ul style="margin:0; padding-left:20px;">${listHTML}</ul></div>`;
+        const renk = onayli ? "d4edda" : "fff3cd";
+        const yaziRenk = onayli ? "155724" : "856404";
+        const cerceve = onayli ? "c3e6cb" : "ffeeba";
+
+        const baslik = onayli
+          ? "✅ Bu tur için listenizi verdiniz."
+          : "⚠️ Yeni liste vermediniz. Geçerli olacak listeniz:";
+
+        let listHTML = "";
+
+        for (let i = 0; i < toplamMasa; i++) {
+          listHTML += `<li>${i + 1}. Masa: ${r.mevcutKadro[i] || "-"}</li>`;
+        }
+
+        dash.innerHTML =
+          `<div style="background:#${renk}; color:#${yaziRenk}; padding:15px; border-radius:8px; border:1px solid #${cerceve}; text-align:left;">
+            <div style="font-weight:bold; margin-bottom:8px;">
+              ${baslik}
+              <span style="font-size:0.8em; font-weight:normal;">(${r.zamanDamgasi || "-"})</span>
+            </div>
+            <ul style="margin:0; padding-left:20px;">${listHTML}</ul>
+          </div>`;
       }
 
       dinamikArayuzCiz(r);
 
-    } catch(e) { alert("Bağlantı hatası!"); btn.innerText = "Giriş Yap"; btn.disabled = false; btn.classList.remove("loading-btn"); }
+    } catch (e) {
+      alert("Bağlantı hatası.");
+
+      btn.innerText = "Giriş Yap";
+      btn.disabled = false;
+      btn.classList.remove("loading-btn");
+    }
   }
 
-  // --- DİNAMİK KATEGORİ ÇİZİCİ (EN ÖNEMLİ YER) ---
+
   function dinamikArayuzCiz(r) {
     const container = document.getElementById("dinamik-kategoriler");
     container.innerHTML = "";
-    
-    // Masa paylaştırma mantığı (Genel -> Kadın -> U20 sırasıyla)
+
     let startIndex = 0;
 
+    // ========================================================
+    // KESİN MASA SIRASI:
+    // 1) Genel
+    // 2) Kadın
+    // 3) U20
+    // ========================================================
+
     // 1. GENEL MASALAR
-    if(config.a > 0) {
-        let bitisIndex = config.a;
-        let baslik = config.a === 1 ? "1. Masa" : `1 ile ${bitisIndex}. Masalar`;
-        let secimSayisi = config.a;
-        let kadroDilimi = r.mevcutKadro ? r.mevcutKadro.slice(startIndex, bitisIndex) : [];
-        
-        let cardHTML = `<div class="category-card"><div class="category-header">${baslik} (Genel)</div>
-        <p class="desc">Takımdan herhangi <b>tam ${secimSayisi} sporcu</b> seçiniz.</p><div id="kat-ana" class="checkbox-group">`;
-        
-        r.sporcular.forEach((s, i) => { cardHTML += createRow(s.isim, 'ana', i, kadroDilimi.includes(s.isim)); });
-        cardHTML += `</div></div>`;
-        container.innerHTML += cardHTML;
-        startIndex = bitisIndex;
+    if (config.a > 0) {
+      const bitisIndex = startIndex + config.a;
+
+      const baslik = config.a === 1
+        ? `${startIndex + 1}. Masa`
+        : `${startIndex + 1} ile ${bitisIndex}. Masalar`;
+
+      const kadroDilimi = r.mevcutKadro
+        ? r.mevcutKadro.slice(startIndex, bitisIndex)
+        : [];
+
+      let cardHTML =
+        `<div class="category-card">
+          <div class="category-header">${baslik} (Genel)</div>
+          <p class="desc">Takımdan herhangi <b>tam ${config.a} sporcu</b> seçiniz.</p>
+          <div id="kat-ana" class="checkbox-group">`;
+
+      r.sporcular.forEach(function(s, i) {
+        cardHTML += createRow(s.isim, "ana", i, kadroDilimi.includes(s.isim));
+      });
+
+      cardHTML += `</div></div>`;
+
+      container.innerHTML += cardHTML;
+      startIndex = bitisIndex;
     }
 
     // 2. KADIN MASALARI
-    if(config.k > 0) {
-        let bitisIndex = startIndex + config.k;
-        let baslik = config.k === 1 ? `${startIndex+1}. Masa` : `${startIndex+1} ile ${bitisIndex}. Masalar`;
-        let secimSayisi = config.k;
-        let kadroDilimi = r.mevcutKadro ? r.mevcutKadro.slice(startIndex, bitisIndex) : [];
-        
-        let cardHTML = `<div class="category-card"><div class="category-header kadin">${baslik} (Sadece Kadın)</div>
-        <p class="desc">Sadece <b>${secimSayisi} kadın sporcu</b> seçiniz.</p><div id="kat-kadin" class="checkbox-group">`;
-        
-        let sayac = 0;
-        r.sporcular.forEach((s, i) => { 
-            if(s.isKadin) { cardHTML += createRow(s.isim, 'kadin', i, kadroDilimi.includes(s.isim)); sayac++; }
-        });
-        if(sayac === 0) cardHTML += `<div style='color:red;'>Uygun kadın sporcu bulunamadı!</div>`;
-        cardHTML += `</div></div>`;
-        container.innerHTML += cardHTML;
-        startIndex = bitisIndex;
+    if (config.k > 0) {
+      const bitisIndex = startIndex + config.k;
+
+      const baslik = config.k === 1
+        ? `${startIndex + 1}. Masa`
+        : `${startIndex + 1} ile ${bitisIndex}. Masalar`;
+
+      const kadroDilimi = r.mevcutKadro
+        ? r.mevcutKadro.slice(startIndex, bitisIndex)
+        : [];
+
+      let cardHTML =
+        `<div class="category-card">
+          <div class="category-header kadin">${baslik} (Sadece Kadın)</div>
+          <p class="desc">Sadece <b>tam ${config.k} kadın sporcu</b> seçiniz.</p>
+          <div id="kat-kadin" class="checkbox-group">`;
+
+      let sayac = 0;
+
+      r.sporcular.forEach(function(s, i) {
+        if (s.isKadin) {
+          cardHTML += createRow(s.isim, "kadin", i, kadroDilimi.includes(s.isim));
+          sayac++;
+        }
+      });
+
+      if (sayac === 0) {
+        cardHTML += `<div style="color:red;">Uygun kadın sporcu bulunamadı.</div>`;
+      }
+
+      cardHTML += `</div></div>`;
+
+      container.innerHTML += cardHTML;
+      startIndex = bitisIndex;
     }
 
     // 3. U20 MASALARI
-    if(config.u > 0) {
-        let bitisIndex = startIndex + config.u;
-        let baslik = config.u === 1 ? `${startIndex+1}. Masa` : `${startIndex+1} ile ${bitisIndex}. Masalar`;
-        let secimSayisi = config.u;
-        let kadroDilimi = r.mevcutKadro ? r.mevcutKadro.slice(startIndex, bitisIndex) : [];
-        
-        let cardHTML = `<div class="category-card"><div class="category-header u20">${baslik} (20 Yaş ve Altı)</div>
-        <p class="desc">Sadece <b>${secimSayisi} U20 sporcu</b> seçiniz.</p><div id="kat-u20" class="checkbox-group">`;
-        
-        let sayac = 0;
-        r.sporcular.forEach((s, i) => { 
-            if(s.isU20) { cardHTML += createRow(s.isim, 'u20', i, kadroDilimi.includes(s.isim)); sayac++; }
-        });
-        if(sayac === 0) cardHTML += `<div style='color:red;'>Uygun U20 sporcu bulunamadı!</div>`;
-        cardHTML += `</div></div>`;
-        container.innerHTML += cardHTML;
+    if (config.u > 0) {
+      const bitisIndex = startIndex + config.u;
+
+      const baslik = config.u === 1
+        ? `${startIndex + 1}. Masa`
+        : `${startIndex + 1} ile ${bitisIndex}. Masalar`;
+
+      const kadroDilimi = r.mevcutKadro
+        ? r.mevcutKadro.slice(startIndex, bitisIndex)
+        : [];
+
+      let cardHTML =
+        `<div class="category-card">
+          <div class="category-header u20">${baslik} (20 Yaş ve Altı)</div>
+          <p class="desc">Sadece <b>tam ${config.u} U20 sporcu</b> seçiniz.</p>
+          <div id="kat-u20" class="checkbox-group">`;
+
+      let sayac = 0;
+
+      r.sporcular.forEach(function(s, i) {
+        if (s.isU20) {
+          cardHTML += createRow(s.isim, "u20", i, kadroDilimi.includes(s.isim));
+          sayac++;
+        }
+      });
+
+      if (sayac === 0) {
+        cardHTML += `<div style="color:red;">Uygun U20 sporcu bulunamadı.</div>`;
+      }
+
+      cardHTML += `</div></div>`;
+
+      container.innerHTML += cardHTML;
+      startIndex = bitisIndex;
     }
 
-    cnt();
+    container.innerHTML +=
+      `<div id="secim-uyari" style="display:none; margin:15px 0; padding:12px; border-radius:8px; background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; text-align:left; font-weight:bold;"></div>`;
+
+    document.querySelectorAll(".sp-check").forEach(function(cb) {
+      cb.addEventListener("change", secimKontrolEt);
+    });
+
+    secimKontrolEt();
   }
 
-  function createRow(isim, cat, index, isChecked) {
-      return `<div class="row">
-          <input type="checkbox" class="sp-check" data-cat="${cat}" data-name="${isim}" id="${cat}-${index}" onchange="handleSelection(this)" ${isChecked ? 'checked' : ''}>
-          <label for="${cat}-${index}">${isim}</label>
-      </div>`;
+
+  function createRow(isim, cat, index, checked) {
+    const safeId = "chk_" + cat + "_" + index + "_" + Math.random().toString(36).substring(2, 8);
+
+    return `
+      <div class="row" data-name="${escapeHtml(isim)}">
+        <input
+          type="checkbox"
+          class="sp-check"
+          id="${safeId}"
+          data-cat="${cat}"
+          data-name="${escapeHtml(isim)}"
+          ${checked ? "checked" : ""}
+        >
+        <label for="${safeId}">${escapeHtml(isim)}</label>
+      </div>
+    `;
   }
 
-  function handleSelection(el) {
-      const selectedName = el.getAttribute("data-name");
-      const cat = el.getAttribute("data-cat");
 
-      if(el.checked) {
-          // 1. KURAL: Aynı kişi başka kategoride varsa tikini kaldır (Çakışma Önleme)
-          document.querySelectorAll('.sp-check:checked').forEach(item => {
-              if(item !== el && item.getAttribute("data-name") === selectedName) item.checked = false;
-          });
-
-          // 2. KURAL: Kategori limitini aşıyorsa uyar ve iptal et
-          const currentCount = document.querySelectorAll(`.sp-check[data-cat="${cat}"]:checked`).length;
-          const limit = (cat === 'ana') ? config.a : ((cat === 'kadin') ? config.k : config.u);
-          if(currentCount > limit) {
-              el.checked = false;
-              alert(`Bu kategori için en fazla ${limit} kişi seçebilirsiniz!`);
-          }
-      }
-      cnt();
+  function escapeHtml(str) {
+    return (str || "").toString()
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
   }
 
-  function cnt() {
-      if (locked) return;
-      let ok = true;
-      let btnStr = [];
 
-      if(config.a > 0) {
-          let c = document.querySelectorAll('.sp-check[data-cat="ana"]:checked').length;
-          if(c !== config.a) ok = false;
-          btnStr.push(`Genel(${c}/${config.a})`);
-      }
-      if(config.k > 0) {
-          let c = document.querySelectorAll('.sp-check[data-cat="kadin"]:checked').length;
-          if(c !== config.k) ok = false;
-          btnStr.push(`Kadın(${c}/${config.k})`);
-      }
-      if(config.u > 0) {
-          let c = document.querySelectorAll('.sp-check[data-cat="u20"]:checked').length;
-          if(c !== config.u) ok = false;
-          btnStr.push(`U20(${c}/${config.u})`);
-      }
+  function secimKontrolEt() {
+    const btn = document.getElementById("s-btn");
+    const uyari = document.getElementById("secim-uyari");
 
-      const btn = document.getElementById("s-btn");
-      btn.disabled = !ok;
-      
-      if(ok) {
-          btn.innerText = `${toplamMasa} Kişilik Listeyi Gönder`;
-          btn.style.background = "#28a745";
+    const secili = Array.from(document.querySelectorAll(".sp-check:checked"));
+
+    const seciliIsimler = secili.map(function(x) {
+      return x.getAttribute("data-name");
+    });
+
+    const normalized = seciliIsimler.map(normalizeNameJS);
+    const benzersiz = new Set(normalized);
+
+    const genelSecili = document.querySelectorAll('.sp-check[data-cat="ana"]:checked').length;
+    const kadinSecili = document.querySelectorAll('.sp-check[data-cat="kadin"]:checked').length;
+    const u20Secili = document.querySelectorAll('.sp-check[data-cat="u20"]:checked').length;
+
+    const sorunlar = [];
+
+    if (genelSecili !== config.a) {
+      sorunlar.push(`Genel: ${genelSecili}/${config.a}`);
+    }
+
+    if (kadinSecili !== config.k) {
+      sorunlar.push(`Kadın: ${kadinSecili}/${config.k}`);
+    }
+
+    if (u20Secili !== config.u) {
+      sorunlar.push(`U20: ${u20Secili}/${config.u}`);
+    }
+
+    if (secili.length !== toplamMasa) {
+      sorunlar.push(`Toplam seçim: ${secili.length}/${toplamMasa}`);
+    }
+
+    if (benzersiz.size !== normalized.length) {
+      sorunlar.push("Aynı sporcu birden fazla masada/kategoride seçilmiş.");
+    }
+
+    const seciliSet = new Set(normalized);
+
+    document.querySelectorAll(".sp-check").forEach(function(cb) {
+      const n = normalizeNameJS(cb.getAttribute("data-name"));
+
+      if (!cb.checked && seciliSet.has(n)) {
+        cb.disabled = true;
+        cb.parentElement.style.opacity = "0.45";
+        cb.parentElement.title = "Bu sporcu başka bir masada/kategoride seçildi.";
       } else {
-          btn.innerText = "Eksik: " + btnStr.join(" | ");
-          btn.style.background = "#ccc";
+        cb.disabled = false;
+        cb.parentElement.style.opacity = "1";
+        cb.parentElement.title = "";
       }
+    });
+
+    const ok = sorunlar.length === 0;
+
+    btn.disabled = !ok;
+
+    if (ok) {
+      btn.innerText = `${toplamMasa} Kişilik Listeyi Gönder`;
+      btn.style.background = "#28a745";
+
+      if (uyari) {
+        uyari.style.display = "none";
+        uyari.innerHTML = "";
+      }
+    } else {
+      btn.innerText = "Eksik veya hatalı seçim var";
+      btn.style.background = "#ccc";
+
+      if (uyari) {
+        uyari.style.display = "block";
+        uyari.innerHTML = "Lütfen düzeltin: " + sorunlar.join(" | ");
+      }
+    }
   }
+
 
   async function gonder() {
-      if(locked) return;
-      let b = document.getElementById("s-btn");
-      b.disabled = true; b.innerText = "Sisteme Kaydediliyor..."; b.classList.add("loading-btn");
+    if (locked) return;
 
-      let finalKadro = [];
-      if(config.a > 0) document.querySelectorAll('.sp-check[data-cat="ana"]:checked').forEach(x => finalKadro.push(x.getAttribute("data-name")));
-      if(config.k > 0) document.querySelectorAll('.sp-check[data-cat="kadin"]:checked').forEach(x => finalKadro.push(x.getAttribute("data-name")));
-      if(config.u > 0) document.querySelectorAll('.sp-check[data-cat="u20"]:checked').forEach(x => finalKadro.push(x.getAttribute("data-name")));
-      
-      try {
-        const response = await fetch(GAS_URL, {
-          method: "POST",
-          body: JSON.stringify({ takim: currentT, sifre: currentS, kadro: finalKadro, sheetId: gercekSheetId })
-        });
-        const res = await response.json();
-        alert(res.mesaj || res.hata);
-        b.classList.remove("loading-btn");
-        giris(); 
-      } catch(e) { alert("Veri gönderilemedi."); b.disabled = false; b.innerText = "Listeyi Gönder"; b.classList.remove("loading-btn"); }
+    const b = document.getElementById("s-btn");
+
+    const finalKadro = [];
+
+    // ========================================================
+    // KESİN KAYIT SIRASI:
+    // 1) Genel
+    // 2) Kadın
+    // 3) U20
+    // Bu sıra TurnuvaYonetimi satırları ve XML masa numarasıyla aynıdır.
+    // ========================================================
+
+    if (config.a > 0) {
+      document.querySelectorAll('.sp-check[data-cat="ana"]:checked').forEach(function(x) {
+        finalKadro.push(x.getAttribute("data-name"));
+      });
+    }
+
+    if (config.k > 0) {
+      document.querySelectorAll('.sp-check[data-cat="kadin"]:checked').forEach(function(x) {
+        finalKadro.push(x.getAttribute("data-name"));
+      });
+    }
+
+    if (config.u > 0) {
+      document.querySelectorAll('.sp-check[data-cat="u20"]:checked').forEach(function(x) {
+        finalKadro.push(x.getAttribute("data-name"));
+      });
+    }
+
+    const benzersiz = new Set(finalKadro.map(normalizeNameJS));
+
+    if (finalKadro.length !== toplamMasa) {
+      alert(`HATA: Tam ${toplamMasa} sporcu seçmelisiniz.`);
+      secimKontrolEt();
+      return;
+    }
+
+    if (benzersiz.size !== finalKadro.length) {
+      alert("HATA: Aynı sporcu birden fazla masaya yazılamaz.");
+      secimKontrolEt();
+      return;
+    }
+
+    b.disabled = true;
+    b.innerText = "Sisteme kaydediliyor...";
+    b.classList.add("loading-btn");
+
+    try {
+      const response = await fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          takim: currentT,
+          sifre: currentS,
+          kadro: finalKadro,
+          sheetId: gercekSheetId
+        })
+      });
+
+      const res = await response.json();
+
+      alert(res.mesaj || res.hata || "İşlem tamamlandı.");
+
+      b.classList.remove("loading-btn");
+
+      giris();
+
+    } catch (e) {
+      alert("Veri gönderilemedi.");
+
+      b.disabled = false;
+      b.innerText = "Listeyi Gönder";
+      b.classList.remove("loading-btn");
+    }
   }
 
-  function kapanisSenkronizasyonuBaslat() {
-      // 1. Ekranı tamamen kilitleyen siyah bir perde ve uyarı mesajı oluştur
-      document.body.innerHTML += `
-      <div id="kapanisEkrani" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; font-family:sans-serif;">
-          <h1 style="color:#ff4d4d; margin-bottom:10px; font-size:36px;">SÜRE DOLDU! ⏳</h1>
-          <h3 style="font-weight:normal; text-align:center; padding:0 20px; line-height:1.5;">Kayıtlar kilitlendi.<br>Arka planda Google E-Tablo verileri turnuva için son haline getiriliyor...</h3>
-          <div style="font-size:60px; font-weight:bold; margin-top:20px; color:#4caf50;" id="geriSayim15">15</div>
-          <p style="margin-top:20px; font-size:14px; color:#aaa;">Lütfen sayfayı kapatmayın, sayfa otomatik olarak yenilenecektir.</p>
-      </div>`;
 
-      // 2. 15 Saniyelik Geri Sayımı Başlat
-      let kalan = 15;
-      let beklemeSayaci = setInterval(() => {
-          kalan--;
-          document.getElementById("geriSayim15").innerText = kalan;
-        
-          if (kalan <= 0) {
-              clearInterval(beklemeSayaci);
-              // 3. 15 Saniye bitince sayfayı kalıcı olarak yenile!
-              window.location.reload();
-          }
-      }, 1000);
+  function kapanisSenkronizasyonuBaslat() {
+    document.body.innerHTML += `
+      <div id="kapanisEkrani" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; font-family:sans-serif;">
+        <h1 style="color:#ff4d4d; margin-bottom:10px; font-size:36px;">SÜRE DOLDU</h1>
+        <h3 style="font-weight:normal; text-align:center; padding:0 20px; line-height:1.5;">
+          Kayıtlar kilitlendi.<br>
+          Google E-Tablo verileri turnuva için son haline getiriliyor.
+        </h3>
+        <div style="font-size:60px; font-weight:bold; margin-top:20px; color:#4caf50;" id="geriSayim15">15</div>
+        <p style="margin-top:20px; font-size:14px; color:#aaa;">
+          Lütfen sayfayı kapatmayın. Sayfa otomatik olarak yenilenecektir.
+        </p>
+      </div>
+    `;
+
+    let kalan = 15;
+
+    const beklemeSayaci = setInterval(function() {
+      kalan--;
+
+      const el = document.getElementById("geriSayim15");
+
+      if (el) el.innerText = kalan;
+
+      if (kalan <= 0) {
+        clearInterval(beklemeSayaci);
+        window.location.reload();
+      }
+    }, 1000);
   }
 </script>
 </body>
