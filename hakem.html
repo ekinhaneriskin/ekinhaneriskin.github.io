@@ -21,12 +21,15 @@
     #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; border-radius: 5px; display: none; text-align: left; border: 1px solid #cce0ff; color: #1a73e8;}
     .bilgi { font-size: 13px; color: #666; text-align: left; display: block; margin-bottom: 5px; }
     
-    /* XML Sepet Stilleri */
     .xml-panel { border: 2px dashed #28a745; background: #f8fff9; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; }
     .xml-panel h3 { color: #28a745; margin-top: 0; font-size: 18px; margin-bottom: 5px;}
     .sepet-listesi { background: white; border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-top: 15px; font-size: 14px; display: none; }
     .sepet-item { border-bottom: 1px solid #eee; padding: 5px 0; display: flex; justify-content: space-between; color: #333; font-weight: bold;}
     .loading-btn { opacity: 0.7; pointer-events: none; }
+    
+    #qr-alani { margin-top: 25px; display: none; animation: fadeIn 0.5s; text-align: center; }
+    #qr-resim { border: 8px solid white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 200px; height: 200px; margin: 0 auto; display: block;}
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
@@ -39,14 +42,13 @@
       <input type="text" id="sheetId" placeholder="Örn: https://docs.google.com/spreadsheets/d/...">
     </div>
 
-    <!-- YENİ: ÇOKLU KATEGORİ SEPETİ -->
     <div class="xml-panel">
       <h3>🚀 Çoklu Kategori XML Sepeti</h3>
-      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Farklı kategorilerin XML dosyalarını sırayla sepete ekleyin. Sistem isim çakışmalarını ve takım adlarını otomatik düzenler.</p>
+      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Kategori adını girin ve ilgili XML'leri seçip sepete atın.</p>
       
       <div style="background: #eafaf1; padding: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">
         <label style="font-weight:bold; color:#155724;">Kategori Adı <span style="color:red">*</span></label>
-        <input type="text" id="kategoriAdi" placeholder="Örn: U12, Genel, Kadınlar vb.">
+        <input type="text" id="kategoriAdi" placeholder="Örn: Minikler Kız, U12, Genel vb.">
         
         <label style="font-size:13px; font-weight:bold; margin-top:5px; display:block;">Takımlar XML:</label>
         <input type="file" id="teamXml" accept=".xml" style="padding: 5px;">
@@ -79,16 +81,19 @@
     
     <button class="btn-green" id="btn-kur" onclick="tumSepetiKur()" disabled>Tüm Sepeti Kur & Kaptan Linkini Üret</button>
     <div id="sonuc"></div>
+    
+    <div id="qr-alani">
+      <p style="font-size: 14px; color: #555; font-weight: bold; margin-bottom:10px;">Kaptanların Taraması İçin QR Kod:</p>
+      <img id="qr-resim" src="" alt="Turnuva QR Kodu">
+    </div>
   </div>
 
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzkan8o6Hif6Ihhcy68OlrL-sETi8X1tKABPyJxlZ0vC6ygWqA7QcJssMFqfwz9nm2Y/exec";
     
-    // Sepet Hafızası
     let turnuvaSepeti = { takimlar: [], sporcular: [] };
     let eklenenKategoriler = [];
 
-    // Dosya Okuyucu Promise
     function dosyaOku(file) {
       return new Promise((resolve, reject) => {
         if(!file) return resolve(null);
@@ -99,7 +104,6 @@
       });
     }
 
-    // 1. AŞAMA: KATEGORİYİ SEPETE EKLEME
     async function kategoriSepeteEkle() {
       let katAdi = document.getElementById("kategoriAdi").value.trim().toUpperCase();
       let tFile = document.getElementById("teamXml").files[0];
@@ -119,39 +123,54 @@
 
         let tCount = 0;
         let pCount = 0;
+        let takimSozlugu = {};
 
-        // TAKIMLARI AYRIŞTIR VE KATEGORİ ETİKETİ EKLE
+        // 1. TAKIMLARI AYRIŞTIR (Orijinal XML'e Tam Uyumlu)
         let teams = teamDoc.getElementsByTagName("Team");
         for (let i = 0; i < teams.length; i++) {
-          let tName = teams[i].getAttribute("Name") || teams[i].textContent;
-          let tId = teams[i].getAttribute("ID") || teams[i].getAttribute("UniqueTeamID") || `${katAdi}_${i}`;
+          let tName = teams[i].getAttribute("TeamLongname") || teams[i].getAttribute("Name");
+          let tId = teams[i].getAttribute("TeamUniqueId") || teams[i].getAttribute("ID");
+          
           if(tName) {
             let formatliTakimAdi = `${tName.trim()} (${katAdi})`;
+            takimSozlugu[tId] = formatliTakimAdi; // ID'ye göre takım ismini hafızaya al
             turnuvaSepeti.takimlar.push({ ad: formatliTakimAdi, id: tId, orjAd: tName.trim() });
             tCount++;
           }
         }
 
-        // SPORCULARI AYRIŞTIR VE TAKIMLARINI GÜNCELLE
+        // 2. SPORCULARI AYRIŞTIR (Orijinal XML'e Tam Uyumlu)
         let players = playerDoc.getElementsByTagName("Player");
         for (let i = 0; i < players.length; i++) {
-          let pName = players[i].getAttribute("Name") || "";
-          let pSex = players[i].getAttribute("Sex") || players[i].getAttribute("Gender") || "";
-          let pYear = players[i].getAttribute("Birthday") || players[i].getAttribute("Year") || "";
-          let pTeam = players[i].getAttribute("Club") || players[i].getAttribute("Team") || "";
-          let pId = players[i].getAttribute("ID") || players[i].getAttribute("UniquePlayerID") || `P_${Math.floor(Math.random()*10000)}`;
+          // İsim Birleştirme (Firstname + Lastname)
+          let fName = players[i].getAttribute("Firstname") || "";
+          let lName = players[i].getAttribute("Lastname") || "";
+          let pName = (fName + " " + lName).trim() || players[i].getAttribute("Name") || "";
           
-          if(pName) {
-             let formatliTakimAdi = `${pTeam.trim()} (${katAdi})`;
+          // Cinsiyet
+          let pSex = players[i].getAttribute("Gender") || players[i].getAttribute("Sex") || "";
+          
+          // Tarih (20160723 -> Sadece "2016" kısmını alıyoruz)
+          let rawDate = players[i].getAttribute("Birthday") || players[i].getAttribute("Year") || "";
+          let pYear = rawDate.length >= 4 ? rawDate.substring(0, 4) : rawDate;
+          
+          // ID'ler
+          let pId = players[i].getAttribute("PlayerUniqueId") || players[i].getAttribute("ID") || `P_${Math.floor(Math.random()*10000)}`;
+          let teamIdRef = players[i].getAttribute("TeamUniqueId") || players[i].getAttribute("TeamSno");
+          
+          // Takım İsmini Bulma (Öncelikle TeamUniqueId üzerinden sözlükten bakar)
+          let pTeam = (teamIdRef ? takimSozlugu[teamIdRef] : "") || players[i].getAttribute("Club") || players[i].getAttribute("TeamLongname") || "";
+          
+          if(pName && pTeam) {
+             let formatliTakimAdi = pTeam.includes(`(${katAdi})`) ? pTeam : `${pTeam.trim()} (${katAdi})`;
              turnuvaSepeti.sporcular.push({ 
-                 isim: pName.trim(), cinsiyet: pSex, yil: pYear, 
-                 takim: formatliTakimAdi, playerId: pId, teamId: "" 
+                 isim: pName, cinsiyet: pSex, yil: pYear, 
+                 takim: formatliTakimAdi, playerId: pId, teamId: teamIdRef || "" 
              });
              pCount++;
           }
         }
 
-        // Sepet Arayüzünü Güncelle
         eklenenKategoriler.push(katAdi);
         document.getElementById("sepet-kutusu").style.display = "block";
         document.getElementById("sepet-icerik").innerHTML += `
@@ -160,20 +179,16 @@
                 <span style="color:#28a745; font-size:12px;">${tCount} Takım | ${pCount} Sporcu</span>
             </div>`;
         
-        // Inputları Temizle
         document.getElementById("kategoriAdi").value = "";
         document.getElementById("teamXml").value = "";
         document.getElementById("playerXml").value = "";
-        
-        // Kurulum Butonunu Aktif Et
         document.getElementById("btn-kur").disabled = false;
 
       } catch(e) {
-        alert("XML ayrıştırma hatası! Dosyalarınızın doğruluğunu kontrol edin. Detay: " + e.message);
+        alert("XML ayrıştırma hatası! Detay: " + e.message);
       }
     }
 
-    // 2. AŞAMA: TÜM SEPETİ GOOGLE SHEET'E GÖNDER VE LİNK ÜRET
     async function tumSepetiKur() {
       const sheetIdInput = document.getElementById("sheetId").value.trim();
       if(!sheetIdInput) { alert("Lütfen 1. Adımdaki Google Sheet linkini girin!"); return; }
@@ -182,18 +197,12 @@
       const urlEslenme = sheetIdInput.match(/\/d\/([a-zA-Z0-9-_]+)/);
       if (urlEslenme && urlEslenme[1]) sheetId = urlEslenme[1];
 
-      // --- İSİM ÇAKIŞMA KALKANI (DUPLICATE HANDLER) ---
+      // İSİM ÇAKIŞMA KALKANI (Aynı isme sahip oyunculara ID ekler)
       let isimSayaci = {};
+      turnuvaSepeti.sporcular.forEach(s => { isimSayaci[s.isim] = (isimSayaci[s.isim] || 0) + 1; });
       turnuvaSepeti.sporcular.forEach(s => {
-          isimSayaci[s.isim] = (isimSayaci[s.isim] || 0) + 1;
+          if(isimSayaci[s.isim] > 1) s.isim = `${s.isim} (${s.playerId})`;
       });
-      turnuvaSepeti.sporcular.forEach(s => {
-          if(isimSayaci[s.isim] > 1) {
-              // Eğer isimden sistemde 1'den fazla varsa yanına ID'sini ekle
-              s.isim = `${s.isim} (${s.playerId})`;
-          }
-      });
-      // --------------------------------------------------
 
       let btn = document.getElementById("btn-kur");
       let sonuc = document.getElementById("sonuc");
@@ -201,14 +210,12 @@
       btn.classList.add("loading-btn");
 
       try {
-        // Arka Plana (Google Apps Script) Gönderim
         const response = await fetch(GAS_URL, {
           method: "POST",
           body: JSON.stringify({ action: "kurulumYap", data: turnuvaSepeti, sheetId: sheetId })
         });
         const res = await response.json();
         
-        // 3. AŞAMA: KAPTAN LİNKİNİ OLUŞTUR
         const logo = document.getElementById("logoUrl").value.trim();
         const b_ana = parseInt(document.getElementById("m-ana").value) || 0;
         const b_kadin = parseInt(document.getElementById("m-kadin").value) || 0;
@@ -220,7 +227,6 @@
         const seninSiten = window.location.origin + window.location.pathname.replace("hakem.html", "kaptan.html"); 
         const paylasimLinki = `${seninSiten}?ref=${sifreliId}`;
 
-        // Sonucu Göster
         sonuc.innerHTML = `
           <div style="color:#155724; margin-bottom:10px;">✅ ${res.mesaj}</div>
           <div style="color:#333; font-weight:normal; margin-bottom:15px; font-size:13px;">Eklenen Toplam Kategori: ${eklenenKategoriler.length}<br>Toplam Takım: ${turnuvaSepeti.takimlar.length}<br>Toplam Sporcu: ${turnuvaSepeti.sporcular.length}</div>
@@ -228,6 +234,9 @@
           <a href="${paylasimLinki}" target="_blank" style="color:#1a73e8; word-break: break-all;">${paylasimLinki}</a>
         `;
         sonuc.style.display = "block";
+        
+        document.getElementById("qr-resim").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(paylasimLinki)}`;
+        document.getElementById("qr-alani").style.display = "block";
         
         btn.innerText = "Kurulum Başarıyla Tamamlandı";
         btn.style.background = "#155724";
