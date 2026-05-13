@@ -76,6 +76,7 @@
         <div class="col"><label>Genel</label><input type="number" id="m-ana" value="4" min="0"></div>
         <div class="col"><label>Kadın</label><input type="number" id="m-kadin" value="0" min="0"></div>
         <div class="col"><label>U20</label><input type="number" id="m-u20" value="0" min="0"></div>
+        <div class="col"><label title="Sezon 15 Eylül'de başlar. Buna göre otomatik hesaplanır.">Hesap Yılı 📅</label><input type="number" id="hesap-yili"></div>
       </div>
     </div>
     
@@ -93,6 +94,19 @@
   </div>
   <!-- COPYRIGHT BÖLÜMÜ BİTİŞİ -->
   <script>
+    // YENİ: SAYFA AÇILDIĞINDA SEZON YILINI OTOMATİK HESAPLA
+    document.addEventListener("DOMContentLoaded", function() {
+        let bugun = new Date();
+        let yil = bugun.getFullYear();
+        let ay = bugun.getMonth(); // 0'dan başlar (Eylül = 8)
+        let gun = bugun.getDate();
+        
+        // Eğer tarih 15 Eylül veya sonrasıysa, yaş hesabı bir sonraki yıl için yapılır
+        if (ay > 8 || (ay === 8 && gun >= 15)) {
+            yil = yil + 1;
+        }
+        document.getElementById("hesap-yili").value = yil;
+    });
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzkan8o6Hif6Ihhcy68OlrL-sETi8X1tKABPyJxlZ0vC6ygWqA7QcJssMFqfwz9nm2Y/exec";
     
     let turnuvaSepeti = { takimlar: [], sporcular: [] };
@@ -218,6 +232,7 @@
       const b_ana = parseInt(document.getElementById("m-ana").value) || 0;
       const b_kadin = parseInt(document.getElementById("m-kadin").value) || 0;
       const b_u20 = parseInt(document.getElementById("m-u20").value) || 0;
+      const hesapYili = parseInt(document.getElementById("hesap-yili").value) || new Date().getFullYear();
 
       try {
         const response = await fetch(GAS_URL, {
@@ -226,7 +241,7 @@
               action: "kurulumYap", 
               data: turnuvaSepeti, 
               sheetId: sheetId,
-              config: { a: b_ana, k: b_kadin, u: b_u20 } // Artık güvenle okuyabilir
+              config: { a: b_ana, k: b_kadin, u: b_u20, yil: hesapYili }
           })
         });
         const res = await response.json();
