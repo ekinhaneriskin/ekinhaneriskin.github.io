@@ -87,7 +87,11 @@
       <img id="qr-resim" src="" alt="Turnuva QR Kodu">
     </div>
   </div>
-
+  <!-- COPYRIGHT BÖLÜMÜ BAŞLANGICI -->
+  <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; text-align: center; font-size: 13px; color: #777;">
+    &copy; 2026 Ekinhan ERİŞKİN. Tüm hakları saklıdır.
+  </div>
+  <!-- COPYRIGHT BÖLÜMÜ BİTİŞİ -->
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzkan8o6Hif6Ihhcy68OlrL-sETi8X1tKABPyJxlZ0vC6ygWqA7QcJssMFqfwz9nm2Y/exec";
     
@@ -212,7 +216,12 @@
       try {
         const response = await fetch(GAS_URL, {
           method: "POST",
-          body: JSON.stringify({ action: "kurulumYap", data: turnuvaSepeti, sheetId: sheetId })
+          body: JSON.stringify({ 
+              action: "kurulumYap", 
+              data: turnuvaSepeti, 
+              sheetId: sheetId,
+              config: { a: b_ana, k: b_kadin, u: b_u20 } // YENİ EKLENEN
+          })
         });
         const res = await response.json();
         
