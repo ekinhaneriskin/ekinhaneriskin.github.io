@@ -201,7 +201,7 @@
       const urlEslenme = sheetIdInput.match(/\/d\/([a-zA-Z0-9-_]+)/);
       if (urlEslenme && urlEslenme[1]) sheetId = urlEslenme[1];
 
-      // İSİM ÇAKIŞMA KALKANI (Aynı isme sahip oyunculara ID ekler)
+      // İSİM ÇAKIŞMA KALKANI
       let isimSayaci = {};
       turnuvaSepeti.sporcular.forEach(s => { isimSayaci[s.isim] = (isimSayaci[s.isim] || 0) + 1; });
       turnuvaSepeti.sporcular.forEach(s => {
@@ -213,6 +213,12 @@
       btn.innerText = "Tüm Kategoriler Google Sheet'e Yazılıyor...";
       btn.classList.add("loading-btn");
 
+      // HATA BURADAYDI: Bu satırları yukarı (Fetch işleminin öncesine) taşıdık!
+      const logo = document.getElementById("logoUrl").value.trim();
+      const b_ana = parseInt(document.getElementById("m-ana").value) || 0;
+      const b_kadin = parseInt(document.getElementById("m-kadin").value) || 0;
+      const b_u20 = parseInt(document.getElementById("m-u20").value) || 0;
+
       try {
         const response = await fetch(GAS_URL, {
           method: "POST",
@@ -220,15 +226,10 @@
               action: "kurulumYap", 
               data: turnuvaSepeti, 
               sheetId: sheetId,
-              config: { a: b_ana, k: b_kadin, u: b_u20 } // YENİ EKLENEN
+              config: { a: b_ana, k: b_kadin, u: b_u20 } // Artık güvenle okuyabilir
           })
         });
         const res = await response.json();
-        
-        const logo = document.getElementById("logoUrl").value.trim();
-        const b_ana = parseInt(document.getElementById("m-ana").value) || 0;
-        const b_kadin = parseInt(document.getElementById("m-kadin").value) || 0;
-        const b_u20 = parseInt(document.getElementById("m-u20").value) || 0;
         
         const payload = { i: sheetId, l: logo, b: { a: b_ana, k: b_kadin, u: b_u20 } };
         const sifreliId = btoa(encodeURIComponent(JSON.stringify(payload)));
