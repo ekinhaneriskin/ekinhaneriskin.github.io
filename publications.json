@@ -27,6 +27,9 @@
             "doi": "10.3390/ijgi15040178",
             "wos_link": "",
             "citations": "0",
+            "sdg": [
+                3,5,11,15,17
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-105037071841",
             "journal": "ISPRS International Journal of Geo Information"
         },
