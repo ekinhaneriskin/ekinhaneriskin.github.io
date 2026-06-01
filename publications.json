@@ -39,7 +39,7 @@
         },
         {
             "title": "Segment-level roughness forecasting and rule-based maintenance prioritization for pavement management systems using a simplified NBeatsX-inspired neural network",
-            "author": "Eriskin, E.",
+            "author": "Eriskin, E., & Terzi, S.",
             "year": "2026",
             "journal": "International Journal of Pavement Engineering",
             "index": "scopus",
@@ -255,7 +255,7 @@
         },
         {
             "title": "Moisture Susceptibility of Nano-Al2O3 and SiO2 Modified Asphalt Mixtures",
-            "author": "Eriskin, E.",
+            "author": "Karahancer, S., Eriskin, E., Saltan, M., Terzi, S., Akbas, M. Y. & Cengizhan, A.",
             "year": "2019",
             "journal": "Airfield and Highway Pavements 2019 Testing and Characterization of Pavement Materials Selected Papers from the International Airfield and Highway Pavements Conference 2019",
             "index": "scopus",
@@ -265,7 +265,7 @@
         },
         {
             "title": "Sulphur factory waste usability in hot mix asphalt as filler material",
-            "author": "Eriskin, E.",
+            "author": "Karahancer, S., Eriskin, E., Armagan, K., Cengizhan, A., Saltan, M. & Terzi, S.",
             "year": "2018",
             "journal": "Advances in Materials and Pavement Performance Prediction Proceedings of the International Am3p Conference 2018",
             "index": "scopus",
@@ -275,7 +275,7 @@
         },
         {
             "title": "Examination of the Effect of Superhydrophobic Coated Pavement under Wet Conditions",
-            "author": "Eriskin, E.",
+            "author": "Eriskin, E., Karahancer, S., Terzi, S. & Saltan, M.",
             "year": "2017",
             "index": "other",
             "doi": "10.1016/j.proeng.2017.04.411",
@@ -286,7 +286,7 @@
         },
         {
             "title": "Optimization of Traffic Signal Timing at Oversaturated Intersections Using Elimination Pairing System",
-            "author": "Eriskin, E.",
+            "author": "Eriskin, E., Karahancer, S., Terzi, S. & Saltan, M.",
             "year": "2017",
             "index": "other",
             "doi": "10.1016/j.proeng.2017.04.378",
@@ -308,7 +308,7 @@
         },
         {
             "title": "Modelling Marshall Stability of fiber reinforced asphalt mixtures with ANFIS",
-            "author": "Eriskin, E.",
+            "author": "Morova, N., Eriskin, E., Terzi, S., Karahancer, S., Serin, S., Saltan, M. & Usta, P.",
             "year": "2017",
             "journal": "Proceedings 2017 IEEE International Conference on Innovations in Intelligent Systems and Applications Inista 2017",
             "index": "scopus",
@@ -318,7 +318,7 @@
         },
         {
             "title": "Estimation of specific gravity with penetration and penetration index parameters by artificial neural network",
-            "author": "Eriskin, E.",
+            "author": "Serin, S., Karahancer, S., Eriskin, E., Morova, N., Saltan, M. & Terzi, S.",
             "year": "2017",
             "journal": "Periodicals of Engineering and Natural Sciences",
             "index": "scopus",
@@ -328,7 +328,7 @@
         },
         {
             "title": "Comparing CBR values obtained from field with laboratory test results",
-            "author": "Eriskin, E.",
+            "author": "Karahancer, S., Eriskin, E., Sarioglu, O. Saltan, M. & Terzi, S.",
             "year": "2017",
             "journal": "Bearing Capacity of Roads Railways and Airfields Proceedings of the 10th International Conference on the Bearing Capacity of Roads Railways and Airfields Bcrra 2017",
             "index": "scopus",
@@ -338,16 +338,18 @@
         },
         {
             "title": "Utility of polyparaphenylene terephtalamide fiber in hot mix asphalt as a fiber",
-            "author": "Eriskin, E.",
+            "author": "Morova, N., Serin, S., Terzi, S., Saltan, M., Ozdemir Kucukcapraz, D., Karahancer, S. & Eriskin, E.",
             "year": "2016",
-            "index": "other",
+            "index": "sci",
             "doi": "10.1016/j.conbuildmat.2015.12.193",
-            "wos_link": "",
+            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000370308000009",
+            "scopus_link": "https://www.scopus.com/pages/publications/84953318864",
             "citations": "0"
+            "journal": "Construction and Building Materials"
         },
         {
             "title": "Utilization of Arundo donax in Hot Mix Asphalt as a fiber",
-            "author": "Eriskin, E.",
+            "author": "Karahancer, S., Eriskin, E., Sarioglu, O., Capali, B., Saltan, M. & Terzi, S.",
             "year": "2016",
             "index": "sci",
             "doi": "10.1016/J.CONBUILDMAT.2016.08.147",
@@ -358,7 +360,7 @@
         },
         {
             "title": "Marshall stability estimating using artificial neural network with polyparaphenylene terephtalamide fibre rate",
-            "author": "Eriskin, E.",
+            "author": "Karahancer, S., Capali, B., Eriskin, E., Morova, N., Serin, S., Saltan, M., Terzi, S. & Ozdemir Kucukcapraz, D.",
             "year": "2016",
             "journal": "Proceedings of the 2016 International Symposium on Innovations in Intelligent Systems and Applications Inista 2016",
             "index": "scopus",
