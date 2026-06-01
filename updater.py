@@ -75,6 +75,16 @@ def fetch_scopus_data():
                 title = title_node.text if title_node is not None else ""
                 if not title: continue
 
+                author_nodes = entry.findall('.//{*}author')
+                author_names = []
+                for author in author_nodes:
+                    auth_name = author.find('.//{*}authname')
+                    if auth_name is not None and auth_name.text:
+                        author_names.append(auth_name.text)
+                
+                # Join authors with a comma, fallback to your name if empty
+                author_list = ", ".join(author_names) if author_names else "Eriskin, E."
+
                 doi_node = entry.find('.//{*}doi')
                 doi = doi_node.text if doi_node is not None else ""
                 
@@ -93,7 +103,7 @@ def fetch_scopus_data():
 
                 pubs.append({
                     "title": title,
-                    "author": "Eriskin, E.", 
+                    "author": author_list, 
                     "year": year,
                     "journal": journal,
                     "index": "scopus",
@@ -109,8 +119,6 @@ def fetch_scopus_data():
     return pubs
 
 def fetch_orcid_data():
-    # ... (Önceki ORCID kodunuz aynı kalabilir, o JSON çalıştığı için sorun çıkarmaz)
-    # Ancak burada da başlıksız verileri engellemek için filtre eklemeyi unutmayın.
     print("ORCID taranıyor...")
     url = f"https://pub.orcid.org/v3.0/{ORCID_ID}/works"
     headers = {'Accept': 'application/json'}
@@ -122,13 +130,22 @@ def fetch_orcid_data():
                 w = g.get('work-summary', [{}])[0]
                 title = w.get('title', {}).get('title', {}).get('value', '')
                 if not title or len(title) < 5: continue
+
+                contributors = w.get('contributors', {}).get('contributor', [])
+                author_names = []
+                for c in contributors:
+                    name = c.get('credit-name', {}).get('value')
+                    if name:
+                        author_names.append(name)
+                
+                author_list = ", ".join(author_names) if author_names else "Eriskin, E."
                 
                 doi = next((eid.get('external-id-value') for eid in w.get('external-ids', {}).get('external-id', []) if eid.get('external-id-type') == 'doi'), "")
                 wos = next((eid.get('external-id-value') for eid in w.get('external-ids', {}).get('external-id', []) if eid.get('external-id-type') == 'wosuid'), "")
 
                 pubs.append({
                     "title": title,
-                    "author": "Eriskin, E.",
+                    "author": author_list,
                     "year": w.get('publication-date', {}).get('year', {}).get('value', '2026') if w.get('publication-date') else "2026",
                     "index": "sci" if wos else "other",
                     "doi": doi,
