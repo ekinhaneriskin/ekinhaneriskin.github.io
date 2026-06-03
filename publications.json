@@ -66,7 +66,9 @@
             "doi": "10.24200/sci.2023.60144.6626",
             "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001591176700002",
             "citations": "4",
-            "sdg": [3],
+            "sdg": [
+                3
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-105030650052",
             "journal": "Scientia Iranica"
         },
