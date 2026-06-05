@@ -78,7 +78,8 @@
             "year": "2025",
             "index": "sci",
             "doi": "",
-            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001586172500036"
+            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001586172500036",
+            "citations": "0"
         },
         {
             "title": "Using Ensemble Machine Learning to Estimate International Roughness Index of Asphalt Pavements",
@@ -203,7 +204,8 @@
             "year": "2022",
             "index": "other",
             "doi": "10.21203/rs.3.rs-848747/v1",
-            "wos_link": ""
+            "wos_link": "",
+            "citations": "0"
         },
         {
             "title": "Bitumen expanding using bio-oil product of rose pulp’s pyrolysis process",
@@ -288,7 +290,8 @@
             "year": "2019",
             "index": "sci",
             "doi": "",
-            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000494465200013"
+            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000494465200013",
+            "citations": "0"
         },
         {
             "title": "Sulphur factory waste usability in hot mix asphalt as filler material",
@@ -306,7 +309,8 @@
             "year": "2018",
             "index": "sci",
             "doi": "10.5592/CO/CETRA.2018.788",
-            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000518218300049"
+            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000518218300049",
+            "citations": "0"
         },
         {
             "title": "USABILITY OF HEMP FIBER IN DENSE GRADED HOT MIX ASPHALT MIXTURE",
@@ -314,7 +318,8 @@
             "year": "2018",
             "index": "sci",
             "doi": "10.5592/CO/CETRA.2018.798",
-            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000518218300052"
+            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000518218300052",
+            "citations": "0"
         },
         {
             "title": "Examination of the Effect of Superhydrophobic Coated Pavement under Wet Conditions",
@@ -385,7 +390,8 @@
             "year": "2017",
             "index": "sci",
             "doi": "",
-            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000450992400031"
+            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000450992400031",
+            "citations": "0"
         },
         {
             "title": "Utility of polyparaphenylene terephtalamide fiber in hot mix asphalt as a fiber",
@@ -425,7 +431,8 @@
             "year": "2016",
             "index": "sci",
             "doi": "",
-            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000386824000029"
+            "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000386824000029",
+            "citations": "0"
         }
     ]
 }
