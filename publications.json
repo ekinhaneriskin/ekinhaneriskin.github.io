@@ -13,12 +13,19 @@
             "index": "sci",
             "doi": "10.3390/ijgi15040178",
             "citations": "0",
+            "sdg": [
+                3,
+                5,
+                11,
+                15,
+                17
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-105037071841",
             "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001749739900001"
         },
         {
             "title": "Segment-level roughness forecasting and rule-based maintenance prioritization for pavement management systems using a simplified NBeatsX-inspired neural network",
-            "author": "Eriskin, E.",
+            "author": "Eriskin, E., & Terzi, S.",
             "year": "2026",
             "journal": "International Journal of Pavement Engineering",
             "index": "scopus",
@@ -28,17 +35,20 @@
         },
         {
             "title": "A Horizon-Adaptive Benchmarking Framework for Long-Term Reservoir Storage Forecasting Using Physics-Informed Transformers and Machine Learning",
-            "author": "Eriskin, E.",
+            "author": "Eriskin, E., Terzi, O. & Taylan, E. D.",
             "year": "2026",
             "journal": "Water Resources Management",
             "index": "scopus",
             "doi": "10.1007/s11269-025-04399-w",
             "citations": "1",
+            "sdg": [
+                6
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-105026208678"
         },
         {
             "title": "Estimating Pavement Temperature Using Machine Learning Models Based on Climatic Data",
-            "author": "Eriskin, E.",
+            "author": "Terzi, O., Baykal, T., Karahancer, S., Eriskin, E. & Terzi, S.",
             "year": "2025",
             "journal": "Airfield and Highway Pavements 2025 Design Construction Condition Evaluation and Management of Pavements Selected Papers from the International Airfield and Highway Pavements Conference 2025",
             "index": "sci",
@@ -49,12 +59,15 @@
         },
         {
             "title": "Accident severity prediction in big data using auto-machine learning",
-            "author": "Eriskin, E.",
+            "author": "Baykal, T., Ergezer, F., Eriskin, E. & Terzi, S.",
             "year": "2025",
             "journal": "Scientia Iranica",
             "index": "sci",
             "doi": "10.24200/sci.2023.60144.6626",
             "citations": "4",
+            "sdg": [
+                3
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-105030650052",
             "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001591176700002"
         },
@@ -66,12 +79,18 @@
             "index": "sci",
             "doi": "10.3390/su162411199",
             "citations": "2",
+            "sdg": [
+                9,
+                10,
+                11,
+                17
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85213213330",
             "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001386540200001"
         },
         {
             "title": "Using Ensemble Machine Learning to Estimate International Roughness Index of Asphalt Pavements",
-            "author": "Eriskin, E.",
+            "author": "Baykal, T., Ergezer, F., Eriskin, E. & Terzi, S.",
             "year": "2024",
             "journal": "Iranian Journal of Science and Technology Transactions of Civil Engineering",
             "index": "sci",
@@ -82,39 +101,60 @@
         },
         {
             "title": "Predicting Hydrological Droughts of Long-Narrow Type Drainage Basin Using Monte Carlo Technique",
-            "author": "Eriskin, E.",
+            "author": "Baykal, T., Taylan, E. D., Eriskin, E. & Terzi, O.",
             "year": "2024",
             "journal": "Journal of Hydrologic Engineering",
             "index": "sci",
             "doi": "10.1061/JHYEFF.HEENG-6144",
             "citations": "1",
+            "sdg": [
+                6,
+                8
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85190527987",
             "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001202621600013"
         },
         {
             "title": "An alternative approach for increasing the visibility of roads",
-            "author": "Eriskin, E.",
+            "author": "Terzi, S., Ergezer, F., Saltan, M., Karahancer, S., Eriskin, E., Uncu, I. S., Karadag, O., Kurtman, A. K., Kayakus, M. & Erten, K. M.",
             "year": "2024",
             "journal": "Revista De La Construccion",
             "index": "sci",
             "doi": "10.7764/RDLC.23.2.203",
             "citations": "1",
+            "sdg": [
+                3,
+                11
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85203088073",
             "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001416924800003"
         },
         {
             "title": "Replacement of signalized traffic network design with Hamiltonian roads: delay? Nevermind",
-            "author": "Eriskin, E.",
+            "author": "Eriskin, E., Turker, G. F., Gunduz, F. K. & Terzi, S.",
             "year": "2023",
             "journal": "Soft Computing",
             "index": "scopus",
             "doi": "10.1007/s00500-022-07735-z",
             "citations": "0",
+            "sdg": [
+                11
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85144199026"
         },
         {
-            "title": "Investigation of waste quartz sand as filler in hot-mix asphalt",
+            "title": "Importance of A-pillars of vehicles during intersection approach",
             "author": "Eriskin, E.",
+            "year": "2023",
+            "index": "trdizin",
+            "doi": "10.51513/jitsa.1104161",
+            "trdizin_link": "https://search.trdizin.gov.tr/en/yayin/detay/1162079/importance-of-a-pillars-of-vehicles-during-intersection-approach",
+            "journal": "Journal of Intelligent Transportation Systems and Applications",
+            "citations": "0"
+        },
+        {
+            "title": "Investigation of waste quartz sand as filler in hot-mix asphalt",
+            "author": "Taciroglu, M. V., Ergezer, F., Baykal, T., Eriskin, E. & Terzi, S.",
             "year": "2022",
             "journal": "Construction and Building Materials",
             "index": "sci",
@@ -125,23 +165,30 @@
         },
         {
             "title": "Development of dynamic traffic signal control based on Monte Carlo simulation approach",
-            "author": "Eriskin, E.",
+            "author": "Eriskin, E., Terzi, S. & Ceylan, H.",
             "year": "2022",
             "journal": "Measurement Journal of the International Measurement Confederation",
             "index": "sci",
             "doi": "10.1016/j.measurement.2021.110591",
             "citations": "9",
+            "sdg": [
+                11
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85121217597",
             "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000742841900008"
         },
         {
             "title": "Bitumen expanding using bio-oil product of rose pulp's pyrolysis process",
-            "author": "Eriskin, E.",
+            "author": "Terzi, S., Saltan, M., Armagan, K., Kurtman, A. K., Karahancer, S., Eriskin, E. & Uz, V. E.",
             "year": "2020",
             "journal": "Construction and Building Materials",
             "index": "sci",
             "doi": "10.1016/j.conbuildmat.2020.118721",
             "citations": "4",
+            "sdg": [
+                7,
+                9
+            ],
             "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85082136200",
             "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000535925900030"
         },
