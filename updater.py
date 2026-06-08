@@ -155,33 +155,47 @@ def fetch_orcid_data():
     except: pass
     return pubs
 
-def merge_and_save(local_data, fetched_pubs, metrics):
+def merge_and_save(local_data, scopus_pubs, orcid_pubs, metrics):
     # Mevcut yayınları DOI veya Başlık bazlı bir sözlüğe al
     local_dict = { (p.get('doi') or p.get('title') or "").lower().strip(): p for p in local_data['publications'] if p }
     
-    for n in fetched_pubs:
+    # --- 1. SCOPUS PROCESSING (Create & Update) ---
+    for n in scopus_pubs:
         n_doi = str(n.get('doi') or "").strip().lower()
         n_title = str(n.get('title') or "").strip().lower()
         key = n_doi if n_doi else n_title
         if not key: continue
 
         if key in local_dict:
-            # --- EŞLEŞME VARSA: SADECE DEĞİŞKEN VERİLERİ GÜNCELLE ---
-            # Atıf sayısı her zaman güncellenir
+            # EŞLEŞME VARSA: Scopus verileriyle güncelle
             local_dict[key]['citations'] = n.get('citations', local_dict[key].get('citations', '0'))
             
-            # Eksik olan linkleri veya dergi adını doldur (varsa dokunma)
-            for field in ['scopus_link', 'wos_link', 'journal']:
+            for field in ['scopus_link', 'journal']:
+                if n.get(field) and not local_dict[key].get(field):
+                    local_dict[key][field] = n[field]
+        else:
+            # YENİ YAYIN: Scopus'tan geldiği için listeye ekle
+            local_dict[key] = n
+
+    # --- 2. ORCID PROCESSING (Update Only / Enrichment) ---
+    for n in orcid_pubs:
+        n_doi = str(n.get('doi') or "").strip().lower()
+        n_title = str(n.get('title') or "").strip().lower()
+        key = n_doi if n_doi else n_title
+        if not key: continue
+
+        if key in local_dict:
+            # EŞLEŞME VARSA: Yalnızca eksik bilgileri veya indeksleri iyileştir
+            for field in ['wos_link', 'journal']:
                 if n.get(field) and not local_dict[key].get(field):
                     local_dict[key][field] = n[field]
             
-            # İndeks SCI-E ise yükselt
+            # ORCID'den gelen indeks SCI ise mevcut durumu yükselt
             if n.get('index') == 'sci':
                 local_dict[key]['index'] = 'sci'
-        else:
-            # --- YENİ YAYIN: LİSTEYE EKLE ---
-            local_dict[key] = n
-    
+        
+        # Eğer ORCID verisi local_dict'te yoksa, 'else' bloğu olmadığı için ES GEÇİLİR.
+
     # Final JSON Yapısı
     output = {
         "metrics": metrics,
@@ -200,7 +214,7 @@ if __name__ == "__main__":
     s_pubs = fetch_scopus_data()
     o_pubs = fetch_orcid_data()
     
-    # Birleştir ve Kaydet
-    merge_and_save(local_data, s_pubs + o_pubs, metrics)
+    # Birleştir ve Kaydet (Parametreleri ayırdık)
+    merge_and_save(local_data, s_pubs, o_pubs, metrics)
     
-    print(f"İşlem Başarılı! {len(local_data['publications'])} yayın kontrol edildi, atıf sayıları güncellendi.")
+    print(f"İşlem Başarılı! Toplam {len(local_data['publications'])} yayın kontrol edildi.")
