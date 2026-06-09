@@ -119,7 +119,7 @@ def fetch_scopus_data():
     return pubs
 
 def fetch_orcid_data():
-    print("ORCID taranıyor...")
+    print("ORCID taranıyor (Grup-Seviyesi Analiz Modu)...")
     url = f"https://pub.orcid.org/v3.0/{ORCID_ID}/works"
     headers = {'Accept': 'application/json'}
     pubs = []
@@ -127,32 +127,49 @@ def fetch_orcid_data():
         res = requests.get(url, headers=headers)
         if res.status_code == 200:
             for g in res.json().get('group', []):
-                w = g.get('work-summary', [{}])[0]
-                title = w.get('title', {}).get('title', {}).get('value', '')
+                
+                # 1. Başlık ve Yazar bilgisini her zaman en üstteki [0] kayıttan al
+                summaries = g.get('work-summary', [])
+                if not summaries: continue
+                primary_w = summaries[0]
+                
+                title = primary_w.get('title', {}).get('title', {}).get('value', '')
                 if not title or len(title) < 5: continue
 
-                contributors = w.get('contributors', {}).get('contributor', [])
+                contributors = primary_w.get('contributors', {}).get('contributor', [])
                 author_names = []
                 for c in contributors:
                     name = c.get('credit-name', {}).get('value')
-                    if name:
-                        author_names.append(name)
-                
+                    if name: author_names.append(name)
                 author_list = ", ".join(author_names) if author_names else "Eriskin, E."
                 
-                doi = next((eid.get('external-id-value') for eid in w.get('external-ids', {}).get('external-id', []) if eid.get('external-id-type') == 'doi'), "")
-                wos = next((eid.get('external-id-value') for eid in w.get('external-ids', {}).get('external-id', []) if eid.get('external-id-type') == 'wosuid'), "")
+                year = primary_w.get('publication-date', {}).get('year', {}).get('value', '2026') if primary_w.get('publication-date') else "2026"
+                
+                # 2. THE FIX: Harici ID'leri alt kayıtlardan değil, ana 'group' seviyesinden al!
+                # Bu sayede WOSUID hangi sırada olursa olsun yakalanır.
+                ext_ids = g.get('external-ids', {}).get('external-id', [])
+                
+                wos = ""
+                doi = ""
+                for eid in ext_ids:
+                    eid_type = eid.get('external-id-type')
+                    if eid_type == 'wosuid' and not wos:
+                        wos = eid.get('external-id-value')
+                    elif eid_type == 'doi' and not doi:
+                        doi = eid.get('external-id-value')
 
                 pubs.append({
                     "title": title,
                     "author": author_list,
-                    "year": w.get('publication-date', {}).get('year', {}).get('value', '2026') if w.get('publication-date') else "2026",
+                    "year": year,
                     "index": "sci" if wos else "other",
                     "doi": doi,
                     "wos_link": f"https://www.webofscience.com/wos/woscc/full-record/{wos}" if wos else ""
                 })
-            print(f"ORCID'den {len(pubs)} yayın çekildi.")
-    except: pass
+            print(f"ORCID'den {len(pubs)} yayın başarıyla ayrıştırıldı.")
+    except Exception as e: 
+        print(f"ORCID Ayrıştırma Hatası: {e}")
+        pass
     return pubs
 
 def merge_and_save(local_data, scopus_pubs, orcid_pubs, metrics):
