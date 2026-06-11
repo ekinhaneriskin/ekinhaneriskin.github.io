@@ -241,15 +241,14 @@
               action: "kurulumYap", 
               data: turnuvaSepeti, 
               sheetId: sheetId,
-              config: { a: b_ana, k: b_kadin, u: b_u20, yil: hesapYili, url: GAS_URL }
+              config: {a: b_ana, k: b_kadin, u: b_u20, yil: hesapYili, logo: logo, url: GAS_URL}
           })
         });
         const res = await response.json();
         
-        const payload = { i: sheetId, l: logo, b: { a: b_ana, k: b_kadin, u: b_u20 } };
-        const sifreliId = btoa(encodeURIComponent(JSON.stringify(payload)));
-        
-        const paylasimLinki = `https://www.ekinhaneriskin.com/kaptan.html?ref=${sifreliId}`;
+        const turnuvaKodu = res.kod;
+
+        const paylasimLinki = `https://www.ekinhaneriskin.com/kaptan.html?t=${turnuvaKodu}`;
 
         // Arka plandan gelen etiketin adını bilmesek bile yakalayan (veya varsayılan metin basan) akıllı satır:
         let gelenMesaj = res.mesaj || res.message || res.sonuc || "Sistem kuruldu.";
