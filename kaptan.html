@@ -84,7 +84,7 @@
 <script>
   const GAS_URL = "https://script.google.com/macros/s/AKfycbzZMZcrUGgCM_fVRxsI1gBkk8Dx0rkN0vAnBo3T75fs1a4t0rQOcMPS3kD2r-obJGcPDQ/exec";
 
-  let gercekSheetId = "";
+  let turnuvaKodu = "";
   let config = { a: 4, k: 0, u: 0 };
   let toplamMasa = 4;
 
@@ -100,50 +100,55 @@
 
   window.onload = async function() {
     const urlParams = new URLSearchParams(window.location.search);
-    const sifreliRef = urlParams.get("ref");
-
-    if (!sifreliRef) {
+    turnuvaKodu = urlParams.get("t");
+  
+    if (!turnuvaKodu) {
       document.getElementById("err").innerHTML =
-        "<div style='color:red; font-weight:bold; margin-top:20px;'>Geçersiz bağlantı. Hakeminizden linki isteyin.</div>";
+        "<div style='color:red; font-weight:bold; margin-top:20px;'>Geçersiz bağlantı. Hakeminizden turnuva linkini isteyin.</div>";
       return;
     }
-
+  
+    turnuvaKodu = turnuvaKodu.trim().toUpperCase();
+  
     try {
-      const decodedStr = decodeURIComponent(atob(sifreliRef));
-
-      try {
-        const payload = JSON.parse(decodedStr);
-
-        gercekSheetId = payload.i;
-
-        if (payload.l) {
-          document.getElementById("ust-logo").src = payload.l;
-        }
-
-        if (payload.b) {
-          config = {
-            a: parseInt(payload.b.a) || 0,
-            k: parseInt(payload.b.k) || 0,
-            u: parseInt(payload.b.u) || 0
-          };
-
-          toplamMasa = config.a + config.k + config.u;
-
-          if (toplamMasa < 1) {
-            config = { a: 4, k: 0, u: 0 };
-            toplamMasa = 4;
-          }
-        }
-      } catch (parseErr) {
-        gercekSheetId = atob(sifreliRef);
+      // Önce merkezi kayıt defterinden logo ve masa ayarlarını al
+      const ayarResponse = await fetch(
+        `${GAS_URL}?action=ayarGetir&kod=${encodeURIComponent(turnuvaKodu)}`
+      );
+  
+      const ayar = await ayarResponse.json();
+  
+      if (ayar.hata || ayar.success === false) {
+        document.getElementById("err").innerHTML =
+          `<div style='color:red; font-weight:bold; margin-top:20px;'>${ayar.hata || "Turnuva kodu bulunamadı."}</div>`;
+        return;
       }
-
+  
+      if (ayar.logo) {
+        document.getElementById("ust-logo").src = ayar.logo;
+      }
+  
+      if (ayar.masa) {
+        config = {
+          a: parseInt(ayar.masa.a, 10) || 0,
+          k: parseInt(ayar.masa.k, 10) || 0,
+          u: parseInt(ayar.masa.u, 10) || 0
+        };
+  
+        toplamMasa = config.a + config.k + config.u;
+  
+        if (toplamMasa < 1) {
+          config = { a: 4, k: 0, u: 0 };
+          toplamMasa = 4;
+        }
+      }
+  
       initAutocomplete();
       await baslangicVerileriniCek();
-
+  
     } catch (e) {
       document.getElementById("err").innerHTML =
-        "<div style='color:red;'>Link bozuk veya okunamadı.</div>";
+        "<div style='color:red;'>Turnuva bilgileri alınamadı. Bağlantıyı kontrol ediniz.</div>";
     }
   };
 
@@ -232,7 +237,7 @@
   async function baslangicVerileriniCek() {
     try {
       const response = await fetch(
-        `${GAS_URL}?action=getInitialData&sheetId=${encodeURIComponent(gercekSheetId)}`
+        `${GAS_URL}?action=getInitialData&kod=${encodeURIComponent(turnuvaKodu)}`
       );
 
       const data = await response.json();
@@ -332,9 +337,8 @@
 
     try {
       const response = await fetch(
-        `${GAS_URL}?action=sporculariGetir&takim=${encodeURIComponent(currentT)}&sifre=${encodeURIComponent(currentS)}&sheetId=${encodeURIComponent(gercekSheetId)}`
+        `${GAS_URL}?action=sporculariGetir&kod=${encodeURIComponent(turnuvaKodu)}&takim=${encodeURIComponent(currentT)}&sifre=${encodeURIComponent(currentS)}`
       );
-
       const r = await response.json();
 
       btn.innerText = "Giriş Yap";
@@ -691,10 +695,11 @@
       const response = await fetch(GAS_URL, {
         method: "POST",
         body: JSON.stringify({
+          action: "kadroKaydet",
+          kod: turnuvaKodu,
           takim: currentT,
           sifre: currentS,
-          kadro: finalKadro,
-          sheetId: gercekSheetId
+          kadro: finalKadro
         })
       });
 
