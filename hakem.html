@@ -245,9 +245,19 @@
           })
         });
         const res = await response.json();
+
+        if (res.hata) {
+          throw new Error(res.hata);
+        }
+        
+        if (!res.kod) {
+          throw new Error(
+            "Sunucudan turnuva kodu dönmedi. Apps Script doPost fonksiyonu güncel olmayabilir veya yeni deployment yapılmamış olabilir."
+          );
+        }
         
         const turnuvaKodu = res.kod;
-
+        
         const paylasimLinki = `https://www.ekinhaneriskin.com/kaptan.html?t=${turnuvaKodu}`;
 
         // Arka plandan gelen etiketin adını bilmesek bile yakalayan (veya varsayılan metin basan) akıllı satır:
