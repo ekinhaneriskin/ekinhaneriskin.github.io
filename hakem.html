@@ -49,6 +49,12 @@
       <div style="background: #eafaf1; padding: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">
         <label style="font-weight:bold; color:#155724;">Kategori Adı <span style="color:red">*</span></label>
         <input type="text" id="kategoriAdi" placeholder="Örn: Minikler Kız, U12, Genel vb.">
+
+        <label style="font-weight:bold; color:#155724;">Chess-Results Turnuva Kodu</label>
+        <input type="text" id="chessResultsId" placeholder="Sadece rakam giriniz. Örn: 1234567">
+        <span style="font-size:12px; color:#666;">
+          Boş bırakılabilir. Sadece rakamlardan oluşan Tnr kodunu giriniz.
+        </span>
         
         <label style="font-size:13px; font-weight:bold; margin-top:5px; display:block;">Takımlar XML:</label>
         <input type="file" id="teamXml" accept=".xml" style="padding: 5px;">
@@ -109,7 +115,11 @@
     });
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzZMZcrUGgCM_fVRxsI1gBkk8Dx0rkN0vAnBo3T75fs1a4t0rQOcMPS3kD2r-obJGcPDQ/exec";
     
-    let turnuvaSepeti = { takimlar: [], sporcular: [] };
+    let turnuvaSepeti = { 
+      takimlar: [], 
+      sporcular: [],
+      kategoriler: []
+    };
     let eklenenKategoriler = [];
 
     function dosyaOku(file) {
@@ -122,10 +132,30 @@
       });
     }
 
+    function chessResultsKoduTemizle(raw) {
+      if (!raw) return "";
+    
+      const s = raw.toString().trim();
+    
+      if (s === "") return "";
+    
+      if (!/^[0-9]+$/.test(s)) {
+        return null;
+      }
+    
+      return s;
+    }
+
     async function kategoriSepeteEkle() {
       let katAdi = document.getElementById("kategoriAdi").value.trim().toUpperCase();
       let tFile = document.getElementById("teamXml").files[0];
       let pFile = document.getElementById("playerXml").files[0];
+      let crRaw = document.getElementById("chessResultsId").value.trim();
+      let chessResultsId = chessResultsKoduTemizle(crRaw);
+      
+      if (chessResultsId === null) {
+        return alert("Chess-Results kodu sadece rakamlardan oluşmalıdır. Örn: 1234567");
+      }
 
       if(!katAdi) return alert("Lütfen kategori adını girin (Örn: U12).");
       if(!tFile || !pFile) return alert("Lütfen hem takım hem sporcu XML'ini seçin.");
@@ -134,6 +164,11 @@
       try {
         const teamXmlText = await dosyaOku(tFile);
         const playerXmlText = await dosyaOku(pFile);
+
+        turnuvaSepeti.kategoriler.push({
+          ad: katAdi,
+          chessResultsId: chessResultsId || ""
+        });
         
         const parser = new DOMParser();
         const teamDoc = parser.parseFromString(teamXmlText, "text/xml");
@@ -152,7 +187,7 @@
           if(tName) {
             let formatliTakimAdi = `${tName.trim()} (${katAdi})`;
             takimSozlugu[tId] = formatliTakimAdi; // ID'ye göre takım ismini hafızaya al
-            turnuvaSepeti.takimlar.push({ ad: formatliTakimAdi, id: tId, orjAd: tName.trim() });
+            turnuvaSepeti.takimlar.push({ ad: formatliTakimAdi, id: tId, orjAd: tName.trim(), kategori: katAdi, chessResultsId: chessResultsId || "" });
             tCount++;
           }
         }
@@ -175,16 +210,30 @@
           // ID'ler
           let pId = players[i].getAttribute("PlayerUniqueId") || players[i].getAttribute("ID") || `P_${Math.floor(Math.random()*10000)}`;
           let teamIdRef = players[i].getAttribute("TeamUniqueId") || players[i].getAttribute("TeamSno");
+          let boardNo =
+              players[i].getAttribute("BoardNumber") ||
+              players[i].getAttribute("Boardnumber") ||
+              players[i].getAttribute("BoardNo") ||
+              players[i].getAttribute("BoardNr") ||
+              players[i].getAttribute("Board") ||
+              "";
           
           // Takım İsmini Bulma (Öncelikle TeamUniqueId üzerinden sözlükten bakar)
           let pTeam = (teamIdRef ? takimSozlugu[teamIdRef] : "") || players[i].getAttribute("Club") || players[i].getAttribute("TeamLongname") || "";
           
           if(pName && pTeam) {
              let formatliTakimAdi = pTeam.includes(`(${katAdi})`) ? pTeam : `${pTeam.trim()} (${katAdi})`;
-             turnuvaSepeti.sporcular.push({ 
-                 isim: pName, cinsiyet: pSex, yil: pYear, 
-                 takim: formatliTakimAdi, playerId: pId, teamId: teamIdRef || "" 
-             });
+              turnuvaSepeti.sporcular.push({ 
+                isim: pName,
+                cinsiyet: pSex,
+                yil: pYear,
+                takim: formatliTakimAdi,
+                playerId: pId,
+                teamId: teamIdRef || "",
+                kategori: katAdi,
+                chessResultsId: chessResultsId || "",
+                boardNo: boardNo
+              });
              pCount++;
           }
         }
@@ -194,10 +243,13 @@
         document.getElementById("sepet-icerik").innerHTML += `
             <div class="sepet-item">
                 <span>📁 ${katAdi}</span>
-                <span style="color:#28a745; font-size:12px;">${tCount} Takım | ${pCount} Sporcu</span>
+                <span style="color:#28a745; font-size:12px;">
+                  ${tCount} Takım | ${pCount} Sporcu ${chessResultsId ? "| CR: " + chessResultsId : "| CR: Yok"}
+                </span>
             </div>`;
         
         document.getElementById("kategoriAdi").value = "";
+        document.getElementById("chessResultsId").value = "";
         document.getElementById("teamXml").value = "";
         document.getElementById("playerXml").value = "";
         document.getElementById("btn-kur").disabled = false;
