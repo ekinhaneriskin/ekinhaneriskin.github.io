@@ -7,7 +7,7 @@
   <style>
     body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; text-align: center; color: #333; }
     .box { background: white; max-width: 750px; margin: 20px auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: left; }
-    input[type="text"], input[type="number"], input[type="file"], select { width: 100%; padding: 10px; margin: 6px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; box-sizing: border-box; }
+    input[type="text"], input[type="password"], input[type="number"], input[type="file"], select { width: 100%; padding: 10px; margin: 6px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; box-sizing: border-box; }
     .row { display: flex; gap: 15px; margin-top: 10px; }
     .col { flex: 1; }
     .col label { font-size: 13px; font-weight: bold; color: #444; }
@@ -17,6 +17,7 @@
     button:disabled { background: #ccc; cursor: not-allowed; }
     .btn-green { background: #28a745; } .btn-green:hover { background: #218838; }
     .btn-outline { background: transparent; color: #1a73e8; border: 2px solid #1a73e8; padding: 8px; margin-top: 8px; }
+    .btn-danger { background: #dc3545; } .btn-danger:hover { background: #c82333; }
     
     .panel-box { border: 2px dashed #28a745; background: #f8fff9; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
     .panel-header { font-weight: bold; color: #155724; font-size: 16px; margin-bottom: 10px; display: block; }
@@ -39,8 +40,22 @@
 </head>
 <body>
 
-  <div class="box">
-    <h2 style="color: #1a73e8; margin-top:0; text-align: center;">Hakem Yönetim Paneli</h2>
+  <!-- 1. ADIM: HAKEM GİRİŞ EKRANI -->
+  <div class="box" id="login-alani" style="max-width: 400px; text-align: center;">
+    <h3 style="color: #1a73e8; margin-top:0;">🔒 Hakem Giriş Paneli</h3>
+    <p style="font-size:13px; color:#666;">Turnuva yönetimi için yetkili girişi yapınız.</p>
+    <input type="text" id="hakem-user" placeholder="Kullanıcı Adı (admin veya hakem)">
+    <input type="password" id="hakem-pass" placeholder="Şifreniz">
+    <button onclick="hakemGiris()">Giriş Yap</button>
+    <div id="login-err" style="color:red; font-size:13px; margin-top:10px;"></div>
+  </div>
+
+  <!-- 2. ADIM: ASIL YÖNETİM PANELİ (GİRİŞTEN SONRA AÇILIR) -->
+  <div class="box" id="ana-panel" style="display: none;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <h2 style="color: #1a73e8; margin:0;">Hakem Yönetim Paneli</h2>
+      <button class="btn-danger" onclick="cikisYap()" style="width:auto; padding:6px 12px; margin:0; font-size:12px;">Çıkış Yap</button>
+    </div>
 
     <div class="tabs">
       <div class="tab active" onclick="switchTab('tab-kurulum', this)">Turnuva Kurulumu</div>
@@ -74,20 +89,24 @@
       </div>
 
       <div class="panel-box" style="border-color: #0275d8; background: #f0f7fd;">
-        <span class="panel-header" style="color: #0275d8;">2. Tur Saatleri & Süre Planlaması</span>
+        <span class="panel-header" style="color: #0275d8;">2. Tur Saatleri & Özel Süre Planlaması</span>
         <div class="row">
-          <div class="col">
-            <label>Kadro Teslim Kapanışı</label>
-            <select id="kapanis-sure">
-              <option value="15">Maçtan 15 dakika önce kapansın</option>
-              <option value="30" selected>Maçtan 30 dakika önce kapansın</option>
-              <option value="45">Maçtan 45 dakika önce kapansın</option>
-              <option value="60">Maçtan 1 saat önce kapansın</option>
-            </select>
-          </div>
           <div class="col">
             <label>1. Tur Başlama Zamanı</label>
             <input type="datetime-local" id="tur1-zaman">
+          </div>
+          <div class="col">
+            <label>Kapanış Süresi (Dakika)</label>
+            <div style="display:flex; gap:8px;">
+              <select id="kapanis-hazir" onchange="sureSecimDegisti(this.value)">
+                <option value="15">15 Dk Önce</option>
+                <option value="30" selected>30 Dk Önce</option>
+                <option value="45">45 Dk Önce</option>
+                <option value="60">60 Dk Önce</option>
+                <option value="ozel">Özel Dakika...</option>
+              </select>
+              <input type="number" id="kapanis-ozel-dk" placeholder="Dk (Örn: 55)" value="30" style="width:110px;">
+            </div>
           </div>
         </div>
       </div>
@@ -137,6 +156,61 @@
 
   <script>
     const API_BASE = "https://satranc.ekinhaneriskin.com/api";
+
+    // AUTH İŞLEMLERİ
+    function authHeader() {
+      return {
+        "x-hakem-user": sessionStorage.getItem("h_user") || "",
+        "x-hakem-pass": sessionStorage.getItem("h_pass") || ""
+      };
+    }
+
+    async function hakemGiris() {
+      const u = document.getElementById("hakem-user").value.trim();
+      const p = document.getElementById("hakem-pass").value.trim();
+      const err = document.getElementById("login-err");
+
+      try {
+        const res = await fetch(`${API_BASE}/hakem/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user: u, pass: p })
+        });
+        const r = await res.json();
+        if (r.success) {
+          sessionStorage.setItem("h_user", u);
+          sessionStorage.setItem("h_pass", p);
+          paneliGoster();
+        } else {
+          err.innerText = r.hata || "Giriş başarısız.";
+        }
+      } catch (e) {
+        err.innerText = "Sunucu bağlantı hatası.";
+      }
+    }
+
+    function paneliGoster() {
+      document.getElementById("login-alani").style.display = "none";
+      document.getElementById("ana-panel").style.display = "block";
+    }
+
+    function cikisYap() {
+      sessionStorage.clear();
+      window.location.reload();
+    }
+
+    window.onload = function() {
+      if (sessionStorage.getItem("h_user") && sessionStorage.getItem("h_pass")) {
+        paneliGoster();
+      }
+    };
+
+    function sureSecimDegisti(val) {
+      const ozel = document.getElementById("kapanis-ozel-dk");
+      if (val !== "ozel") {
+        ozel.value = val;
+      }
+    }
 
     function switchTab(id, el) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -235,7 +309,7 @@
       btn.disabled = true;
 
       const macSaati = new Date(document.getElementById("tur1-zaman").value);
-      const kapanisDk = parseInt(document.getElementById("kapanis-sure").value) || 30;
+      const kapanisDk = parseInt(document.getElementById("kapanis-ozel-dk").value) || 30;
       const kapanisZamani = new Date(macSaati.getTime() - kapanisDk * 60000);
 
       const turPlani = {
@@ -259,7 +333,10 @@
       try {
         const res = await fetch(`${API_BASE}/kurulumYap`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            ...authHeader()
+          },
           body: JSON.stringify(payload)
         });
         const result = await res.json();
@@ -274,7 +351,7 @@
         document.getElementById("sonuc").innerHTML = `
           <b>✅ ${result.mesaj}</b><br><br>
           <b>Turnuva Kodu:</b> ${kod}<br>
-          <b>1. Tur Kapanış:</b> ${kapanisZamani.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}<br><br>
+          <b>Kadro Kapanış Süresi:</b> Maçtan ${kapanisDk} dakika önce (${kapanisZamani.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})})<br><br>
           <b>Kaptan Paylaşım Linki:</b><br>
           <input type="text" value="${link}" id="k-link" readonly style="background:#fff;">
           <button onclick="navigator.clipboard.writeText('${link}'); alert('Link kopyalandı!')">📋 Linki Kopyala</button>
@@ -294,7 +371,9 @@
     async function sifreleriYukle() {
       const kod = document.getElementById("sifre-turnuva-kodu").value.trim().toUpperCase();
       if(!kod) return alert("Turnuva kodu girin.");
-      const res = await fetch(`${API_BASE}/hakem/takimlar?kod=${kod}`);
+      const res = await fetch(`${API_BASE}/hakem/takimlar?kod=${kod}`, {
+        headers: authHeader()
+      });
       const r = await res.json();
       if(!r.success) return alert(r.hata || "Hata oluştu.");
 
@@ -314,7 +393,10 @@
 
       const res = await fetch(`${API_BASE}/hakem/turGuncelle`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          ...authHeader()
+        },
         body: JSON.stringify({ kod: kod, aktifTur: turAdi, kapanisZamani: kapanis, durum: "AÇIK" })
       });
       const r = await res.json();
@@ -324,7 +406,9 @@
     async function kadrolariYukle() {
       const kod = document.getElementById("tur-yonetim-kodu").value.trim().toUpperCase();
       if(!kod) return alert("Turnuva kodu girin.");
-      const res = await fetch(`${API_BASE}/hakem/kadrolar?kod=${kod}`);
+      const res = await fetch(`${API_BASE}/hakem/kadrolar?kod=${kod}`, {
+        headers: authHeader()
+      });
       const r = await res.json();
       if(!r.success) return alert(r.hata || "Hata oluştu.");
 
