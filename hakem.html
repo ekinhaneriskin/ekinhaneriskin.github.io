@@ -3,124 +3,161 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hakem Paneli - Çoklu Kategori Turnuva</title>
+  <title>Hakem Yönetim Paneli - Satranç Turnuvası</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
-    .box { background: white; max-width: 600px; margin: 20px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    input[type="text"], input[type="number"], input[type="file"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; box-sizing: border-box; }
-    .row { display: flex; gap: 15px; margin-top: 15px; text-align: left;}
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; text-align: center; color: #333; }
+    .box { background: white; max-width: 750px; margin: 20px auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: left; }
+    input[type="text"], input[type="number"], input[type="file"], select { width: 100%; padding: 10px; margin: 6px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; box-sizing: border-box; }
+    .row { display: flex; gap: 15px; margin-top: 10px; }
     .col { flex: 1; }
-    .col label { font-size: 14px; font-weight: bold; color: #333; }
+    .col label { font-size: 13px; font-weight: bold; color: #444; }
     
-    button { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 15px; transition: 0.2s; }
+    button { background: #1a73e8; color: white; border: none; padding: 12px; width: 100%; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 12px; transition: 0.2s; }
     button:hover { background: #1557b0; }
     button:disabled { background: #ccc; cursor: not-allowed; }
-    .btn-green { background: #28a745; margin-top: 10px;} .btn-green:hover { background: #218838; }
-    .btn-outline { background: transparent; color: #1a73e8; border: 2px solid #1a73e8; padding: 10px; margin-top: 5px; }
+    .btn-green { background: #28a745; } .btn-green:hover { background: #218838; }
+    .btn-outline { background: transparent; color: #1a73e8; border: 2px solid #1a73e8; padding: 8px; margin-top: 8px; }
     
-    #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; border-radius: 5px; display: none; text-align: left; border: 1px solid #cce0ff; color: #1a73e8;}
-    .bilgi { font-size: 13px; color: #666; text-align: left; display: block; margin-bottom: 5px; }
+    .panel-box { border: 2px dashed #28a745; background: #f8fff9; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    .panel-header { font-weight: bold; color: #155724; font-size: 16px; margin-bottom: 10px; display: block; }
+    .tur-item { background: white; border: 1px solid #ddd; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
     
-    .xml-panel { border: 2px dashed #28a745; background: #f8fff9; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; }
-    .xml-panel h3 { color: #28a745; margin-top: 0; font-size: 18px; margin-bottom: 5px;}
-    .sepet-listesi { background: white; border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-top: 15px; font-size: 14px; display: none; }
-    .sepet-item { border-bottom: 1px solid #eee; padding: 5px 0; display: flex; justify-content: space-between; color: #333; font-weight: bold;}
-    .loading-btn { opacity: 0.7; pointer-events: none; }
+    .tabs { display: flex; border-bottom: 2px solid #ddd; margin-bottom: 20px; }
+    .tab { padding: 10px 20px; cursor: pointer; font-weight: bold; border-bottom: 3px solid transparent; }
+    .tab.active { border-bottom: 3px solid #1a73e8; color: #1a73e8; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+    table, th, td { border: 1px solid #e0e0e0; }
+    th { background: #f8f9fa; padding: 10px; text-align: left; }
+    td { padding: 8px 10px; }
     
-    #qr-alani { margin-top: 25px; display: none; animation: fadeIn 0.5s; text-align: center; }
-    #qr-resim { border: 8px solid white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 200px; height: 200px; margin: 0 auto; display: block;}
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    #sonuc { margin-top: 20px; padding: 15px; background: #e8f0fe; border-radius: 6px; display: none; border: 1px solid #cce0ff; color: #1a73e8; }
+    #qr-resim { border: 6px solid white; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 180px; height: 180px; margin: 15px auto; display: block; }
   </style>
 </head>
 <body>
 
   <div class="box">
-    <h2 style="color: #1a73e8; margin-top:0;">Merkezi Turnuva Kurulumu</h2>
-    
-    <div style="text-align: left; margin-bottom: 20px;">
-      <label style="font-weight:bold;">1. Google Sheet Linki (Sıfır Tablo) <span style="color:red">*</span></label>
-      <input type="text" id="sheetId" placeholder="Örn: https://docs.google.com/spreadsheets/d/...">
+    <h2 style="color: #1a73e8; margin-top:0; text-align: center;">Hakem Yönetim Paneli</h2>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('tab-kurulum', this)">Turnuva Kurulumu</div>
+      <div class="tab" onclick="switchTab('tab-sifreler', this)">Takım Şifreleri</div>
+      <div class="tab" onclick="switchTab('tab-turlar', this)">Tur Yönetimi & Canlı Kadrolar</div>
     </div>
 
-    <div class="xml-panel">
-      <h3>🚀 Çoklu Kategori XML Sepeti</h3>
-      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">Kategori adını girin ve ilgili XML'leri seçip sepete atın.</p>
-      
-      <div style="background: #eafaf1; padding: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">
-        <label style="font-weight:bold; color:#155724;">Kategori Adı <span style="color:red">*</span></label>
-        <input type="text" id="kategoriAdi" placeholder="Örn: Minikler Kız, U12, Genel vb.">
-
-        <label style="font-weight:bold; color:#155724;">Chess-Results Turnuva Kodu</label>
-        <input type="text" id="chessResultsId" placeholder="Sadece rakam giriniz. Örn: 1234567">
-        <span style="font-size:12px; color:#666;">
-          Boş bırakılabilir. Sadece rakamlardan oluşan Tnr kodunu giriniz.
-        </span>
+    <!-- TAB 1: KURULUM -->
+    <div id="tab-kurulum" class="tab-content active">
+      <div class="panel-box">
+        <span class="panel-header">1. Çoklu Kategori XML Sepeti</span>
+        <div class="row">
+          <div class="col">
+            <label>Kategori Adı *</label>
+            <input type="text" id="kategoriAdi" placeholder="Örn: U12 Genel, Gençler Kız">
+          </div>
+          <div class="col">
+            <label>Chess-Results Kodu</label>
+            <input type="text" id="chessResultsId" placeholder="Örn: 1234567">
+          </div>
+        </div>
         
-        <label style="font-size:13px; font-weight:bold; margin-top:5px; display:block;">Takımlar XML:</label>
-        <input type="file" id="teamXml" accept=".xml" style="padding: 5px;">
+        <label style="font-size:12px; font-weight:bold; margin-top:5px; display:block;">Takımlar XML:</label>
+        <input type="file" id="teamXml" accept=".xml">
         
-        <label style="font-size:13px; font-weight:bold; margin-top:5px; display:block;">Sporcular XML:</label>
-        <input type="file" id="playerXml" accept=".xml" style="padding: 5px;">
+        <label style="font-size:12px; font-weight:bold; margin-top:5px; display:block;">Sporcular XML:</label>
+        <input type="file" id="playerXml" accept=".xml">
         
         <button class="btn-outline" onclick="kategoriSepeteEkle()">Kategoriyi Sepete Ekle 🛒</button>
+        <div id="sepet-icerik" style="margin-top: 10px;"></div>
       </div>
 
-      <div id="sepet-kutusu" class="sepet-listesi">
-        <div style="color: #666; font-size: 12px; margin-bottom: 5px;">SEPETTEKİ KATEGORİLER:</div>
-        <div id="sepet-icerik"></div>
+      <div class="panel-box" style="border-color: #0275d8; background: #f0f7fd;">
+        <span class="panel-header" style="color: #0275d8;">2. Tur Saatleri & Süre Planlaması</span>
+        <div class="row">
+          <div class="col">
+            <label>Kadro Teslim Kapanışı</label>
+            <select id="kapanis-sure">
+              <option value="15">Maçtan 15 dakika önce kapansın</option>
+              <option value="30" selected>Maçtan 30 dakika önce kapansın</option>
+              <option value="45">Maçtan 45 dakika önce kapansın</option>
+              <option value="60">Maçtan 1 saat önce kapansın</option>
+            </select>
+          </div>
+          <div class="col">
+            <label>1. Tur Başlama Zamanı</label>
+            <input type="datetime-local" id="tur1-zaman">
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-box" style="border-color: #6c757d; background: #fafafa;">
+        <span class="panel-header" style="color: #333;">3. Masa ve Kural Ayarları</span>
+        <div class="row">
+          <div class="col"><label>Genel Masa</label><input type="number" id="m-ana" value="4" min="0"></div>
+          <div class="col"><label>Kadın Masa</label><input type="number" id="m-kadin" value="0" min="0"></div>
+          <div class="col"><label>U20 Masa</label><input type="number" id="m-u20" value="0" min="0"></div>
+          <div class="col"><label>Hesap Yılı</label><input type="number" id="hesap-yili"></div>
+        </div>
+        <label style="font-size:12px; font-weight:bold; margin-top:8px; display:block;">Turnuva Logo URL (İsteğe Bağlı):</label>
+        <input type="text" id="logoUrl" placeholder="https://... /logo.png">
+      </div>
+
+      <button class="btn-green" id="btn-kur" onclick="tumSepetiKur()" disabled>Turnuvayı Sunucuya Kur & Kaptan Linki Üret</button>
+      
+      <div id="sonuc"></div>
+      <div id="qr-alani" style="text-align: center; display: none;">
+        <p style="font-weight:bold; margin-top:10px;">Kaptanlar İçin QR Kod:</p>
+        <img id="qr-resim" src="">
       </div>
     </div>
 
-    <div style="text-align: left; margin-bottom: 20px;">
-      <label style="font-weight:bold;">2. Turnuva Görsel Linki (İsteğe Bağlı)</label>
-      <input type="text" id="logoUrl" placeholder="Sonu .jpg veya .png biten link">
+    <!-- TAB 2: ŞİFRELER -->
+    <div id="tab-sifreler" class="tab-content">
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col"><input type="text" id="sifre-turnuva-kodu" placeholder="Turnuva Kodu (Örn: TRN123456)"></div>
+        <div class="col" style="flex: 0.5;"><button style="margin-top:0;" onclick="sifreleriYukle()">Şifreleri Getir</button></div>
+      </div>
+      <div id="sifre-tablo-alani"></div>
     </div>
 
-    <div style="border-top: 2px dashed #eee; padding-top: 20px;">
-      <h3 style="margin: 0 0 10px 0; color: #333; font-size:18px; text-align: left;">3. Masa Yapılandırması (Tüm Kategoriler İçin)</h3>
-      <div class="row">
-        <div class="col"><label>Genel</label><input type="number" id="m-ana" value="4" min="0"></div>
-        <div class="col"><label>Kadın</label><input type="number" id="m-kadin" value="0" min="0"></div>
-        <div class="col"><label>U20</label><input type="number" id="m-u20" value="0" min="0"></div>
-        <div class="col"><label title="Sezon 15 Eylül'de başlar. Buna göre otomatik hesaplanır.">Hesap Yılı 📅</label><input type="number" id="hesap-yili"></div>
+    <!-- TAB 3: TUR YÖNETİMİ & CANLI KADROLAR -->
+    <div id="tab-turlar" class="tab-content">
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col"><input type="text" id="tur-yonetim-kodu" placeholder="Turnuva Kodu"></div>
+        <div class="col"><input type="text" id="aktif-tur-adi" placeholder="Örn: 2. Tur Kadro Bildirimi"></div>
+        <div class="col"><input type="datetime-local" id="aktif-tur-kapanis"></div>
+        <div class="col" style="flex: 0.6;"><button style="margin-top:0;" class="btn-green" onclick="turuGuncelle()">Turu Aç / Güncelle</button></div>
       </div>
-    </div>
-    
-    <button class="btn-green" id="btn-kur" onclick="tumSepetiKur()" disabled>Tüm Sepeti Kur & Kaptan Linkini Üret</button>
-    <div id="sonuc"></div>
-    
-    <div id="qr-alani">
-      <p style="font-size: 14px; color: #555; font-weight: bold; margin-bottom:10px;">Kaptanların Taraması İçin QR Kod:</p>
-      <img id="qr-resim" src="" alt="Turnuva QR Kodu">
+      <button onclick="kadrolariYukle()" class="btn-outline">Canlı Kadro Bildirimlerini Listele</button>
+      <div id="kadro-tablo-alani"></div>
     </div>
   </div>
-  <!-- COPYRIGHT BÖLÜMÜ BAŞLANGICI -->
-  <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; text-align: center; font-size: 13px; color: #777;">
-    &copy; 2026 Ekinhan ERİŞKİN. Tüm hakları saklıdır.
-  </div>
-  <!-- COPYRIGHT BÖLÜMÜ BİTİŞİ -->
+
   <script>
-    // YENİ: SAYFA AÇILDIĞINDA SEZON YILINI OTOMATİK HESAPLA
+    const API_BASE = "https://satranc.ekinhaneriskin.com/api";
+
+    function switchTab(id, el) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById(id).classList.add('active');
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
-        let bugun = new Date();
-        let yil = bugun.getFullYear();
-        let ay = bugun.getMonth(); // 0'dan başlar (Eylül = 8)
-        let gun = bugun.getDate();
-        
-        // Eğer tarih 15 Eylül veya sonrasıysa, yaş hesabı bir sonraki yıl için yapılır
-        if (ay > 8 || (ay === 8 && gun >= 15)) {
-            yil = yil + 1;
-        }
-        document.getElementById("hesap-yili").value = yil;
+      let bugun = new Date();
+      let yil = bugun.getFullYear();
+      let ay = bugun.getMonth();
+      let gun = bugun.getDate();
+      if (ay > 8 || (ay === 8 && gun >= 15)) yil += 1;
+      document.getElementById("hesap-yili").value = yil;
+      
+      let varsayilanSaat = new Date(Date.now() + 60*60*1000);
+      document.getElementById("tur1-zaman").value = varsayilanSaat.toISOString().slice(0,16);
     });
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbzZMZcrUGgCM_fVRxsI1gBkk8Dx0rkN0vAnBo3T75fs1a4t0rQOcMPS3kD2r-obJGcPDQ/exec";
-    
-    let turnuvaSepeti = { 
-      takimlar: [], 
-      sporcular: [],
-      kategoriler: []
-    };
-    let eklenenKategoriler = [];
+
+    let turnuvaSepeti = { takimlar: [], sporcular: [], kategoriler: [] };
 
     function dosyaOku(file) {
       return new Promise((resolve, reject) => {
@@ -132,218 +169,171 @@
       });
     }
 
-    function chessResultsKoduTemizle(raw) {
-      if (!raw) return "";
-    
-      const s = raw.toString().trim();
-    
-      if (s === "") return "";
-    
-      if (!/^[0-9]+$/.test(s)) {
-        return null;
-      }
-    
-      return s;
-    }
-
     async function kategoriSepeteEkle() {
       let katAdi = document.getElementById("kategoriAdi").value.trim().toUpperCase();
       let tFile = document.getElementById("teamXml").files[0];
       let pFile = document.getElementById("playerXml").files[0];
-      let crRaw = document.getElementById("chessResultsId").value.trim();
-      let chessResultsId = chessResultsKoduTemizle(crRaw);
-      
-      if (chessResultsId === null) {
-        return alert("Chess-Results kodu sadece rakamlardan oluşmalıdır. Örn: 1234567");
+      let crId = document.getElementById("chessResultsId").value.trim();
+
+      if(!katAdi) return alert("Kategori adı giriniz.");
+      if(!tFile || !pFile) return alert("XML dosyalarını seçiniz.");
+
+      const teamXmlText = await dosyaOku(tFile);
+      const playerXmlText = await dosyaOku(pFile);
+      const parser = new DOMParser();
+      const teamDoc = parser.parseFromString(teamXmlText, "text/xml");
+      const playerDoc = parser.parseFromString(playerXmlText, "text/xml");
+
+      let takimSozlugu = {};
+      let teams = teamDoc.getElementsByTagName("Team");
+      let tCount = 0;
+      for(let i=0; i<teams.length; i++) {
+        let tName = teams[i].getAttribute("TeamLongname") || teams[i].getAttribute("Name");
+        let tId = teams[i].getAttribute("TeamUniqueId") || teams[i].getAttribute("ID");
+        if(tName) {
+          let formatli = `${tName.trim()} (${katAdi})`;
+          takimSozlugu[tId] = formatli;
+          turnuvaSepeti.takimlar.push({ ad: formatli, kategori: katAdi, chessResultsId: crId });
+          tCount++;
+        }
       }
 
-      if(!katAdi) return alert("Lütfen kategori adını girin (Örn: U12).");
-      if(!tFile || !pFile) return alert("Lütfen hem takım hem sporcu XML'ini seçin.");
-      if(eklenenKategoriler.includes(katAdi)) return alert("Bu kategori adını zaten eklediniz!");
+      let players = playerDoc.getElementsByTagName("Player");
+      let pCount = 0;
+      for(let i=0; i<players.length; i++) {
+        let fName = players[i].getAttribute("Firstname") || "";
+        let lName = players[i].getAttribute("Lastname") || "";
+        let pName = (fName + " " + lName).trim() || players[i].getAttribute("Name") || "";
+        let pSex = players[i].getAttribute("Gender") || players[i].getAttribute("Sex") || "";
+        let rawDate = players[i].getAttribute("Birthday") || players[i].getAttribute("Year") || "";
+        let pYear = rawDate.length >= 4 ? rawDate.substring(0, 4) : rawDate;
+        let pId = players[i].getAttribute("PlayerUniqueId") || players[i].getAttribute("ID") || "";
+        let teamIdRef = players[i].getAttribute("TeamUniqueId") || players[i].getAttribute("TeamSno");
+        let boardNo = players[i].getAttribute("BoardNumber") || players[i].getAttribute("BoardNo") || "";
+        let pTeam = (teamIdRef ? takimSozlugu[teamIdRef] : "") || players[i].getAttribute("Club") || "";
 
-      try {
-        const teamXmlText = await dosyaOku(tFile);
-        const playerXmlText = await dosyaOku(pFile);
-
-        turnuvaSepeti.kategoriler.push({
-          ad: katAdi,
-          chessResultsId: chessResultsId || ""
-        });
-        
-        const parser = new DOMParser();
-        const teamDoc = parser.parseFromString(teamXmlText, "text/xml");
-        const playerDoc = parser.parseFromString(playerXmlText, "text/xml");
-
-        let tCount = 0;
-        let pCount = 0;
-        let takimSozlugu = {};
-
-        // 1. TAKIMLARI AYRIŞTIR (Orijinal XML'e Tam Uyumlu)
-        let teams = teamDoc.getElementsByTagName("Team");
-        for (let i = 0; i < teams.length; i++) {
-          let tName = teams[i].getAttribute("TeamLongname") || teams[i].getAttribute("Name");
-          let tId = teams[i].getAttribute("TeamUniqueId") || teams[i].getAttribute("ID");
-          
-          if(tName) {
-            let formatliTakimAdi = `${tName.trim()} (${katAdi})`;
-            takimSozlugu[tId] = formatliTakimAdi; // ID'ye göre takım ismini hafızaya al
-            turnuvaSepeti.takimlar.push({ ad: formatliTakimAdi, id: tId, orjAd: tName.trim(), kategori: katAdi, chessResultsId: chessResultsId || "" });
-            tCount++;
-          }
+        if(pName && pTeam) {
+          turnuvaSepeti.sporcular.push({
+            isim: pName, cinsiyet: pSex, yil: pYear, takim: pTeam, playerId: pId, kategori: katAdi, boardNo: boardNo
+          });
+          pCount++;
         }
-
-        // 2. SPORCULARI AYRIŞTIR (Orijinal XML'e Tam Uyumlu)
-        let players = playerDoc.getElementsByTagName("Player");
-        for (let i = 0; i < players.length; i++) {
-          // İsim Birleştirme (Firstname + Lastname)
-          let fName = players[i].getAttribute("Firstname") || "";
-          let lName = players[i].getAttribute("Lastname") || "";
-          let pName = (fName + " " + lName).trim() || players[i].getAttribute("Name") || "";
-          
-          // Cinsiyet
-          let pSex = players[i].getAttribute("Gender") || players[i].getAttribute("Sex") || "";
-          
-          // Tarih (20160723 -> Sadece "2016" kısmını alıyoruz)
-          let rawDate = players[i].getAttribute("Birthday") || players[i].getAttribute("Year") || "";
-          let pYear = rawDate.length >= 4 ? rawDate.substring(0, 4) : rawDate;
-          
-          // ID'ler
-          let pId = players[i].getAttribute("PlayerUniqueId") || players[i].getAttribute("ID") || `P_${Math.floor(Math.random()*10000)}`;
-          let teamIdRef = players[i].getAttribute("TeamUniqueId") || players[i].getAttribute("TeamSno");
-          let boardNo =
-              players[i].getAttribute("BoardNumber") ||
-              players[i].getAttribute("Boardnumber") ||
-              players[i].getAttribute("BoardNo") ||
-              players[i].getAttribute("BoardNr") ||
-              players[i].getAttribute("Board") ||
-              "";
-          
-          // Takım İsmini Bulma (Öncelikle TeamUniqueId üzerinden sözlükten bakar)
-          let pTeam = (teamIdRef ? takimSozlugu[teamIdRef] : "") || players[i].getAttribute("Club") || players[i].getAttribute("TeamLongname") || "";
-          
-          if(pName && pTeam) {
-             let formatliTakimAdi = pTeam.includes(`(${katAdi})`) ? pTeam : `${pTeam.trim()} (${katAdi})`;
-              turnuvaSepeti.sporcular.push({ 
-                isim: pName,
-                cinsiyet: pSex,
-                yil: pYear,
-                takim: formatliTakimAdi,
-                playerId: pId,
-                teamId: teamIdRef || "",
-                kategori: katAdi,
-                chessResultsId: chessResultsId || "",
-                boardNo: boardNo
-              });
-             pCount++;
-          }
-        }
-
-        eklenenKategoriler.push(katAdi);
-        document.getElementById("sepet-kutusu").style.display = "block";
-        document.getElementById("sepet-icerik").innerHTML += `
-            <div class="sepet-item">
-                <span>📁 ${katAdi}</span>
-                <span style="color:#28a745; font-size:12px;">
-                  ${tCount} Takım | ${pCount} Sporcu ${chessResultsId ? "| CR: " + chessResultsId : "| CR: Yok"}
-                </span>
-            </div>`;
-        
-        document.getElementById("kategoriAdi").value = "";
-        document.getElementById("chessResultsId").value = "";
-        document.getElementById("teamXml").value = "";
-        document.getElementById("playerXml").value = "";
-        document.getElementById("btn-kur").disabled = false;
-
-      } catch(e) {
-        alert("XML ayrıştırma hatası! Detay: " + e.message);
       }
+
+      document.getElementById("sepet-icerik").innerHTML += `
+        <div class="tur-item"><b>📁 ${katAdi}</b> <span>${tCount} Takım | ${pCount} Sporcu</span></div>
+      `;
+      document.getElementById("btn-kur").disabled = false;
+      document.getElementById("kategoriAdi").value = "";
+      document.getElementById("teamXml").value = "";
+      document.getElementById("playerXml").value = "";
     }
 
     async function tumSepetiKur() {
-      const sheetIdInput = document.getElementById("sheetId").value.trim();
-      if(!sheetIdInput) { alert("Lütfen 1. Adımdaki Google Sheet linkini girin!"); return; }
+      const btn = document.getElementById("btn-kur");
+      btn.innerText = "Sunucuya Kuruluyor...";
+      btn.disabled = true;
 
-      let sheetId = sheetIdInput;
-      const urlEslenme = sheetIdInput.match(/\/d\/([a-zA-Z0-9-_]+)/);
-      if (urlEslenme && urlEslenme[1]) sheetId = urlEslenme[1];
+      const macSaati = new Date(document.getElementById("tur1-zaman").value);
+      const kapanisDk = parseInt(document.getElementById("kapanis-sure").value) || 30;
+      const kapanisZamani = new Date(macSaati.getTime() - kapanisDk * 60000);
 
-      // İSİM ÇAKIŞMA KALKANI
-      let isimSayaci = {};
-      turnuvaSepeti.sporcular.forEach(s => { isimSayaci[s.isim] = (isimSayaci[s.isim] || 0) + 1; });
-      turnuvaSepeti.sporcular.forEach(s => {
-          if(isimSayaci[s.isim] > 1) s.isim = `${s.isim} (${s.playerId})`;
-      });
+      const turPlani = {
+        turlar: [
+          { ad: "1. Tur Kadro Bildirimi", macZamani: macSaati.toISOString(), kapanis: kapanisZamani.toISOString() }
+        ]
+      };
 
-      let btn = document.getElementById("btn-kur");
-      let sonuc = document.getElementById("sonuc");
-      btn.innerText = "Tüm Kategoriler Google Sheet'e Yazılıyor...";
-      btn.classList.add("loading-btn");
-
-      // HATA BURADAYDI: Bu satırları yukarı (Fetch işleminin öncesine) taşıdık!
-      const logo = document.getElementById("logoUrl").value.trim();
-      const b_ana = parseInt(document.getElementById("m-ana").value) || 0;
-      const b_kadin = parseInt(document.getElementById("m-kadin").value) || 0;
-      const b_u20 = parseInt(document.getElementById("m-u20").value) || 0;
-      const hesapYili = parseInt(document.getElementById("hesap-yili").value) || new Date().getFullYear();
+      const payload = {
+        data: turnuvaSepeti,
+        config: {
+          a: parseInt(document.getElementById("m-ana").value) || 4,
+          k: parseInt(document.getElementById("m-kadin").value) || 0,
+          u: parseInt(document.getElementById("m-u20").value) || 0,
+          yil: parseInt(document.getElementById("hesap-yili").value),
+          logo: document.getElementById("logoUrl").value.trim()
+        },
+        turPlani: turPlani
+      };
 
       try {
-        const response = await fetch(GAS_URL, {
+        const res = await fetch(`${API_BASE}/kurulumYap`, {
           method: "POST",
-          body: JSON.stringify({ 
-              action: "kurulumYap", 
-              data: turnuvaSepeti, 
-              sheetId: sheetId,
-              config: {a: b_ana, k: b_kadin, u: b_u20, yil: hesapYili, logo: logo, url: GAS_URL}
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
         });
-        const res = await response.json();
+        const result = await res.json();
+        if(result.hata) throw new Error(result.hata);
 
-        if (res.hata) {
-          throw new Error(res.hata);
-        }
+        const kod = result.kod;
+        const link = `https://www.ekinhaneriskin.com/kaptan.html?t=${kod}`;
         
-        if (!res.kod) {
-          throw new Error(
-            "Sunucudan turnuva kodu dönmedi. Apps Script doPost fonksiyonu güncel olmayabilir veya yeni deployment yapılmamış olabilir."
-          );
-        }
-        
-        const turnuvaKodu = res.kod;
-        
-        const paylasimLinki = `https://www.ekinhaneriskin.com/kaptan.html?t=${turnuvaKodu}`;
+        document.getElementById("sifre-turnuva-kodu").value = kod;
+        document.getElementById("tur-yonetim-kodu").value = kod;
 
-        // Arka plandan gelen etiketin adını bilmesek bile yakalayan (veya varsayılan metin basan) akıllı satır:
-        let gelenMesaj = res.mesaj || res.message || res.sonuc || "Sistem kuruldu.";
-
-        sonuc.innerHTML = `
-          <div style="color:#155724; margin-bottom:10px; font-weight:bold; font-size:15px;">✅ ${gelenMesaj}</div>
-          <div style="color:#333; font-weight:normal; margin-bottom:15px; font-size:13px;">
-            Eklenen Toplam Kategori: ${eklenenKategoriler.length}<br>
-            Toplam Takım: ${turnuvaSepeti.takimlar.length}<br>
-            Toplam Sporcu: ${turnuvaSepeti.sporcular.length}
-          </div>
-          
-          <div style="background-color:#ffffff; border:2px dashed #1a73e8; padding:15px; border-radius:8px; margin-top:15px;">
-            <b style="color:#1a73e8; font-size:14px;">Kaptanlara Gönderilecek Link:</b><br><br>
-            <input type="text" id="kopyalanacakLink" value="${paylasimLinki}" style="width:95%; padding:10px; border:1px solid #ccc; border-radius:4px; margin-bottom:10px; color:#555; background-color:#f8f9fa;" readonly>
-            <button onclick="document.getElementById('kopyalanacakLink').select(); document.execCommand('copy'); alert('✅ Kaptanlar ile paylaşabileceğiniz link başarıyla kopyalandı!');" style="background-color:#1a73e8; color:white; border:none; padding:10px 15px; border-radius:4px; cursor:pointer; font-weight:bold; width:100%;">
-              📋 LİNKİ KOPYALA
-            </button>
-          </div>
+        document.getElementById("sonuc").innerHTML = `
+          <b>✅ ${result.mesaj}</b><br><br>
+          <b>Turnuva Kodu:</b> ${kod}<br>
+          <b>1. Tur Kapanış:</b> ${kapanisZamani.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}<br><br>
+          <b>Kaptan Paylaşım Linki:</b><br>
+          <input type="text" value="${link}" id="k-link" readonly style="background:#fff;">
+          <button onclick="navigator.clipboard.writeText('${link}'); alert('Link kopyalandı!')">📋 Linki Kopyala</button>
         `;
-        sonuc.style.display = "block";
-        
-        document.getElementById("qr-resim").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(paylasimLinki)}`;
+        document.getElementById("sonuc").style.display = "block";
+        document.getElementById("qr-resim").src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(link)}`;
         document.getElementById("qr-alani").style.display = "block";
-        
-        btn.innerText = "Kurulum Başarıyla Tamamlandı";
-        btn.style.background = "#155724";
 
+        btn.innerText = "Kurulum Tamamlandı";
       } catch(e) {
-        alert("Sunucu bağlantı hatası: " + e.message);
-        btn.innerText = "Tüm Sepeti Kur & Kaptan Linkini Üret";
-        btn.classList.remove("loading-btn");
+        alert("Hata: " + e.message);
+        btn.innerText = "Tekrar Dene";
+        btn.disabled = false;
       }
+    }
+
+    async function sifreleriYukle() {
+      const kod = document.getElementById("sifre-turnuva-kodu").value.trim().toUpperCase();
+      if(!kod) return alert("Turnuva kodu girin.");
+      const res = await fetch(`${API_BASE}/hakem/takimlar?kod=${kod}`);
+      const r = await res.json();
+      if(!r.success) return alert(r.hata || "Hata oluştu.");
+
+      let h = `<table><tr><th>Kategori</th><th>Takım Adı</th><th>Giriş Şifresi</th></tr>`;
+      r.takimlar.forEach(t => {
+        h += `<tr><td>${t.kategori}</td><td><b>${t.takim_adi}</b></td><td><code style="font-size:15px; color:#1a73e8;">${t.sifre}</code></td></tr>`;
+      });
+      h += `</table>`;
+      document.getElementById("sifre-tablo-alani").innerHTML = h;
+    }
+
+    async function turuGuncelle() {
+      const kod = document.getElementById("tur-yonetim-kodu").value.trim().toUpperCase();
+      const turAdi = document.getElementById("aktif-tur-adi").value.trim();
+      const kapanis = document.getElementById("aktif-tur-kapanis").value;
+      if(!kod || !turAdi || !kapanis) return alert("Lütfen tüm alanları doldurun.");
+
+      const res = await fetch(`${API_BASE}/hakem/turGuncelle`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kod: kod, aktifTur: turAdi, kapanisZamani: kapanis, durum: "AÇIK" })
+      });
+      const r = await res.json();
+      alert(r.mesaj || r.hata);
+    }
+
+    async function kadrolariYukle() {
+      const kod = document.getElementById("tur-yonetim-kodu").value.trim().toUpperCase();
+      if(!kod) return alert("Turnuva kodu girin.");
+      const res = await fetch(`${API_BASE}/hakem/kadrolar?kod=${kod}`);
+      const r = await res.json();
+      if(!r.success) return alert(r.hata || "Hata oluştu.");
+
+      let h = `<table><tr><th>Tur</th><th>Takım</th><th>Kadro</th><th>Saat</th></tr>`;
+      r.kadrolar.forEach(k => {
+        h += `<tr><td>${k.tur}</td><td><b>${k.takim}</b></td><td>${k.kadro.join(" | ")}</td><td>${k.zaman}</td></tr>`;
+      });
+      h += `</table>`;
+      document.getElementById("kadro-tablo-alani").innerHTML = h;
     }
   </script>
 </body>
