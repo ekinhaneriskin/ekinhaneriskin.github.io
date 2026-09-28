@@ -176,8 +176,13 @@
             align-items: center;
             vertical-align: middle;
             flex-shrink: 0;
-            transform: scale(0.5);       /* Boyutu küçültme oranı (0.7 ile 0.85 arası idealdir) */
-            transform-origin: left center; /* Sol tarafa yaslı şekilde küçülmesini sağlar */
+            transform: scale(0.5);
+            transform-origin: left center;
+            /* Dikey boşlukları sıfırlamak için negatif margin ve yükseklik kısıtlaması */
+            margin-top: -12px;
+            margin-bottom: -12px;
+            height: 24px;
+            overflow: hidden;
         }
     </style>
 </head>
