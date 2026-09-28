@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Assoc. Prof. Ekinhan Eriskin - Transportation Engineering, Intelligent Transportation Systems, and AI-based Analytics.">
+    <meta property="og:title" content="Ekinhan Erişkin | AI & Transportation">
+    <meta property="og:description" content="Academic profile, research publications, and projects in AI & Intelligent Transportation Systems.">
+    <meta property="og:image" content="https://www.ekinhaneriskin.com/foto.jpeg">
+    <meta property="og:url" content="https://www.ekinhaneriskin.com">
     <title>Ekinhan Erişkin | AI & Transportation</title>
     <link rel="icon" href="icon.ico" type="image/x-icon">
     
@@ -162,6 +167,8 @@
             .hero h1 { font-size: 2.8em; }
             .bio-container { flex-direction: column; text-align: center; }
             #backToTop { bottom: 20px; right: 20px; }
+            .pub-title { padding-right: 0; margin-top: 25px; }
+            .citations-count { top: 15px; right: 15px; }
         }
     </style>
 </head>
@@ -315,25 +322,24 @@
 
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        fetch('publications.json')
-            .then(res => res.json())
-            .then(data => {
-                const pubs = data.publications || data;
-                const pubList = document.getElementById('pub-list');
-                const years = [...new Set(pubs.map(p => p.year))].sort((a,b) => b-a);
-                const indices = [...new Set(pubs.map(p => p.index))];
-                years.forEach(y => document.getElementById('yearFilter').innerHTML += `<option value="${y}">${y}</option>`);
-                const labels = {"sci":"WoS", "scopus":"Scopus", "trdizin":"TR Dizin"};
-                indices.forEach(i => document.getElementById('indexFilter').innerHTML += `<option value="${i}">${labels[i] || i.toUpperCase()}</option>`);
-
-                pubList.innerHTML = '';
-                pubs.forEach(pub => {
+    fetch('publications.json')
+        .then(res => res.json())
+        .then(data => {
+            const pubs = data.publications || data;
+            const pubList = document.getElementById('pub-list');
+            const years = [...new Set(pubs.map(p => p.year))].sort((a,b) => b-a);
+            const indices = [...new Set(pubs.map(p => p.index))];
+            years.forEach(y => document.getElementById('yearFilter').innerHTML += `<option value="${y}">${y}</option>`);
+            const labels = {"sci":"WoS", "scopus":"Scopus", "trdizin":"TR Dizin"};
+            indices.forEach(i => document.getElementById('indexFilter').innerHTML += `<option value="${i}">${labels[i] || i.toUpperCase()}</option>`);
+    
+            pubList.innerHTML = '';
+            pubs.forEach(pub => {
                 let linksHTML = '';
-                if (pub.wos_link) linksHTML += `<a href="${pub.wos_link}" target="_blank" class="index-badge badge-wos">WoS</a>`;
-                if (pub.scopus_link) linksHTML += `<a href="${pub.scopus_link}" target="_blank" class="index-badge badge-scopus">Scopus</a>`;
-                if (pub.trdizin_link) linksHTML += `<a href="${pub.trdizin_link}" target="_blank" class="index-badge badge-trdizin">TR Dizin</a>`;
-            
-                // SDG ikonlarının üzerindeki o ifadeyi geri ekliyoruz
+                if (pub.wos_link) linksHTML += `<a href="${pub.wos_link}" target="_blank" rel="noopener noreferrer" class="index-badge badge-wos">WoS</a>`;
+                if (pub.scopus_link) linksHTML += `<a href="${pub.scopus_link}" target="_blank" rel="noopener noreferrer" class="index-badge badge-scopus">Scopus</a>`;
+                if (pub.trdizin_link) linksHTML += `<a href="${pub.trdizin_link}" target="_blank" rel="noopener noreferrer" class="index-badge badge-trdizin">TR Dizin</a>`;
+        
                 let sdgHTML = '';
                 if (pub.sdg && pub.sdg.length > 0) {
                     sdgHTML = `
@@ -347,32 +353,32 @@
                     });
                     sdgHTML += '</div></div>';
                 }
-            
+        
                 pubList.innerHTML += `
                     <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
                         ${pub.citations && pub.citations !== "0" ? `<div class="citations-count">Cited: ${pub.citations}</div>` : ''}
-                        <div class="pub-title"><a href="https://doi.org/${pub.doi}" target="_blank" class="pub-link">${pub.title}</a></div>
+                        <div class="pub-title"><a href="https://doi.org/${pub.doi}" target="_blank" rel="noopener noreferrer" class="pub-link">${pub.title}</a></div>
                         <div class="journal-name">${pub.journal || ''}</div>
                         <div style="font-size: 0.9em; color: #a1a1aa; margin-bottom: 12px;">${pub.author} (${pub.year})</div>
                         
                         <div class="links-area" style="display:flex; align-items:center; gap:12px;">
                             ${linksHTML}
-                            <a href="https://plu.mx/plum/a/?doi=${pub.doi}" 
+                            <a href="https://plumx.elsevier.com/plum/a/?doi=${pub.doi}" 
                                class="plumx-plum-print-popup" 
                                data-popup="right" 
                                data-size="medium" 
                                style="margin-left: 5px;"></a>
                         </div>
-            
+        
                         ${sdgHTML}
                     </div>`;
             });
-
-                // PlumX scriptini DOM yüklendikten sonra bir kez ekle
-                let s = document.createElement("script");
-                s.src = "https://cdn.plu.mx/widget-popup.js";
-                document.body.appendChild(s);
-            });
+    
+            // Güncellenmiş PlumX widget script adresi
+            let s = document.createElement("script");
+            s.src = "https://plumx.elsevier.com/widget-popup.js";
+            document.body.appendChild(s);
+        });
 
         function filterPubs() {
             const y = document.getElementById("yearFilter").value;
