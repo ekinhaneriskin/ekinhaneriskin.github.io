@@ -366,7 +366,7 @@
                         <div class="links-area" style="display:flex; align-items:center; gap:12px; min-height: 32px;">
                             ${linksHTML}
                             ${pub.doi ? `
-                                <a href="https://plu.mx/plum/a/?doi=${encodeURIComponent(pub.doi)}" 
+                                <a href="https://plumx.elsevier.com/plum/a/?doi=${encodeURIComponent(pub.doi)}" 
                                    class="plumx-plum-print-popup" 
                                    data-popup="right" 
                                    data-size="medium"
@@ -378,26 +378,26 @@
                     </div>`;
             });
     
-            // Tüm liste tek seferde DOM'a basılır
+            // Tüm listeyi tek seferde DOM'a yazdır
             pubList.innerHTML = fullHTML;
     
-            // PlumX scripti yükleme ve tetikleme
+            // Yeni Elsevier PlumX scriptini ekle veya halihazırda varsa yeniden tara
             if (window.__plumX && typeof window.__plumX.loadWidgets === 'function') {
                 window.__plumX.loadWidgets();
             } else {
-                const existingScript = document.querySelector('script[src*="widget-popup.js"]');
-                if (!existingScript) {
-                    const s = document.createElement("script");
-                    s.type = "text/javascript";
-                    s.src = "https://cdn.plu.mx/widget-popup.js";
-                    s.async = true;
-                    document.body.appendChild(s);
-                }
+                // Eski script varsa temizle
+                const oldScript = document.querySelector('script[src*="widget-popup.js"]');
+                if (oldScript) oldScript.remove();
+    
+                const s = document.createElement("script");
+                s.type = "text/javascript";
+                s.src = "https://plumx.elsevier.com/plum/widget-popup.js";
+                s.async = true;
+                document.body.appendChild(s);
             }
         })
         .catch(err => {
             console.error("Yayınlar yüklenirken hata oluştu:", err);
-            document.getElementById('pub-list').innerHTML = '<p>Yayınlar yüklenemedi.</p>';
         });
 
         function filterPubs() {
