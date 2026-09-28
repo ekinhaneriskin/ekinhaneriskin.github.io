@@ -170,6 +170,12 @@
             .pub-title { padding-right: 0; margin-top: 25px; }
             .citations-count { top: 15px; right: 15px; }
         }
+
+        plumx-widget {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -327,11 +333,11 @@
         .then(data => {
             const pubs = data.publications || data;
             const pubList = document.getElementById('pub-list');
-            const years = [...new Set(pubs.map(p => p.year))].sort((a, b) => b - a);
+            const years = [...new Set(pubs.map(p => p.year))].sort((a,b) => b-a);
             const indices = [...new Set(pubs.map(p => p.index))];
             
             years.forEach(y => document.getElementById('yearFilter').innerHTML += `<option value="${y}">${y}</option>`);
-            const labels = { "sci": "WoS", "scopus": "Scopus", "trdizin": "TR Dizin" };
+            const labels = {"sci":"WoS", "scopus":"Scopus", "trdizin":"TR Dizin"};
             indices.forEach(i => document.getElementById('indexFilter').innerHTML += `<option value="${i}">${labels[i] || i.toUpperCase()}</option>`);
     
             let fullHTML = '';
@@ -356,21 +362,27 @@
                     sdgHTML += '</div></div>';
                 }
     
+                // DOI varsa başındaki url kısmını temizleyip saf DOI'yi alıyoruz
+                const cleanDoi = pub.doi ? pub.doi.replace(/^https?:\/\/doi\.org\//, '') : '';
+    
                 fullHTML += `
                     <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
                         ${pub.citations && pub.citations !== "0" ? `<div class="citations-count">Cited: ${pub.citations}</div>` : ''}
-                        <div class="pub-title"><a href="https://doi.org/${pub.doi}" target="_blank" rel="noopener noreferrer" class="pub-link">${pub.title}</a></div>
+                        <div class="pub-title"><a href="https://doi.org/${cleanDoi}" target="_blank" rel="noopener noreferrer" class="pub-link">${pub.title}</a></div>
                         <div class="journal-name">${pub.journal || ''}</div>
                         <div style="font-size: 0.9em; color: #a1a1aa; margin-bottom: 12px;">${pub.author} (${pub.year})</div>
                         
-                        <div class="links-area" style="display:flex; align-items:center; gap:12px; min-height: 32px;">
+                        <div class="links-area" style="display:flex; align-items:center; gap:12px; min-height: 36px;">
                             ${linksHTML}
-                            ${pub.doi ? `
-                                <a href="https://plumx.elsevier.com/plum/a/?doi=${encodeURIComponent(pub.doi)}" 
-                                   class="plumx-plum-print-popup" 
-                                   data-popup="right" 
-                                   data-size="medium"
-                                   data-hide-when-empty="true"></a>
+                            ${cleanDoi ? `
+                                <plumx-widget
+                                    type="artifact"
+                                    identifier-type="doi"
+                                    identifier="${cleanDoi}"
+                                    display="plumprint"
+                                    theme="liberty"
+                                    config='{"hideWhenEmpty":true}'>
+                                </plumx-widget>
                             ` : ''}
                         </div>
     
@@ -378,23 +390,8 @@
                     </div>`;
             });
     
-            // Tüm listeyi tek seferde DOM'a yazdır
+            // Tüm listeyi tek seferde DOM'a yazdırıyoruz
             pubList.innerHTML = fullHTML;
-    
-            // Yeni Elsevier PlumX scriptini ekle veya halihazırda varsa yeniden tara
-            if (window.__plumX && typeof window.__plumX.loadWidgets === 'function') {
-                window.__plumX.loadWidgets();
-            } else {
-                // Eski script varsa temizle
-                const oldScript = document.querySelector('script[src*="widget-popup.js"]');
-                if (oldScript) oldScript.remove();
-    
-                const s = document.createElement("script");
-                s.type = "text/javascript";
-                s.src = "https://plumx.elsevier.com/plum/widget-popup.js";
-                s.async = true;
-                document.body.appendChild(s);
-            }
         })
         .catch(err => {
             console.error("Yayınlar yüklenirken hata oluştu:", err);
@@ -411,5 +408,6 @@
         }
         document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
+    <script src="https://plumx.elsevier.com/widget/plumx-widget.js" defer></script>
 </body>
 </html>
