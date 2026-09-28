@@ -327,19 +327,21 @@
         .then(data => {
             const pubs = data.publications || data;
             const pubList = document.getElementById('pub-list');
-            const years = [...new Set(pubs.map(p => p.year))].sort((a,b) => b-a);
+            const years = [...new Set(pubs.map(p => p.year))].sort((a, b) => b - a);
             const indices = [...new Set(pubs.map(p => p.index))];
+            
             years.forEach(y => document.getElementById('yearFilter').innerHTML += `<option value="${y}">${y}</option>`);
-            const labels = {"sci":"WoS", "scopus":"Scopus", "trdizin":"TR Dizin"};
+            const labels = { "sci": "WoS", "scopus": "Scopus", "trdizin": "TR Dizin" };
             indices.forEach(i => document.getElementById('indexFilter').innerHTML += `<option value="${i}">${labels[i] || i.toUpperCase()}</option>`);
     
-            pubList.innerHTML = '';
+            let fullHTML = '';
+    
             pubs.forEach(pub => {
                 let linksHTML = '';
                 if (pub.wos_link) linksHTML += `<a href="${pub.wos_link}" target="_blank" rel="noopener noreferrer" class="index-badge badge-wos">WoS</a>`;
                 if (pub.scopus_link) linksHTML += `<a href="${pub.scopus_link}" target="_blank" rel="noopener noreferrer" class="index-badge badge-scopus">Scopus</a>`;
                 if (pub.trdizin_link) linksHTML += `<a href="${pub.trdizin_link}" target="_blank" rel="noopener noreferrer" class="index-badge badge-trdizin">TR Dizin</a>`;
-        
+    
                 let sdgHTML = '';
                 if (pub.sdg && pub.sdg.length > 0) {
                     sdgHTML = `
@@ -353,31 +355,49 @@
                     });
                     sdgHTML += '</div></div>';
                 }
-        
-                pubList.innerHTML += `
+    
+                fullHTML += `
                     <div class="pub-item" data-year="${pub.year}" data-index="${pub.index}">
                         ${pub.citations && pub.citations !== "0" ? `<div class="citations-count">Cited: ${pub.citations}</div>` : ''}
                         <div class="pub-title"><a href="https://doi.org/${pub.doi}" target="_blank" rel="noopener noreferrer" class="pub-link">${pub.title}</a></div>
                         <div class="journal-name">${pub.journal || ''}</div>
                         <div style="font-size: 0.9em; color: #a1a1aa; margin-bottom: 12px;">${pub.author} (${pub.year})</div>
                         
-                        <div class="links-area" style="display:flex; align-items:center; gap:12px;">
+                        <div class="links-area" style="display:flex; align-items:center; gap:12px; min-height: 32px;">
                             ${linksHTML}
-                            <a href="https://plumx.elsevier.com/plum/a/?doi=${pub.doi}" 
-                               class="plumx-plum-print-popup" 
-                               data-popup="right" 
-                               data-size="medium" 
-                               style="margin-left: 5px;"></a>
+                            ${pub.doi ? `
+                                <a href="https://plu.mx/plum/a/?doi=${encodeURIComponent(pub.doi)}" 
+                                   class="plumx-plum-print-popup" 
+                                   data-popup="right" 
+                                   data-size="medium"
+                                   data-hide-when-empty="true"></a>
+                            ` : ''}
                         </div>
-        
+    
                         ${sdgHTML}
                     </div>`;
             });
     
-            // Güncellenmiş PlumX widget script adresi
-            let s = document.createElement("script");
-            s.src = "https://plumx.elsevier.com/widget-popup.js";
-            document.body.appendChild(s);
+            // Tüm liste tek seferde DOM'a basılır
+            pubList.innerHTML = fullHTML;
+    
+            // PlumX scripti yükleme ve tetikleme
+            if (window.__plumX && typeof window.__plumX.loadWidgets === 'function') {
+                window.__plumX.loadWidgets();
+            } else {
+                const existingScript = document.querySelector('script[src*="widget-popup.js"]');
+                if (!existingScript) {
+                    const s = document.createElement("script");
+                    s.type = "text/javascript";
+                    s.src = "https://cdn.plu.mx/widget-popup.js";
+                    s.async = true;
+                    document.body.appendChild(s);
+                }
+            }
+        })
+        .catch(err => {
+            console.error("Yayınlar yüklenirken hata oluştu:", err);
+            document.getElementById('pub-list').innerHTML = '<p>Yayınlar yüklenemedi.</p>';
         });
 
         function filterPubs() {
