@@ -60,9 +60,84 @@
         /* --- HERO SECTION --- */
         .hero {
             height: 100vh;
-            background: linear-gradient(rgba(13, 17, 23, 0.5), rgba(13, 17, 23, 0.7)), url('background.jpg') no-repeat center center/cover;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            background-color: #0d1117;
+        
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
+        
+        /* İki arka planın ortak özellikleri */
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        
+            pointer-events: none;
+        }
+        
+        /* Birinci arka plan */
+        .hero::before {
+            background-image:
+                linear-gradient(
+                    rgba(13, 17, 23, 0.5),
+                    rgba(13, 17, 23, 0.7)
+                ),
+                url('background.jpg');
+        }
+        
+        /* İkinci arka plan */
+        .hero::after {
+            background-image:
+                linear-gradient(
+                    rgba(13, 17, 23, 0.5),
+                    rgba(13, 17, 23, 0.7)
+                ),
+                url('background2.jpeg');
+        
+            opacity: 0;
+            animation: heroCrossfade 28s ease-in-out infinite;
+        }
+        
+        /* Yazılar ve bağlantılar arka planın üzerinde */
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Çok yumuşak arka plan geçişi */
+        @keyframes heroCrossfade {
+            0%, 35% {
+                opacity: 0;
+            }
+        
+            50%, 85% {
+                opacity: 1;
+            }
+        
+            100% {
+                opacity: 0;
+            }
+        }
+        
+        /* Hareket azaltma tercihi olan kullanıcılar */
+        @media (prefers-reduced-motion: reduce) {
+            .hero::after {
+                animation: none;
+            }
+        }
+
         .hero h1 { font-family: 'Merriweather', serif; font-size: 4em; color: #fff; margin-bottom: 0px; font-weight: 700; }
         .hero h2 { font-family: 'Arizonia', cursive; font-size: 2.5em; color: var(--accent-color); font-weight: 400; margin-top: -10px; margin-bottom: 35px; letter-spacing: 1px; }
         .hero-note { max-width: 900px; margin: 0 20px 30px; font-size: 1.05em; line-height: 1.8; color: #c9d1d9; }
