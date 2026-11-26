@@ -1,0 +1,98 @@
+{
+  "featured": [
+    "10.1016/j.ress.2026.113930",
+    "10.3390/ijgi15040178",
+    "10.1080/10298436.2026.2677651",
+    "10.3390/su162411199",
+    "10.1016/j.measurement.2021.110591",
+    "10.1016/j.acme.2017.03.006"
+  ],
+  "papers": {
+    "10.1016/j.ress.2026.113930": {
+      "topic": "Traffic reliability",
+      "summary": "Examines how congestion-induced driver adaptation changes traffic efficiency and the probability of system collapse at oversaturated roundabouts.",
+      "video": "https://youtu.be/LhIG9pF54Wo",
+      "repo": "DBMR-Roundabout-Reliability",
+      "bibliography": {
+        "title": "Congestion-induced behavioral escalation and dynamic reliability at oversaturated roundabouts",
+        "year": "2027",
+        "journal": "Reliability Engineering & System Safety",
+        "source": "manual",
+        "index": "other"
+      }
+    },
+    "10.3390/ijgi15040178": {
+      "topic": "Traffic safety",
+      "summary": "Develops a geodemographic baseline for traffic safety monitoring, connecting subnational road safety indicators with demographic and spatial information.",
+      "repo": "turkiye-traffic-safety-geodemography",
+      "access": {
+        "kind": "publisher_oa",
+        "url": "https://www.mdpi.com/2220-9964/15/4/178",
+        "license": "CC BY 4.0",
+        "policy": "https://www.mdpi.com/authors/rights"
+      }
+    },
+    "10.1080/10298436.2026.2677651": {
+      "topic": "Infrastructure analytics",
+      "summary": "Combines segment-level pavement roughness forecasting with rule-based maintenance prioritization using a simplified NBeatsX-inspired neural network."
+    },
+    "10.3390/su162411199": {
+      "topic": "Urban mobility",
+      "summary": "Uses cooperative game theory to explore public transport fare policies and balance stakeholder welfare.",
+      "video": "https://youtu.be/HMA9HIPryPw",
+      "access": {
+        "kind": "publisher_oa",
+        "url": "https://doi.org/10.3390/su162411199",
+        "license": "CC BY 4.0",
+        "policy": "https://www.mdpi.com/authors/rights"
+      }
+    },
+    "10.1016/j.measurement.2021.110591": {
+      "topic": "Intelligent transport systems",
+      "summary": "Introduces a Monte Carlo simulation approach to dynamic traffic signal control.",
+      "video": "https://youtu.be/ICgkZzaF2FI"
+    },
+    "10.1016/j.acme.2017.03.006": {
+      "topic": "Sustainable infrastructure",
+      "summary": "Investigates waste frying oil as a bitumen modifier for sustainable hot-mix asphalt.",
+      "video": "https://youtu.be/4kfl_mhKsA8"
+    }
+  },
+  "repositories": [
+    {
+      "name": "DBMR-Roundabout-Reliability",
+      "title": "Roundabout reliability",
+      "description": "Dynamic driver behaviour and roundabout reliability."
+    },
+    {
+      "name": "turkiye-traffic-safety-geodemography",
+      "title": "Traffic safety geodemography",
+      "description": "Spatial and demographic analysis of road traffic safety in Türkiye."
+    },
+    {
+      "name": "ltppcompositepavementmodeling",
+      "title": "Composite pavement modeling",
+      "description": "Long-term pavement performance and composite pavement modeling."
+    },
+    {
+      "name": "pms-decision-fidelity",
+      "title": "Pavement management decisions",
+      "description": "Decision fidelity in pavement management systems."
+    },
+    {
+      "name": "beraygecescale",
+      "title": "Beray Gece Scale",
+      "description": "Research on occupational gender perceptions and the Beray Gece Scale."
+    },
+    {
+      "name": "precipitationgaugeoptimization",
+      "title": "Precipitation gauge optimization",
+      "description": "Optimization of precipitation gauge networks."
+    },
+    {
+      "name": "ekinhaneriskin.github.io",
+      "title": "Academic website",
+      "description": "Source repository for this academic website."
+    }
+  ]
+}
