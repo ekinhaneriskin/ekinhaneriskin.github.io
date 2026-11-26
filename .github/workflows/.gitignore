@@ -1,7 +1,0 @@
-__pycache__/
-*.pyc
-_site/
-.venv/
-.env
-.DS_Store
-sdg_report.json
