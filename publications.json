@@ -9,25 +9,81 @@
       "author": "Ekinhan Eriskin, Serdal Terzi, Halim Ceylan",
       "index": "other",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.ress.2026.113930|Congestion-induced behavioral escalation and dynamic reliability at oversaturated roundabouts",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.5378999710083008,
+          "11": 0.7646999955177307
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0185718238,
+            "2": 0.0766484737,
+            "3": 0.00378444791,
+            "4": 0.00955924392,
+            "5": 0.0242849588,
+            "6": 0.0110961199,
+            "7": 0.0347235203,
+            "8": 0.0921998322,
+            "9": 0.0543158054,
+            "10": 0.0277173817,
+            "11": 0.0673601925,
+            "12": 0.0449652672,
+            "13": 0.620623112,
+            "14": 0.0119829178,
+            "15": 0.0230428278,
+            "16": 0.0109482706,
+            "17": 0.0335285962
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00622179825,
+            "2": 0.00166568835,
+            "3": 0.00524333073,
+            "4": 0.00118457247,
+            "5": 0.000464452052,
+            "6": 0.00754707353,
+            "7": 0.00298539223,
+            "8": 0.00502469577,
+            "9": 0.00591401756,
+            "10": 0.0046396642,
+            "11": 0.91948539,
+            "12": 0.0178237446,
+            "13": 0.00336430152,
+            "14": 0.00378048676,
+            "15": 0.0111551546,
+            "16": 0.00350028579
+          }
+        },
+        "recommended": [
+          9,
+          11
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9,
+          11
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "11": "OpenAlex"
+      },
+      "sdg": [
+        9,
+        11
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "A Scalable Geodemographic Baseline for Traffic Safety Monitoring in a Middle-Income Country",
@@ -53,17 +109,67 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.3390/ijgi15040178|A Scalable Geodemographic Baseline for Traffic Safety Monitoring in a Middle-Income Country",
         "checked_on": "2026-11-26",
         "input": "title+abstract",
-        "abstract_source": "Crossref",
+        "abstract_source": "OpenAlex",
         "status": "manual",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.5378999710083008,
+          "10": 0.4000000059604645,
+          "11": 0.9333000183105469
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.142796427,
+            "2": 0.00303962827,
+            "3": 0.010045439,
+            "4": 0.0141353607,
+            "5": 0.00466987491,
+            "6": 0.00607436895,
+            "7": 0.00559344888,
+            "8": 0.095867306,
+            "9": 0.0442930162,
+            "10": 0.25470531,
+            "11": 0.1632227,
+            "12": 0.0121528506,
+            "13": 0.00972545147,
+            "14": 0.00828555226,
+            "15": 0.016646266,
+            "16": 0.0257916451,
+            "17": 0.137672365
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.0306542,
+            "2": 0.0022257294,
+            "3": 0.0183742773,
+            "4": 0.0238991026,
+            "5": 0.0093422113,
+            "6": 0.00605080044,
+            "7": 0.00444287481,
+            "8": 0.0769037157,
+            "9": 0.0794899389,
+            "10": 0.0337710977,
+            "11": 0.635547876,
+            "12": 0.0278388988,
+            "13": 0.00536289066,
+            "14": 0.00261706882,
+            "15": 0.00852209888,
+            "16": 0.0349572487
+          }
+        },
+        "recommended": [
+          9,
+          10,
+          11
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "10": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
         "applied": [
           3,
@@ -72,11 +178,7 @@
           15,
           17
         ],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -95,25 +197,81 @@
       "wos_uid": "WOS:001773633100001",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1080/10298436.2026.2677651|Segment-level roughness forecasting and rule-based maintenance prioritization for pavement management systems using a simplified NBeatsX-inspired neural network",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.7207000255584717,
+          "11": 0.47999998927116394
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00721174479,
+            "2": 0.00947660208,
+            "3": 0.00765615702,
+            "4": 0.00530090928,
+            "5": 0.00311759114,
+            "6": 0.0075134933,
+            "7": 0.0386866033,
+            "8": 0.0503658056,
+            "9": 0.348427206,
+            "10": 0.00367164612,
+            "11": 0.119245946,
+            "12": 0.208936572,
+            "13": 0.0199055672,
+            "14": 0.00845885277,
+            "15": 0.0786284804,
+            "16": 0.012629509,
+            "17": 0.0973692238
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00460319,
+            "2": 0.00221209927,
+            "3": 0.0670994073,
+            "4": 0.00939448,
+            "5": 0.00199759798,
+            "6": 0.0116061121,
+            "7": 0.0229647774,
+            "8": 0.00370096345,
+            "9": 0.0823770836,
+            "10": 0.00805536564,
+            "11": 0.734854639,
+            "12": 0.0240593459,
+            "13": 0.00204283232,
+            "14": 0.00729554333,
+            "15": 0.00992992241,
+            "16": 0.00780671323
+          }
+        },
+        "recommended": [
+          9,
+          11
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9,
+          11
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "11": "OpenAlex"
+      },
+      "sdg": [
+        9,
+        11
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "A Horizon-Adaptive Benchmarking Framework for Long-Term Reservoir Storage Forecasting Using Physics-Informed Transformers and Machine Learning",
@@ -135,26 +293,66 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1007/s11269-025-04399-w|A Horizon-Adaptive Benchmarking Framework for Long-Term Reservoir Storage Forecasting Using Physics-Informed Transformers and Machine Learning",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
         "status": "manual",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "openalex_status": "labels_found",
+        "openalex": {
+          "13": 0.821399986743927
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00311502814,
+            "2": 0.0218061209,
+            "3": 0.00441122055,
+            "4": 0.00823772,
+            "5": 0.00550302863,
+            "6": 0.0429815054,
+            "7": 0.355173409,
+            "8": 0.0276405811,
+            "9": 0.12930581,
+            "10": 0.00902107358,
+            "11": 0.0275779068,
+            "12": 0.162750155,
+            "13": 0.282047153,
+            "14": 0.0321986079,
+            "15": 0.0289104283,
+            "16": 0.0136554241,
+            "17": 0.0445060134
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00246119848,
+            "2": 0.00168787641,
+            "3": 0.00633166824,
+            "4": 0.00405254588,
+            "5": 0.0020037971,
+            "6": 0.0792672113,
+            "7": 0.753113508,
+            "8": 0.00222852943,
+            "9": 0.0905486569,
+            "10": 0.001089814,
+            "11": 0.00907021575,
+            "12": 0.0222331118,
+            "13": 0.00897493772,
+            "14": 0.00985063612,
+            "15": 0.00416796235,
+            "16": 0.00291842152
+          }
+        },
+        "recommended": [
+          13
+        ],
+        "recommended_sources": {
+          "13": "OpenAlex"
+        },
         "review_candidates": [],
         "applied": [
           6
         ],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -170,25 +368,81 @@
       "first_author": "Terzi S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1061/9780784487037.003|Perpetual Pavement Design for Turkish Highways: A Sustainable Approach to Long-Life Asphalt Infrastructure",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.8970999717712402,
+          "11": 0.7646999955177307
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00758951902,
+            "2": 0.0149286091,
+            "3": 0.00671365857,
+            "4": 0.0109395683,
+            "5": 0.00413709879,
+            "6": 0.0169766247,
+            "7": 0.0461753607,
+            "8": 0.0643496811,
+            "9": 0.58054173,
+            "10": 0.00577032566,
+            "11": 0.0291273594,
+            "12": 0.283339977,
+            "13": 0.0118142366,
+            "14": 0.00890925527,
+            "15": 0.0578673184,
+            "16": 0.00799626112,
+            "17": 0.0844540894
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00653978111,
+            "2": 0.00294360309,
+            "3": 0.00236379937,
+            "4": 0.0131048085,
+            "5": 0.000851165038,
+            "6": 0.00685601449,
+            "7": 0.0232049152,
+            "8": 0.108420275,
+            "9": 0.508727431,
+            "10": 0.00299532083,
+            "11": 0.0442056619,
+            "12": 0.251715213,
+            "13": 0.0104830917,
+            "14": 0.00307460339,
+            "15": 0.00933999196,
+            "16": 0.0051742564
+          }
+        },
+        "recommended": [
+          9,
+          11
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9,
+          11
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "11": "OpenAlex"
+      },
+      "sdg": [
+        9,
+        11
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Predictive modeling of pavement final service life using machine learning techniques",
@@ -203,25 +457,81 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.trpro.2026.07.182|Predictive modeling of pavement final service life using machine learning techniques",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 1.0,
+          "11": 0.761900007724762
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0194859803,
+            "2": 0.0105876625,
+            "3": 0.0231374502,
+            "4": 0.00569087267,
+            "5": 0.00856611133,
+            "6": 0.00961324573,
+            "7": 0.00780123472,
+            "8": 0.0332241952,
+            "9": 0.039604634,
+            "10": 0.0110421777,
+            "11": 0.0535806119,
+            "12": 0.11632064,
+            "13": 0.00975599885,
+            "14": 0.00783819,
+            "15": 0.250706643,
+            "16": 0.152193755,
+            "17": 0.105232567
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.0102500655,
+            "2": 0.00516301,
+            "3": 0.042124778,
+            "4": 0.020327596,
+            "5": 0.00158798299,
+            "6": 0.0228541512,
+            "7": 0.00862006471,
+            "8": 0.0176078212,
+            "9": 0.063613981,
+            "10": 0.0112194791,
+            "11": 0.632186055,
+            "12": 0.0832379088,
+            "13": 0.00336408499,
+            "14": 0.00415786775,
+            "15": 0.0578365177,
+            "16": 0.015848659
+          }
+        },
+        "recommended": [
+          9,
+          11
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9,
+          11
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "11": "OpenAlex"
+      },
+      "sdg": [
+        9,
+        11
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Estimating Pavement Temperature Using Machine Learning Models Based on Climatic Data",
@@ -239,25 +549,87 @@
       "wos_uid": "WOS:001586172500036",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1061/9780784486214.036|Estimating Pavement Temperature Using Machine Learning Models Based on Climatic Data",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.5378999710083008,
+          "11": 0.5142999887466431,
+          "13": 0.5351999998092651
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00949433446,
+            "2": 0.022826463,
+            "3": 0.00843900442,
+            "4": 0.0078330934,
+            "5": 0.00507828593,
+            "6": 0.0232178569,
+            "7": 0.0581308305,
+            "8": 0.00802305341,
+            "9": 0.0230588913,
+            "10": 0.0105268359,
+            "11": 0.0337670147,
+            "12": 0.0516150296,
+            "13": 0.777186275,
+            "14": 0.0240663886,
+            "15": 0.0949368477,
+            "16": 0.0117511451,
+            "17": 0.0228351951
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00583874248,
+            "2": 0.0293277837,
+            "3": 0.0122322571,
+            "4": 0.0105508501,
+            "5": 0.00267206761,
+            "6": 0.0203628261,
+            "7": 0.315944821,
+            "8": 0.0118964687,
+            "9": 0.0395712,
+            "10": 0.00315575767,
+            "11": 0.111547813,
+            "12": 0.105524763,
+            "13": 0.0772256702,
+            "14": 0.00628334237,
+            "15": 0.245062798,
+            "16": 0.00280279666
+          }
+        },
+        "recommended": [
+          9,
+          11,
+          13
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "11": "OpenAlex",
+          "13": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9,
+          11,
+          13
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "11": "OpenAlex",
+        "13": "OpenAlex"
+      },
+      "sdg": [
+        9,
+        11,
+        13
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Accident severity prediction in big data using auto-machine learning",
@@ -279,26 +651,72 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.24200/sci.2023.60144.6626|Accident severity prediction in big data using auto-machine learning",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
         "status": "manual",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "openalex_status": "labels_found",
+        "openalex": {
+          "3": 0.504800021648407,
+          "9": 0.5378999710083008,
+          "11": 0.5142999887466431
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0193659961,
+            "2": 0.00934290886,
+            "3": 0.8751,
+            "4": 0.0281744897,
+            "5": 0.0408086479,
+            "6": 0.00944620371,
+            "7": 0.0224815011,
+            "8": 0.0135606229,
+            "9": 0.0163674653,
+            "10": 0.0130732656,
+            "11": 0.0244309902,
+            "12": 0.0143879652,
+            "13": 0.00976872444,
+            "14": 0.0158092976,
+            "15": 0.0106029809,
+            "16": 0.0424604714,
+            "17": 0.0437816679
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00625740783,
+            "2": 0.00135576143,
+            "3": 0.0633200705,
+            "4": 0.00326460367,
+            "5": 0.0028858094,
+            "6": 0.00528174499,
+            "7": 0.00498356204,
+            "8": 0.00476337038,
+            "9": 0.0179728307,
+            "10": 0.013483814,
+            "11": 0.851840913,
+            "12": 0.0039569838,
+            "13": 0.00316628278,
+            "14": 0.00403479347,
+            "15": 0.00345372129,
+            "16": 0.00997838471
+          }
+        },
+        "recommended": [
+          3,
+          9,
+          11
+        ],
+        "recommended_sources": {
+          "3": "OpenAlex",
+          "9": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
         "applied": [
           3
         ],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -324,17 +742,67 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.3390/su162411199|Collaborative Game-Theoretic Optimization of Public Transport Fare Policies: A Global Framework for Sustainable Urban Mobility",
         "checked_on": "2026-11-26",
         "input": "title+abstract",
-        "abstract_source": "Crossref",
+        "abstract_source": "OpenAlex",
         "status": "manual",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.6773999929428101,
+          "10": 0.5676000118255615,
+          "11": 1.0
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0141510069,
+            "2": 0.0109004378,
+            "3": 0.00450828671,
+            "4": 0.00555050373,
+            "5": 0.0030978024,
+            "6": 0.0095961988,
+            "7": 0.0129958391,
+            "8": 0.0451390743,
+            "9": 0.138358325,
+            "10": 0.00914219,
+            "11": 0.526149511,
+            "12": 0.119600713,
+            "13": 0.0161099732,
+            "14": 0.0107432306,
+            "15": 0.207721531,
+            "16": 0.0132629871,
+            "17": 0.0509412
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.521377623,
+            "2": 0.00437024143,
+            "3": 0.00545219285,
+            "4": 0.00799457077,
+            "5": 0.0024719066,
+            "6": 0.0073902728,
+            "7": 0.00432492653,
+            "8": 0.124442473,
+            "9": 0.0186697319,
+            "10": 0.081794329,
+            "11": 0.137625128,
+            "12": 0.0315435715,
+            "13": 0.00824779924,
+            "14": 0.00227944134,
+            "15": 0.0105967913,
+            "16": 0.031419
+          }
+        },
+        "recommended": [
+          9,
+          10,
+          11
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "10": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
         "applied": [
           9,
@@ -342,11 +810,7 @@
           11,
           17
         ],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -365,25 +829,75 @@
       "wos_uid": "WOS:001132106300001",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1007/s40996-023-01320-6|Using Ensemble Machine Learning to Estimate International Roughness Index of Asphalt Pavements",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.6773999929428101
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0144833028,
+            "2": 0.0262003541,
+            "3": 0.00259700418,
+            "4": 0.0119148791,
+            "5": 0.00582242,
+            "6": 0.00709158182,
+            "7": 0.0113675,
+            "8": 0.110554695,
+            "9": 0.286583,
+            "10": 0.0287475288,
+            "11": 0.236298352,
+            "12": 0.0869001746,
+            "13": 0.096763134,
+            "14": 0.0091008842,
+            "15": 0.0424599648,
+            "16": 0.0108940899,
+            "17": 0.12396729
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00485581066,
+            "2": 0.00379014341,
+            "3": 0.0118023418,
+            "4": 0.0053118025,
+            "5": 0.00135765132,
+            "6": 0.0235805903,
+            "7": 0.088242054,
+            "8": 0.0111859255,
+            "9": 0.0920279697,
+            "10": 0.00240518572,
+            "11": 0.510245323,
+            "12": 0.188768417,
+            "13": 0.0332196206,
+            "14": 0.00773005281,
+            "15": 0.0122401398,
+            "16": 0.00323694479
+          }
+        },
+        "recommended": [
+          9
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex"
+      },
+      "sdg": [
+        9
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Predicting Hydrological Droughts of Long-Narrow Type Drainage Basin Using Monte Carlo Technique",
@@ -406,27 +920,70 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1061/jhyeff.heeng-6144|Predicting Hydrological Droughts of Long-Narrow Type Drainage Basin Using Monte Carlo Technique",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
         "status": "manual",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "openalex_status": "labels_found",
+        "openalex": {
+          "6": 0.7778000235557556,
+          "13": 0.5351999998092651
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.010969162,
+            "2": 0.0303973854,
+            "3": 0.00479236245,
+            "4": 0.00576490164,
+            "5": 0.0055552721,
+            "6": 0.678625107,
+            "7": 0.00877967477,
+            "8": 0.0213647187,
+            "9": 0.0750777423,
+            "10": 0.0088018775,
+            "11": 0.0279265642,
+            "12": 0.160391748,
+            "13": 0.014136374,
+            "14": 0.00909498334,
+            "15": 0.0752593875,
+            "16": 0.0101014078,
+            "17": 0.0373094678
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.0459390469,
+            "2": 0.0337109789,
+            "3": 0.00515517313,
+            "4": 0.0054606162,
+            "5": 0.00225416129,
+            "6": 0.60520345,
+            "7": 0.00495485077,
+            "8": 0.103016287,
+            "9": 0.0234688297,
+            "10": 0.0101740407,
+            "11": 0.0456637144,
+            "12": 0.030346401,
+            "13": 0.0323888063,
+            "14": 0.0110342,
+            "15": 0.032854829,
+            "16": 0.00837457832
+          }
+        },
+        "recommended": [
+          6,
+          13
+        ],
+        "recommended_sources": {
+          "6": "OpenAlex",
+          "13": "OpenAlex"
+        },
         "review_candidates": [],
         "applied": [
           6,
           8
         ],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -450,27 +1007,70 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.7764/rdlc.23.2.203|An alternative approach for increasing the visibility of roads",
         "checked_on": "2026-11-26",
         "input": "title+abstract",
-        "abstract_source": "Crossref",
+        "abstract_source": "OpenAlex",
         "status": "manual",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.8970999717712402,
+          "11": 0.7250000238418579
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00672376156,
+            "2": 0.00900870562,
+            "3": 0.0168024302,
+            "4": 0.0112133026,
+            "5": 0.00569790602,
+            "6": 0.0485472977,
+            "7": 0.0270057023,
+            "8": 0.0102636814,
+            "9": 0.0441868,
+            "10": 0.00614339113,
+            "11": 0.533953309,
+            "12": 0.03316,
+            "13": 0.00787121058,
+            "14": 0.0258946419,
+            "15": 0.0461726487,
+            "16": 0.0101611912,
+            "17": 0.0191081464
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.0040701814,
+            "2": 0.00161082298,
+            "3": 0.0197916403,
+            "4": 0.00246474822,
+            "5": 0.00123641791,
+            "6": 0.0249898,
+            "7": 0.00789331924,
+            "8": 0.00262362463,
+            "9": 0.016947167,
+            "10": 0.00353680295,
+            "11": 0.859685481,
+            "12": 0.0121545792,
+            "13": 0.00355749764,
+            "14": 0.030786844,
+            "15": 0.00578632345,
+            "16": 0.00286479574
+          }
+        },
+        "recommended": [
+          9,
+          11
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
         "applied": [
           3,
           11
         ],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -493,26 +1093,69 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1007/s00500-022-07735-z|Replacement of signalized traffic network design with Hamiltonian roads: delay? Nevermind",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
         "status": "manual",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.8970999717712402,
+          "11": 0.7603999972343445
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00472679734,
+            "2": 0.0106964409,
+            "3": 0.00841072202,
+            "4": 0.00566849113,
+            "5": 0.00306630135,
+            "6": 0.0145524144,
+            "7": 0.23333475,
+            "8": 0.0344560742,
+            "9": 0.316940784,
+            "10": 0.00462073088,
+            "11": 0.0460961461,
+            "12": 0.25560838,
+            "13": 0.0121275485,
+            "14": 0.0127030313,
+            "15": 0.0632644296,
+            "16": 0.00843012333,
+            "17": 0.0406728387
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00375740835,
+            "2": 0.000846802373,
+            "3": 0.0184784103,
+            "4": 0.00314437621,
+            "5": 0.00116544869,
+            "6": 0.00406233547,
+            "7": 0.0211467054,
+            "8": 0.00535582844,
+            "9": 0.0365986042,
+            "10": 0.00426076865,
+            "11": 0.87018621,
+            "12": 0.0142478254,
+            "13": 0.00714670168,
+            "14": 0.003358074,
+            "15": 0.00386358076,
+            "16": 0.00238087564
+          }
+        },
+        "recommended": [
+          9,
+          11
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
         "applied": [
           11
         ],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -525,7 +1168,7 @@
       "journal": "Journal of Intelligent Transportation Systems and Applications",
       "citations": "0",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.51513/jitsa.1104161|Importance of A-pillars of vehicles during intersection approach",
         "checked_on": "2026-11-26",
         "input": "title+abstract",
@@ -533,15 +1176,52 @@
         "status": "review",
         "openalex_status": "no_labels",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00931334496,
+            "2": 0.00735497475,
+            "3": 0.0317565501,
+            "4": 0.00992208719,
+            "5": 0.0110241175,
+            "6": 0.00842428207,
+            "7": 0.0529986322,
+            "8": 0.014369458,
+            "9": 0.0185834169,
+            "10": 0.0110542476,
+            "11": 0.563585818,
+            "12": 0.0152468681,
+            "13": 0.0162472129,
+            "14": 0.0220523179,
+            "15": 0.0327906609,
+            "16": 0.0356166363,
+            "17": 0.0186368227
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00414669607,
+            "2": 0.00132235512,
+            "3": 0.0320354551,
+            "4": 0.00235467451,
+            "5": 0.00148326729,
+            "6": 0.00382802403,
+            "7": 0.0116479062,
+            "8": 0.00267451396,
+            "9": 0.0154956123,
+            "10": 0.00565635785,
+            "11": 0.896239698,
+            "12": 0.00690474361,
+            "13": 0.00345823914,
+            "14": 0.00347472401,
+            "15": 0.00430154195,
+            "16": 0.00497620599
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
-        "review_candidates": [],
+        "review_candidates": [
+          11
+        ],
         "applied": [],
-        "errors": [
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -560,25 +1240,81 @@
       "wos_uid": "WOS:000813423000003",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.conbuildmat.2022.128004|Investigation of waste quartz sand as filler in hot-mix asphalt",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.7207000255584717,
+          "12": 1.0
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00365296,
+            "2": 0.0406531096,
+            "3": 0.00159683824,
+            "4": 0.00385919213,
+            "5": 0.00468957424,
+            "6": 0.0707641542,
+            "7": 0.0173845291,
+            "8": 0.0266507864,
+            "9": 0.162745327,
+            "10": 0.00744226575,
+            "11": 0.0355255902,
+            "12": 0.303299785,
+            "13": 0.0841552,
+            "14": 0.0132605433,
+            "15": 0.111988723,
+            "16": 0.00836372375,
+            "17": 0.0313945115
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00230478565,
+            "2": 0.00441211462,
+            "3": 0.00404881081,
+            "4": 0.00370143168,
+            "5": 0.0008346783,
+            "6": 0.0292160437,
+            "7": 0.0249851663,
+            "8": 0.0116135804,
+            "9": 0.0357613824,
+            "10": 0.00113522087,
+            "11": 0.0828212127,
+            "12": 0.737235367,
+            "13": 0.0186334662,
+            "14": 0.0134332962,
+            "15": 0.0256949775,
+            "16": 0.00416849507
+          }
+        },
+        "recommended": [
+          9,
+          12
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "12": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9,
+          12
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "12": "OpenAlex"
+      },
+      "sdg": [
+        9,
+        12
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Development of dynamic traffic signal control based on Monte Carlo simulation approach",
@@ -600,26 +1336,66 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.measurement.2021.110591|Development of dynamic traffic signal control based on Monte Carlo simulation approach",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
         "status": "manual",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "openalex_status": "labels_found",
+        "openalex": {
+          "11": 0.7250000238418579
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00651955605,
+            "2": 0.0148044825,
+            "3": 0.0101416111,
+            "4": 0.0146926045,
+            "5": 0.00921464,
+            "6": 0.0062405467,
+            "7": 0.118757099,
+            "8": 0.0407718718,
+            "9": 0.173790842,
+            "10": 0.0172941387,
+            "11": 0.322178245,
+            "12": 0.0337795913,
+            "13": 0.0696063936,
+            "14": 0.00598070025,
+            "15": 0.0184561312,
+            "16": 0.0171702802,
+            "17": 0.0758306086
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00464308634,
+            "2": 0.0011663459,
+            "3": 0.0332276821,
+            "4": 0.00329083856,
+            "5": 0.00199282472,
+            "6": 0.00543186767,
+            "7": 0.00988520123,
+            "8": 0.00393529749,
+            "9": 0.0293535478,
+            "10": 0.00720343366,
+            "11": 0.880952179,
+            "12": 0.00452605123,
+            "13": 0.00311945099,
+            "14": 0.00369755737,
+            "15": 0.00322250579,
+            "16": 0.00435214676
+          }
+        },
+        "recommended": [
+          11
+        ],
+        "recommended_sources": {
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
         "applied": [
           11
         ],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -643,27 +1419,73 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.conbuildmat.2020.118721|Bitumen expanding using bio-oil product of rose pulp's pyrolysis process",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
         "status": "manual",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "openalex_status": "labels_found",
+        "openalex": {
+          "7": 0.75,
+          "9": 0.5378999710083008,
+          "12": 1.0
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00285106897,
+            "2": 0.102986395,
+            "3": 0.00323438644,
+            "4": 0.00400403142,
+            "5": 0.00477102399,
+            "6": 0.0309001803,
+            "7": 0.13640511,
+            "8": 0.0391325355,
+            "9": 0.199436605,
+            "10": 0.00515577197,
+            "11": 0.0112786591,
+            "12": 0.375314057,
+            "13": 0.0451006889,
+            "14": 0.0140610635,
+            "15": 0.0416472256,
+            "16": 0.00629216433,
+            "17": 0.0260608792
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00199441,
+            "2": 0.00293636229,
+            "3": 0.00436211796,
+            "4": 0.00258159218,
+            "5": 0.00159335055,
+            "6": 0.0367405452,
+            "7": 0.697537661,
+            "8": 0.00343655329,
+            "9": 0.0781824663,
+            "10": 0.00190136314,
+            "11": 0.00420787558,
+            "12": 0.0422436744,
+            "13": 0.0238177888,
+            "14": 0.0889276341,
+            "15": 0.00800233148,
+            "16": 0.00153424905
+          }
+        },
+        "recommended": [
+          7,
+          9,
+          12
+        ],
+        "recommended_sources": {
+          "7": "OpenAlex",
+          "9": "OpenAlex",
+          "12": "OpenAlex"
+        },
         "review_candidates": [],
         "applied": [
           7,
           9
         ],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -682,25 +1504,75 @@
       "wos_uid": "WOS:000514748700061",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.conbuildmat.2019.117381|Evaluating mechanical properties of bitumen and hot mix asphalt modified with nano ferric oxide",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.5378999710083008
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00321125984,
+            "2": 0.0567622781,
+            "3": 0.00161245465,
+            "4": 0.00520154834,
+            "5": 0.00334298611,
+            "6": 0.136219591,
+            "7": 0.050535053,
+            "8": 0.0157995224,
+            "9": 0.176952779,
+            "10": 0.00680246949,
+            "11": 0.0361469388,
+            "12": 0.242497832,
+            "13": 0.0405499637,
+            "14": 0.00968688726,
+            "15": 0.0743361413,
+            "16": 0.00566115975,
+            "17": 0.0236369371
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00168397615,
+            "2": 0.0021342379,
+            "3": 0.00298241084,
+            "4": 0.00265302602,
+            "5": 0.00129461091,
+            "6": 0.0310516525,
+            "7": 0.634852409,
+            "8": 0.0045240866,
+            "9": 0.057048589,
+            "10": 0.000787581084,
+            "11": 0.0135775348,
+            "12": 0.112606332,
+            "13": 0.117104545,
+            "14": 0.0110751949,
+            "15": 0.00558197685,
+            "16": 0.00104187883
+          }
+        },
+        "recommended": [
+          9
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex"
+      },
+      "sdg": [
+        9
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Investigation the Usability of Garnet as Filler Material in Hot Mix Asphalt",
@@ -715,25 +1587,75 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1007/978-981-15-2349-6_60|Investigation the Usability of Garnet as Filler Material in Hot Mix Asphalt",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "12": 0.5925999879837036
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00480464101,
+            "2": 0.280838042,
+            "3": 0.00278911,
+            "4": 0.013627857,
+            "5": 0.020838201,
+            "6": 0.0331249833,
+            "7": 0.067099005,
+            "8": 0.0880194902,
+            "9": 0.173213631,
+            "10": 0.0116905868,
+            "11": 0.0386519134,
+            "12": 0.246297,
+            "13": 0.144787759,
+            "14": 0.0116866529,
+            "15": 0.0410891473,
+            "16": 0.0133191049,
+            "17": 0.0305712819
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00255090953,
+            "2": 0.00379971345,
+            "3": 0.00389058352,
+            "4": 0.00362924044,
+            "5": 0.00161677657,
+            "6": 0.0304896198,
+            "7": 0.346601933,
+            "8": 0.00965502206,
+            "9": 0.085911639,
+            "10": 0.0012447302,
+            "11": 0.0324011445,
+            "12": 0.279273033,
+            "13": 0.175359294,
+            "14": 0.0124433553,
+            "15": 0.00908646733,
+            "16": 0.00204643514
+          }
+        },
+        "recommended": [
+          12
+        ],
+        "recommended_sources": {
+          "12": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          12
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "12": "OpenAlex"
+      },
+      "sdg": [
+        12
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Expanded Glass Usability in Hot-Mix Asphalt as Fine Aggregate",
@@ -748,25 +1670,81 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1007/978-981-15-2349-6_54|Expanded Glass Usability in Hot-Mix Asphalt as Fine Aggregate",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.5378999710083008,
+          "12": 0.5171999931335449
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00359147787,
+            "2": 0.0648426712,
+            "3": 0.00281682611,
+            "4": 0.00668552518,
+            "5": 0.00454524159,
+            "6": 0.0136502981,
+            "7": 0.128917247,
+            "8": 0.0426684022,
+            "9": 0.287318051,
+            "10": 0.00614023209,
+            "11": 0.0615591705,
+            "12": 0.26502353,
+            "13": 0.0877861381,
+            "14": 0.00867661834,
+            "15": 0.0594894,
+            "16": 0.00724616647,
+            "17": 0.0342195928
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00221848488,
+            "2": 0.0032336982,
+            "3": 0.0031258245,
+            "4": 0.00345177739,
+            "5": 0.0015562207,
+            "6": 0.0183850136,
+            "7": 0.46683,
+            "8": 0.00841334,
+            "9": 0.0705290213,
+            "10": 0.00119716581,
+            "11": 0.0217844434,
+            "12": 0.21635066,
+            "13": 0.163060725,
+            "14": 0.0107119568,
+            "15": 0.00744967721,
+            "16": 0.00170203345
+          }
+        },
+        "recommended": [
+          9,
+          12
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "12": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9,
+          12
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "12": "OpenAlex"
+      },
+      "sdg": [
+        9,
+        12
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Utility of Aramid, Polyolefin and Polypropylene Combination in Hot Mix Asphalt as a Fiber Material",
@@ -781,7 +1759,7 @@
       "first_author": "Karahancer B.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1007/978-981-15-2349-6_61|Utility of Aramid, Polyolefin and Polypropylene Combination in Hot Mix Asphalt as a Fiber Material",
         "checked_on": "2026-11-26",
         "input": "title only",
@@ -789,15 +1767,50 @@
         "status": "review",
         "openalex_status": "no_labels",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0035417974,
+            "2": 0.108035296,
+            "3": 0.00207915902,
+            "4": 0.00568985939,
+            "5": 0.0042784512,
+            "6": 0.0404425859,
+            "7": 0.0466798246,
+            "8": 0.0262931883,
+            "9": 0.227129936,
+            "10": 0.00639480352,
+            "11": 0.0398418903,
+            "12": 0.303230584,
+            "13": 0.0700343549,
+            "14": 0.0110808611,
+            "15": 0.0673903227,
+            "16": 0.00639000535,
+            "17": 0.0283519924
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00238914811,
+            "2": 0.00426092884,
+            "3": 0.00292727328,
+            "4": 0.00298308907,
+            "5": 0.00136840891,
+            "6": 0.0471278653,
+            "7": 0.360091,
+            "8": 0.00828766264,
+            "9": 0.0655593127,
+            "10": 0.000981906662,
+            "11": 0.0228868835,
+            "12": 0.328541398,
+            "13": 0.12623702,
+            "14": 0.0152361179,
+            "15": 0.00964490604,
+            "16": 0.00147707423
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
         "review_candidates": [],
         "applied": [],
-        "errors": [
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -816,25 +1829,81 @@
       "wos_uid": "WOS:000454358700012",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1080/14680629.2017.1374999|Increasing the visibility of roads using phosphorous paint",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.7207000255584717,
+          "11": 0.5142999887466431
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0052472353,
+            "2": 0.0096976459,
+            "3": 0.0101422966,
+            "4": 0.0116992295,
+            "5": 0.00601026416,
+            "6": 0.0190022,
+            "7": 0.0356825,
+            "8": 0.0175587833,
+            "9": 0.0865057409,
+            "10": 0.00544214249,
+            "11": 0.471220255,
+            "12": 0.0543454,
+            "13": 0.0093510747,
+            "14": 0.0161960125,
+            "15": 0.0514692962,
+            "16": 0.00942781568,
+            "17": 0.0218282342
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00320103439,
+            "2": 0.0013092513,
+            "3": 0.0174247157,
+            "4": 0.00266225263,
+            "5": 0.000969172688,
+            "6": 0.01110896,
+            "7": 0.0121801523,
+            "8": 0.0029893273,
+            "9": 0.0215164255,
+            "10": 0.00236939848,
+            "11": 0.881958485,
+            "12": 0.0253864657,
+            "13": 0.00468472,
+            "14": 0.00464785332,
+            "15": 0.00492080906,
+            "16": 0.00267107878
+          }
+        },
+        "recommended": [
+          9,
+          11
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9,
+          11
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "11": "OpenAlex"
+      },
+      "sdg": [
+        9,
+        11
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Moisture Susceptibility of Nano-Al2O3 and SiO2 Modified Asphalt Mixtures",
@@ -849,23 +1918,58 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1061/9780784482469.013|Moisture Susceptibility of Nano-Al2O3 and SiO2 Modified Asphalt Mixtures",
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
-        "status": "review",
+        "status": "no_consensus",
         "openalex_status": "no_labels",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00269341469,
+            "2": 0.0165779889,
+            "3": 0.00267371535,
+            "4": 0.00297194719,
+            "5": 0.00204798579,
+            "6": 0.135482788,
+            "7": 0.0450349152,
+            "8": 0.0116832256,
+            "9": 0.109068692,
+            "10": 0.00365969539,
+            "11": 0.0199735165,
+            "12": 0.263019741,
+            "13": 0.0161543489,
+            "14": 0.0164526105,
+            "15": 0.135982722,
+            "16": 0.00457590818,
+            "17": 0.0166483223
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00192547764,
+            "2": 0.00506748445,
+            "3": 0.00334165152,
+            "4": 0.00281026633,
+            "5": 0.0011018709,
+            "6": 0.0961284414,
+            "7": 0.235192358,
+            "8": 0.00734520704,
+            "9": 0.0626826361,
+            "10": 0.000873111305,
+            "11": 0.0126080913,
+            "12": 0.403802484,
+            "13": 0.13316533,
+            "14": 0.0225298386,
+            "15": 0.0101282103,
+            "16": 0.00129751104
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
         "review_candidates": [],
         "applied": [],
-        "errors": [
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -878,7 +1982,7 @@
       "wos_source": "ORCID (record identifier)",
       "source": "ORCID",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "|Moisture Susceptibility of Nano-Al<sub>2</sub>O<sub>3</sub> and SiO<sub>2</sub> Modified Asphalt Mixtures",
         "checked_on": "2026-11-26",
         "input": "title only",
@@ -886,15 +1990,50 @@
         "status": "review",
         "openalex_status": "no_doi",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00399914384,
+            "2": 0.22742644,
+            "3": 0.00242641568,
+            "4": 0.00741028786,
+            "5": 0.0062430203,
+            "6": 0.0569323301,
+            "7": 0.0365465,
+            "8": 0.0193064809,
+            "9": 0.111985832,
+            "10": 0.00578868389,
+            "11": 0.0197302401,
+            "12": 0.264522612,
+            "13": 0.133948267,
+            "14": 0.0123333335,
+            "15": 0.0729167759,
+            "16": 0.00568860769,
+            "17": 0.0179828107
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00260811951,
+            "2": 0.00492074946,
+            "3": 0.0035287654,
+            "4": 0.0033619348,
+            "5": 0.00123189855,
+            "6": 0.0778034404,
+            "7": 0.229916155,
+            "8": 0.00968514,
+            "9": 0.0622206368,
+            "10": 0.00095392717,
+            "11": 0.0254760534,
+            "12": 0.408745557,
+            "13": 0.14122878,
+            "14": 0.0157975592,
+            "15": 0.0109497681,
+            "16": 0.00157161755
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
         "review_candidates": [],
         "applied": [],
-        "errors": [
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -910,7 +2049,7 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "|Sulphur factory waste usability in hot mix asphalt as filler material",
         "checked_on": "2026-11-26",
         "input": "title only",
@@ -918,15 +2057,50 @@
         "status": "review",
         "openalex_status": "no_doi",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00486752391,
+            "2": 0.0400279462,
+            "3": 0.0020467937,
+            "4": 0.0041231215,
+            "5": 0.00421774387,
+            "6": 0.0261718333,
+            "7": 0.0330194533,
+            "8": 0.050252378,
+            "9": 0.333692431,
+            "10": 0.008022964,
+            "11": 0.052110374,
+            "12": 0.365380555,
+            "13": 0.0595739186,
+            "14": 0.00970822573,
+            "15": 0.0818643272,
+            "16": 0.00965589285,
+            "17": 0.0542651117
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.0023440381,
+            "2": 0.00440655462,
+            "3": 0.00265463139,
+            "4": 0.00452674,
+            "5": 0.00076855591,
+            "6": 0.018875964,
+            "7": 0.0241916385,
+            "8": 0.017592093,
+            "9": 0.0636625364,
+            "10": 0.00103236584,
+            "11": 0.0574953891,
+            "12": 0.756237745,
+            "13": 0.0182343386,
+            "14": 0.00838368293,
+            "15": 0.0160200838,
+            "16": 0.00357365189
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
         "review_candidates": [],
         "applied": [],
-        "errors": [
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -940,25 +2114,75 @@
       "source": "ORCID",
       "author": "Ekinhan Eriskin, Sebnem Karahancer, Kemal Armagan, Caglar Sivri, Serdal Terzi, Mehmet Saltan",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.5592/co/cetra.2018.788|THE INVESTIGATION OF POLYAMIDE FIBER AS AN ADDITIVE IN HMA",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.7207000255584717
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0073798,
+            "2": 0.0117379129,
+            "3": 0.0106536746,
+            "4": 0.0151888728,
+            "5": 0.00736269355,
+            "6": 0.0201281011,
+            "7": 0.0513510704,
+            "8": 0.0547601581,
+            "9": 0.684869647,
+            "10": 0.0066652596,
+            "11": 0.0594534278,
+            "12": 0.119292855,
+            "13": 0.0128486753,
+            "14": 0.0125806928,
+            "15": 0.0307650566,
+            "16": 0.0107737184,
+            "17": 0.09423545
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00328359241,
+            "2": 0.00184764178,
+            "3": 0.00734932069,
+            "4": 0.00556108961,
+            "5": 0.000901914318,
+            "6": 0.00961378403,
+            "7": 0.0322805867,
+            "8": 0.0191180836,
+            "9": 0.602418721,
+            "10": 0.00261289091,
+            "11": 0.158952653,
+            "12": 0.129180476,
+            "13": 0.00837540068,
+            "14": 0.00926279649,
+            "15": 0.00565157086,
+            "16": 0.00358949578
+          }
+        },
+        "recommended": [
+          9
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex"
+      },
+      "sdg": [
+        9
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "USABILITY OF HEMP FIBER IN DENSE GRADED HOT MIX ASPHALT MIXTURE",
@@ -971,25 +2195,75 @@
       "source": "ORCID",
       "author": "Sebnem Karahancer, Ekinhan Eriskin, Kemal Armagan, Nihat Morova, Mehmet Saltan, Serdal Terzi",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.5592/co/cetra.2018.798|USABILITY OF HEMP FIBER IN DENSE GRADED HOT MIX ASPHALT MIXTURE",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.5378999710083008
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00374358892,
+            "2": 0.0111789405,
+            "3": 0.00498968363,
+            "4": 0.0056219697,
+            "5": 0.00313657522,
+            "6": 0.0636481643,
+            "7": 0.0722417533,
+            "8": 0.016520828,
+            "9": 0.0848365128,
+            "10": 0.00503909588,
+            "11": 0.121780813,
+            "12": 0.179549366,
+            "13": 0.00626054406,
+            "14": 0.0146215856,
+            "15": 0.229073375,
+            "16": 0.0106672049,
+            "17": 0.0201748312
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00212013372,
+            "2": 0.0101530133,
+            "3": 0.00606948417,
+            "4": 0.00355659309,
+            "5": 0.000871175551,
+            "6": 0.079299964,
+            "7": 0.0748296082,
+            "8": 0.00796203129,
+            "9": 0.131131947,
+            "10": 0.00100273127,
+            "11": 0.0233152397,
+            "12": 0.617988467,
+            "13": 0.0114405174,
+            "14": 0.014976983,
+            "15": 0.0132506406,
+            "16": 0.00203153142
+          }
+        },
+        "recommended": [
+          9
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex"
+      },
+      "sdg": [
+        9
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Waste frying oil modified bitumen usage for sustainable hot mix asphalt pavement",
@@ -1007,25 +2281,81 @@
       "wos_uid": "WOS:000416528900013",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.acme.2017.03.006|Waste frying oil modified bitumen usage for sustainable hot mix asphalt pavement",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.4943999946117401,
+          "12": 1.0
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00602930784,
+            "2": 0.184127659,
+            "3": 0.00379794836,
+            "4": 0.00529947877,
+            "5": 0.00458681583,
+            "6": 0.016738683,
+            "7": 0.0390149355,
+            "8": 0.0271463394,
+            "9": 0.139661163,
+            "10": 0.00504013896,
+            "11": 0.0180959404,
+            "12": 0.480100393,
+            "13": 0.05837816,
+            "14": 0.00955939293,
+            "15": 0.15942353,
+            "16": 0.00689062476,
+            "17": 0.0261844695
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00212187297,
+            "2": 0.0036751295,
+            "3": 0.00295697781,
+            "4": 0.00420745928,
+            "5": 0.00069299218,
+            "6": 0.026706988,
+            "7": 0.0367340036,
+            "8": 0.0135847041,
+            "9": 0.0549223535,
+            "10": 0.000984016573,
+            "11": 0.0572059713,
+            "12": 0.730838358,
+            "13": 0.0226410497,
+            "14": 0.0186452474,
+            "15": 0.0212050136,
+            "16": 0.00287784683
+          }
+        },
+        "recommended": [
+          9,
+          12
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "12": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9,
+          12
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "12": "OpenAlex"
+      },
+      "sdg": [
+        9,
+        12
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Modelling Marshall Stability of fiber reinforced asphalt mixtures with ANFIS",
@@ -1043,23 +2373,58 @@
       "wos_uid": "WOS:000450992400031",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1109/inista.2017.8001152|Modelling Marshall Stability of fiber reinforced asphalt mixtures with ANFIS",
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
-        "status": "review",
+        "status": "no_consensus",
         "openalex_status": "no_labels",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00637349486,
+            "2": 0.00989925861,
+            "3": 0.00456941128,
+            "4": 0.00684484839,
+            "5": 0.00485053658,
+            "6": 0.0192816854,
+            "7": 0.0248346031,
+            "8": 0.0309048593,
+            "9": 0.100273758,
+            "10": 0.00776410103,
+            "11": 0.559014678,
+            "12": 0.0934141,
+            "13": 0.0184866786,
+            "14": 0.0110455155,
+            "15": 0.166590482,
+            "16": 0.0190743804,
+            "17": 0.0335844159
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00198746915,
+            "2": 0.00647895,
+            "3": 0.0047250404,
+            "4": 0.00361160957,
+            "5": 0.000709328742,
+            "6": 0.0568059459,
+            "7": 0.052676294,
+            "8": 0.00888039917,
+            "9": 0.0671393,
+            "10": 0.00107370329,
+            "11": 0.0369257182,
+            "12": 0.698555171,
+            "13": 0.0272498857,
+            "14": 0.0169114694,
+            "15": 0.0143288523,
+            "16": 0.00194081687
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
         "review_candidates": [],
         "applied": [],
-        "errors": [
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -1078,7 +2443,7 @@
       "wos_uid": "WOS:000404961500070",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.proeng.2017.04.411|Examination of the Effect of Superhydrophobic Coated Pavement under Wet Conditions",
         "checked_on": "2026-11-26",
         "input": "title+abstract",
@@ -1086,15 +2451,52 @@
         "status": "review",
         "openalex_status": "no_labels",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0131084025,
+            "2": 0.00889742374,
+            "3": 0.326430023,
+            "4": 0.0166133344,
+            "5": 0.0178133845,
+            "6": 0.0490714908,
+            "7": 0.0205459893,
+            "8": 0.0065446496,
+            "9": 0.00918230414,
+            "10": 0.00919249654,
+            "11": 0.214118928,
+            "12": 0.0172510445,
+            "13": 0.0103320479,
+            "14": 0.0447832346,
+            "15": 0.0335197747,
+            "16": 0.0260989368,
+            "17": 0.0208141506
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00341666839,
+            "2": 0.000948456582,
+            "3": 0.0151447561,
+            "4": 0.00155571033,
+            "5": 0.000893713615,
+            "6": 0.00795346312,
+            "7": 0.00458195712,
+            "8": 0.00251199282,
+            "9": 0.011135309,
+            "10": 0.00300786691,
+            "11": 0.929544747,
+            "12": 0.00642849086,
+            "13": 0.00283372,
+            "14": 0.00383311254,
+            "15": 0.00377781759,
+            "16": 0.0024322297
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
-        "review_candidates": [],
+        "review_candidates": [
+          11
+        ],
         "applied": [],
-        "errors": [
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -1110,23 +2512,59 @@
       "first_author": "Serin S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.21533/pen.v5i2.106|Estimation of specific gravity with penetration and penetration index parameters by artificial neural network",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
         "status": "review",
-        "openalex_status": "error",
+        "openalex_status": "not_found",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0205004513,
+            "2": 0.0726760626,
+            "3": 0.0071066618,
+            "4": 0.0134601,
+            "5": 0.0314391255,
+            "6": 0.00778630376,
+            "7": 0.135329366,
+            "8": 0.120235473,
+            "9": 0.08027035,
+            "10": 0.111348301,
+            "11": 0.0775734186,
+            "12": 0.0363919139,
+            "13": 0.373679817,
+            "14": 0.010953933,
+            "15": 0.0175314844,
+            "16": 0.0449170172,
+            "17": 0.138515592
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.011214749,
+            "2": 0.0197017547,
+            "3": 0.285226315,
+            "4": 0.0175205208,
+            "5": 0.0132926935,
+            "6": 0.0216626115,
+            "7": 0.333182096,
+            "8": 0.00522531429,
+            "9": 0.140880451,
+            "10": 0.021182118,
+            "11": 0.045439519,
+            "12": 0.0145077277,
+            "13": 0.00304481923,
+            "14": 0.0215951577,
+            "15": 0.030918872,
+            "16": 0.0154053383
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
         "review_candidates": [],
         "applied": [],
         "errors": [
-          "OpenAlex DOI identity mismatch",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
+          "OpenAlex: no unique exact DOI match"
         ]
       }
     },
@@ -1143,7 +2581,7 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "|Comparing CBR values obtained from field with laboratory test results",
         "checked_on": "2026-11-26",
         "input": "title only",
@@ -1151,15 +2589,50 @@
         "status": "review",
         "openalex_status": "no_doi",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00891077518,
+            "2": 0.109215677,
+            "3": 0.00439456105,
+            "4": 0.0325335562,
+            "5": 0.0313254893,
+            "6": 0.0117560029,
+            "7": 0.0439376831,
+            "8": 0.108454585,
+            "9": 0.166088939,
+            "10": 0.0195764303,
+            "11": 0.0220329762,
+            "12": 0.0664519072,
+            "13": 0.227935851,
+            "14": 0.00819936395,
+            "15": 0.0116997957,
+            "16": 0.0125650167,
+            "17": 0.0775383115
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00954132061,
+            "2": 0.0300134961,
+            "3": 0.410516351,
+            "4": 0.0917183235,
+            "5": 0.00953637157,
+            "6": 0.0268458594,
+            "7": 0.133485451,
+            "8": 0.0089419838,
+            "9": 0.130561158,
+            "10": 0.025996007,
+            "11": 0.0126957698,
+            "12": 0.0434887856,
+            "13": 0.00456480402,
+            "14": 0.0171873942,
+            "15": 0.028682461,
+            "16": 0.0162244402
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
         "review_candidates": [],
         "applied": [],
-        "errors": [
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -1179,25 +2652,81 @@
       "wos_source": "ORCID (record identifier)",
       "author": "Ekinhan Eriskin, Sebnem Karahancer, Serdal Terzi, Mehmet Saltan",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.proeng.2017.04.378|Optimization of Traffic Signal Timing at Oversaturated Intersections Using Elimination Pairing System",
         "checked_on": "2026-11-26",
-        "input": "title only",
-        "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "input": "title+abstract",
+        "abstract_source": "OpenAlex",
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.5062999725341797,
+          "11": 0.7250000238418579
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0105555058,
+            "2": 0.00508052111,
+            "3": 0.0187041759,
+            "4": 0.014665097,
+            "5": 0.00739046931,
+            "6": 0.00688588619,
+            "7": 0.0172623098,
+            "8": 0.0293117464,
+            "9": 0.0522577465,
+            "10": 0.0178815424,
+            "11": 0.639995635,
+            "12": 0.0169991553,
+            "13": 0.00924807787,
+            "14": 0.0101444423,
+            "15": 0.0259770453,
+            "16": 0.0293199718,
+            "17": 0.0446926057
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00526579795,
+            "2": 0.00118838053,
+            "3": 0.0348974802,
+            "4": 0.00254225475,
+            "5": 0.00191411993,
+            "6": 0.00443855347,
+            "7": 0.00778295379,
+            "8": 0.00339994556,
+            "9": 0.0191459451,
+            "10": 0.00967934262,
+            "11": 0.892884,
+            "12": 0.00376344519,
+            "13": 0.00251803244,
+            "14": 0.00360621372,
+            "15": 0.00300695677,
+            "16": 0.00396661
+          }
+        },
+        "recommended": [
+          9,
+          11
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex",
+          "11": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9,
+          11
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "11": "OpenAlex"
+      },
+      "sdg": [
+        9,
+        11
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Utilization of Arundo donax in Hot Mix Asphalt as a fiber",
@@ -1216,25 +2745,75 @@
       "wos_source": "ORCID (record identifier)",
       "author": "Sebnem Sargin Karahancer, Ekinhan Eriskin, Onur Sarioglu, Buket Capali, Mehmet Saltan, Serdal Terzi",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.conbuildmat.2016.08.147|Utilization of Arundo donax in Hot Mix Asphalt as a fiber",
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
-        "status": "review",
-        "openalex_status": "error",
-        "openalex": {},
-        "aurora": {},
-        "recommended": [],
-        "recommended_sources": {},
+        "status": "classified",
+        "openalex_status": "labels_found",
+        "openalex": {
+          "9": 0.5378999710083008
+        },
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00366079807,
+            "2": 0.118023366,
+            "3": 0.00241881609,
+            "4": 0.00774514675,
+            "5": 0.00546616316,
+            "6": 0.0295520723,
+            "7": 0.105784982,
+            "8": 0.0346073508,
+            "9": 0.20319736,
+            "10": 0.00562244654,
+            "11": 0.0305396318,
+            "12": 0.291164815,
+            "13": 0.0930250287,
+            "14": 0.00879570842,
+            "15": 0.0523241758,
+            "16": 0.00594747066,
+            "17": 0.0240764618
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00248106918,
+            "2": 0.00365521223,
+            "3": 0.00299697672,
+            "4": 0.00304182293,
+            "5": 0.00155497261,
+            "6": 0.0204962492,
+            "7": 0.459865,
+            "8": 0.0093407305,
+            "9": 0.069272,
+            "10": 0.00122116157,
+            "11": 0.0240106899,
+            "12": 0.209508762,
+            "13": 0.173292279,
+            "14": 0.00971070677,
+            "15": 0.00802352745,
+            "16": 0.00152882969
+          }
+        },
+        "recommended": [
+          9
+        ],
+        "recommended_sources": {
+          "9": "OpenAlex"
+        },
         "review_candidates": [],
-        "applied": [],
-        "errors": [
-          "OpenAlex SDG score invalid",
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
-      }
+        "applied": [
+          9
+        ],
+        "errors": []
+      },
+      "sdg_sources": {
+        "9": "OpenAlex"
+      },
+      "sdg": [
+        9
+      ],
+      "sdg_source": "OpenAlex / Aurora",
+      "sdg_manual": false
     },
     {
       "title": "Marshall stability estimating using artificial neural network with polyparaphenylene terephtalamide fibre rate",
@@ -1253,23 +2832,58 @@
       "wos_source": "ORCID (record identifier)",
       "author": "Sebnem Karahancer, Buket Capali, Ekinhan Eriskin, Nihat Morova, Sercan Serin, Mehmet Saltan, Serdal Terzi, Dicle Ozdemir Kucukcapraz",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1109/inista.2016.7571848|Marshall stability estimating using artificial neural network with polyparaphenylene terephtalamide fibre rate",
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
-        "status": "review",
+        "status": "no_consensus",
         "openalex_status": "no_labels",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.0049611032,
+            "2": 0.0076738894,
+            "3": 0.00658553839,
+            "4": 0.00655472279,
+            "5": 0.00398859382,
+            "6": 0.025552243,
+            "7": 0.014674753,
+            "8": 0.0189983249,
+            "9": 0.0825262368,
+            "10": 0.00496715307,
+            "11": 0.368198186,
+            "12": 0.108419,
+            "13": 0.00933885574,
+            "14": 0.0226623714,
+            "15": 0.208279669,
+            "16": 0.0149591863,
+            "17": 0.0344185531
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00291698263,
+            "2": 0.0036163975,
+            "3": 0.00735308789,
+            "4": 0.0125671253,
+            "5": 0.000989146647,
+            "6": 0.0176816378,
+            "7": 0.0317229033,
+            "8": 0.0179257225,
+            "9": 0.350171,
+            "10": 0.0015079414,
+            "11": 0.103007123,
+            "12": 0.421067268,
+            "13": 0.00817232206,
+            "14": 0.00772721181,
+            "15": 0.00886442,
+            "16": 0.00470972294
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
         "review_candidates": [],
         "applied": [],
-        "errors": [
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     },
     {
@@ -1289,7 +2903,7 @@
       "wos_source": "ORCID (record identifier)",
       "author": "N. Morova, S. Serin, S. Terzi, M. Saltan, D. Ozdemir Kucukcapraz, S. Sargin Karahancer, E. Eriskin",
       "sdg_classification": {
-        "version": "openalex-aurora-v3",
+        "version": "openalex-aurora-v4",
         "identity": "10.1016/j.conbuildmat.2015.12.193|Utility of polyparaphenylene terephtalamide fiber in hot mix asphalt as a fiber",
         "checked_on": "2026-11-26",
         "input": "title only",
@@ -1297,15 +2911,50 @@
         "status": "review",
         "openalex_status": "no_labels",
         "openalex": {},
-        "aurora": {},
+        "aurora": {
+          "aurora-sdg-multi": {
+            "1": 0.00398764,
+            "2": 0.0901699364,
+            "3": 0.00250282884,
+            "4": 0.00793719292,
+            "5": 0.00413391,
+            "6": 0.0478516221,
+            "7": 0.0873911679,
+            "8": 0.0275132954,
+            "9": 0.302740753,
+            "10": 0.00721338391,
+            "11": 0.0418328345,
+            "12": 0.279609591,
+            "13": 0.0694390833,
+            "14": 0.00888145,
+            "15": 0.0564852357,
+            "16": 0.00636076927,
+            "17": 0.0384344459
+          },
+          "elsevier-sdg-multi": {
+            "1": 0.00234324229,
+            "2": 0.00422556046,
+            "3": 0.00338031608,
+            "4": 0.00279897894,
+            "5": 0.00136357895,
+            "6": 0.0924388841,
+            "7": 0.434460521,
+            "8": 0.00543483393,
+            "9": 0.0460954197,
+            "10": 0.000861241,
+            "11": 0.0167094674,
+            "12": 0.259495467,
+            "13": 0.103030182,
+            "14": 0.0155195426,
+            "15": 0.010363753,
+            "16": 0.00147900649
+          }
+        },
         "recommended": [],
         "recommended_sources": {},
         "review_candidates": [],
         "applied": [],
-        "errors": [
-          "aurora-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions",
-          "elsevier-sdg-multi: Aurora response has no recognized goal-score pairs; top-level schema: @self, text, model, model_name, @context, predictions"
-        ]
+        "errors": []
       }
     }
   ],
