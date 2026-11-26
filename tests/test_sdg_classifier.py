@@ -29,13 +29,13 @@ class SDGTests(unittest.TestCase):
         for assignment in ([5,11],[]):
             p=self.paper()|{'sdg':assignment.copy()}
             with patch.object(s,'openalex',return_value=({12:.95},'abstract')),patch.object(s,'aurora',side_effect=self.models):
-                self.assertEqual(s.classify(p,'key',force=True),'manual'); self.assertEqual(p['sdg'],assignment); self.assertTrue(p['sdg_manual'])
+                self.assertEqual(s.classify(p,'key',force=True),'manual'); self.assertEqual(p['sdg'],sorted(set(assignment)|{12}) if assignment else []); self.assertTrue(p['sdg_manual']); self.assertEqual(p['sdg_manual_goals'],assignment)
                 self.assertEqual(p['sdg_classification']['recommended'],[12])
     def test_edit_auto_assignment(self):
         p=self.paper()
         with patch.object(s,'openalex',return_value=({12:.95},'abstract')),patch.object(s,'aurora',side_effect=self.models):
             s.classify(p,'key'); p['sdg']=[3]; s.classify(p,'key',force=True)
-            self.assertEqual(p['sdg'],[3]); self.assertTrue(p['sdg_manual'])
+            self.assertEqual(p['sdg'],[3,12]); self.assertTrue(p['sdg_manual']); self.assertEqual(p['sdg_manual_goals'],[3])
     def test_openalex_only_without_abstract(self):
         p=self.paper()
         with patch.object(s,'openalex',return_value=({9:.62},'')),patch.object(s,'crossref_abstract',return_value=''),patch.object(s,'aurora',side_effect=s.SDGError('unavailable')):
@@ -104,3 +104,26 @@ class SDGTests(unittest.TestCase):
         fixture={'doi':'https://doi.org/10.1234/a','sustainable_development_goals':[{'id':'https://metadata.un.org/sdg/9','score':.85}]}
         with patch.object(s,'request_json',side_effect=[dict(fixture,doi='https://doi.org/10.1234/other'),{'results':[fixture]}]):
             self.assertEqual(s.openalex('10.1234/a','key'),({9:.85},''))
+
+    def test_legacy_manual_migration_union_and_provenance(self):
+        p=self.paper()|{'sdg':[3,5,11,15,17],'sdg_manual':True,'sdg_classification':{'version':'openalex-aurora-v4','applied':[3,5,11,15,17]}}
+        with patch.object(s,'openalex',return_value=({9:.5379,10:.4,11:.9333},'abstract')),patch.object(s,'aurora',return_value={}):
+            s.classify(p,'key')
+            self.assertEqual(p['sdg'],[3,5,9,10,11,15,17]); self.assertEqual(p['sdg_manual_goals'],[3,5,11,15,17])
+            self.assertEqual(p['sdg_sources']['9'],'OpenAlex'); self.assertEqual(p['sdg_sources']['11'],'Manual / existing assignment')
+            self.assertIn('OpenAlex (automated classification)',b.sdg_impact(p))
+            self.assertEqual(s.classify(p,'key'),'cached')
+        with patch.object(s,'openalex',return_value=({11:.95},'abstract')),patch.object(s,'aurora',return_value={}):
+            s.classify(p,'key',force=True)
+            self.assertEqual(p['sdg'],[3,5,11,15,17]); self.assertEqual(p['sdg_manual_goals'],[3,5,11,15,17])
+    def test_explicit_replace_and_policy_cache(self):
+        p=self.paper()|{'sdg':[3],'sdg_manual':True}
+        with patch.object(s,'openalex',return_value=({9:.8},'abstract')),patch.object(s,'aurora',return_value={}):
+            s.classify(p,'key'); self.assertEqual(p['sdg'],[3,9])
+            p['sdg_mode']='replace'; s.classify(p,'key'); self.assertEqual(p['sdg'],[3])
+            p['sdg_mode']='add'; p['sdg_manual_goals']=[5]; s.classify(p,'key'); self.assertEqual(p['sdg'],[5,9])
+    def test_manual_union_failure_preserves_previous(self):
+        p=self.paper()|{'sdg':[3],'sdg_manual':True}
+        with patch.object(s,'openalex',return_value=({9:.8},'abstract')),patch.object(s,'aurora',return_value={}): s.classify(p,'key')
+        with patch.object(s,'openalex',side_effect=s.SDGError('unavailable')),patch.object(s,'crossref_abstract',return_value=''),patch.object(s,'aurora',side_effect=s.SDGError('unavailable')):
+            s.classify(p,'key',force=True); self.assertEqual(p['sdg'],[3,9]); self.assertEqual(p['sdg_manual_goals'],[3]); self.assertEqual(p['sdg_sources']['9'],'OpenAlex')

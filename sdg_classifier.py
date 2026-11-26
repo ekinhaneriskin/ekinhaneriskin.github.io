@@ -6,7 +6,7 @@ from urllib.parse import quote
 from html import unescape
 import requests
 
-VERSION = 'openalex-aurora-v4'
+VERSION = 'openalex-aurora-v5'
 MODELS = ('aurora-sdg-multi', 'elsevier-sdg-multi')
 AURORA_THRESHOLD = .80
 CACHE_DAYS = 90
@@ -142,17 +142,22 @@ def aurora(text,model):
     return aurora_scores(request_json('POST','https://aurora-sdg.labs.vu.nl/classifier/classify/'+model,json={'text':text},headers={'Accept':'application/json'}))
 
 def manual(p):
-    if p.get('sdg_manual') is True: return True
+    if 'sdg_manual_goals' in p or p.get('sdg_manual') is True or p.get('sdg_mode') == 'replace': return True
     if 'sdg' not in p: return False
     c=p.get('sdg_classification')
     return not isinstance(c,dict) or 'applied' not in c or goals(p['sdg'])!=goals(c['applied'])
 
 def classify(p,key,force=False,today=None):
     today=today or date.today(); stamp=today.isoformat(); d=doi(p.get('doi')); old=p.get('sdg_classification') or {}; locked=manual(p)
-    if locked: p['sdg_manual']=True
+    manual_goals=goals(p.get('sdg_manual_goals',p.get('sdg'))) if locked else []
+    # A legacy intentional empty override remains an exclusion; nonempty legacy
+    # assignments migrate to additive mode unless replacement is explicit.
+    mode=p.get('sdg_mode','add' if manual_goals else 'replace') if locked else 'auto'
+    if locked and mode not in ('add','replace'): mode='add'
+    policy={'mode':mode,'manual_goals':manual_goals}
     # Cache by DOI and title: a new DOI or edited title triggers a fresh attempt.
     identity=d+'|'+str(p.get('title') or '')
-    if not force and old.get('version')==VERSION and old.get('identity')==identity:
+    if not force and old.get('version')==VERSION and old.get('identity')==identity and old.get('policy')==policy:
         try:
             days=(today-date.fromisoformat(old['checked_on'])).days
             ttl=ERROR_DAYS if old.get('errors') else REVIEW_DAYS if old.get('status')!='classified' else CACHE_DAYS
@@ -188,15 +193,33 @@ def classify(p,key,force=False,today=None):
     provenance={str(n): ('OpenAlex + Aurora' if n in oa_labels and n in aurora_agreement else 'OpenAlex' if n in oa_labels else 'Aurora + Elsevier model') for n in selected}
     candidates=sorted(oa_labels | strong_aurora)
     previous=goals(p.get('sdg'))
-    if not locked and selected:
-        # A partial provider failure must not erase previously assigned tags.
-        applied_now=sorted(set(previous)|set(selected)) if errors else selected
-        prior_sources=p.get('sdg_sources') or {}
-        p['sdg_sources']={str(n):provenance.get(str(n),prior_sources.get(str(n),p.get('sdg_source','OpenAlex + Aurora'))) for n in applied_now}
-        p['sdg']=applied_now; p['sdg_source']='OpenAlex / Aurora'; p['sdg_manual']=False
+    prior_sources=p.get('sdg_sources') or {}
+    # Keep manual ownership separate from the displayed union. Previously added
+    # automatic labels must not silently become manual on subsequent refreshes.
+    if locked:
+        p['sdg_manual']=True
+        p['sdg_manual_goals']=manual_goals
+        p['sdg_mode']=mode
+    # On a manual edit, never promote removed manual goals to automatic ones.
+    prior_manual=goals((old.get('policy') or {}).get('manual_goals'))
+    prior_auto=set(previous)-set(manual_goals)-set(prior_manual)
+    if locked and 'policy' not in old:
+        prior_auto={n for n in prior_auto if prior_sources.get(str(n)) in ('OpenAlex + Aurora','OpenAlex','Aurora + Elsevier model','OpenAlex / Aurora')}
+    if mode=='replace':
+        applied_now=manual_goals
+    else:
+        auto_now=set(selected)
+        if errors or not selected:
+            auto_now |= prior_auto
+        applied_now=sorted(set(manual_goals)|auto_now)
+    if applied_now or locked or 'sdg' in p:
+        p['sdg']=applied_now
+        p['sdg_sources']={str(n):'Manual / existing assignment' if n in manual_goals else provenance.get(str(n),prior_sources.get(str(n),p.get('sdg_source','OpenAlex / Aurora'))) for n in applied_now}
+        p['sdg_manual']=locked
+        p['sdg_source']='Manual + automatic' if locked and mode=='add' else 'Manual / existing assignment' if locked else 'OpenAlex / Aurora'
     applied=goals(p.get('sdg'))
     status='manual' if locked else 'classified' if selected else 'review' if candidates or not abstract or errors or applied else 'no_consensus'
-    p['sdg_classification']={'version':VERSION,'identity':identity,'checked_on':stamp,'input':'title+abstract' if abstract else 'title only','abstract_source':abstract_source,'status':status,'openalex_status':oa_status,'openalex':{str(k):v for k,v in sorted(oa.items())},'aurora':{m:{str(k):v for k,v in sorted(r.items())} for m,r in results.items()},'recommended':selected,'recommended_sources':provenance,'review_candidates':sorted(set(candidates)-set(selected)),'applied':applied,'errors':errors}
+    p['sdg_classification']={'version':VERSION,'identity':identity,'policy':policy,'checked_on':stamp,'input':'title+abstract' if abstract else 'title only','abstract_source':abstract_source,'status':status,'openalex_status':oa_status,'openalex':{str(k):v for k,v in sorted(oa.items())},'aurora':{m:{str(k):v for k,v in sorted(r.items())} for m,r in results.items()},'recommended':selected,'recommended_sources':provenance,'review_candidates':sorted(set(candidates)-set(selected)),'applied':applied,'errors':errors}
     # Preserve automatic ownership even after an unsuccessful attempt with no sdg field.
     return status
 
@@ -211,7 +234,7 @@ def enrich(records,report_path,force=False):
         c=p.get('sdg_classification') or {}
         state=c.get('openalex_status','not_checked') if key else 'missing_key'
         report['openalex_counts'][state]=report['openalex_counts'].get(state,0)+1
-        report['papers'].append({'title':p.get('title'),'doi':doi(p.get('doi')),'displayed_sdgs':goals(p.get('sdg')),'manual':manual(p),'openalex_status':state,'classification':c})
+        report['papers'].append({'title':p.get('title'),'doi':doi(p.get('doi')),'displayed_sdgs':goals(p.get('sdg')),'manual':manual(p),'manual_goals':goals(p.get('sdg_manual_goals',p.get('sdg'))) if manual(p) else [],'mode':p.get('sdg_mode','replace' if manual(p) else 'auto'),'openalex_status':state,'classification':c})
     Path(report_path).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print('SDG summary: '+json.dumps(counts,sort_keys=True))
     print('OpenAlex lookup summary: '+json.dumps(report['openalex_counts'],sort_keys=True))
@@ -222,11 +245,11 @@ def enrich(records,report_path,force=False):
         with open(summary,'a',encoding='utf-8') as f:
             f.write('\n## SDG classification diagnostics\n\n')
             f.write('OpenAlex key configured: **'+('yes' if key else 'NO')+'**\n\n')
-            f.write('| DOI | OpenAlex status | OpenAlex goals | Displayed goals | Manual override |\n|---|---|---|---|---|\n')
+            f.write('| DOI | OpenAlex status | OpenAlex goals | Displayed goals | Manual goals | Policy |\n|---|---|---|---|---|---|\n')
             for row in report['papers']:
                 c=row['classification']; d=row['doi'].replace('|','%7C').replace('\n',' ')
                 found=', '.join(sorted(c.get('openalex',{}),key=int)) or '—'
                 shown=', '.join(map(str,row['displayed_sdgs'])) or '—'
-                f.write(f"| {d or 'No DOI'} | {row['openalex_status']} | {found} | {shown} | {'yes' if row['manual'] else 'no'} |\n")
+                f.write(f"| {d or 'No DOI'} | {row['openalex_status']} | {found} | {shown} | {', '.join(map(str,row['manual_goals'])) or '—'} | {row['mode']} |\n")
             f.write('\nSee sdg-classification-report for per-paper errors and Aurora results.\n')
     return counts
