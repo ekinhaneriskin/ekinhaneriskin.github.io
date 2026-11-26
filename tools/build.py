@@ -99,7 +99,6 @@ def build():
         ctext=''
         wc=p.get('wos_citations')
         if str(wc).isdigit() and 'wos' in indices: ctext+=f' · WoS citations: {wc}'
-        if p.get('wos_source')=='ORCID (record identifier)': ctext+=' · WoS identifier via ORCID'
         rows.append(f'<article class="pub" {attr}><div class="year">{h(p.get("year") or "—")}</div><div><div class="pub-heading"><h3>{title_link(p)}</h3>{badge}</div><p>{h(p.get("author") or "Author metadata pending")}</p><p><i>{h(p.get("journal"))}</i>{h(ctext)}</p>{actions(p,e,True)}'+sdg_impact(p)+'</div></article>')
     metrics=author_metrics_html(m)
     repos=[]
