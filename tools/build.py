@@ -5,6 +5,10 @@ from pathlib import Path
 from datetime import date
 from html import escape
 from urllib.parse import urlparse, quote
+if __package__:
+    from .github_repos import repositories_for_site
+else:
+    from github_repos import repositories_for_site
 ROOT=Path(__file__).resolve().parents[1]
 def h(s): return escape(str(s or ''),quote=True)
 def doi(s): return re.sub(r'^(?:https?://(?:dx\.)?doi\.org/|doi:\s*)','',str(s or '').strip(),flags=re.I).lower()
@@ -98,8 +102,11 @@ def build():
         rows.append(f'<article class="pub" {attr}><div class="year">{h(p.get("year") or "—")}</div><div><h3>{title_link(p)}</h3><p>{h(p.get("author") or "Author metadata pending")}</p><p><i>{h(p.get("journal"))}</i>{h(ctext)}</p>{actions(p,e,True)}'+sdg_impact(p)+'</div></article>')
     metrics=author_metrics_html(m)
     repos=[]
-    for r in ed['repositories']:
-        u='https://github.com/ekinhaneriskin/'+quote(r['name'],safe=''); repos.append(f'<a class="repo" href="{h(u)}"><h3>{h(r["title"])} ↗</h3><p>{h(r["description"])}</p><small>{h(r["name"])}</small></a>')
+    for r in repositories_for_site(ed, ROOT):
+        details=' · '.join(x for x in (r['name'],r['language'],'Archived' if r['archived'] else '') if x)
+        description=f'<p>{h(r["description"])}</p>' if r['description'] else ''
+        repos.append(f'<a class="repo" href="{h(r["url"])}"><h3>{h(r["title"])} ↗</h3>{description}<small>{h(details)}</small></a>')
+    if not repos: repos.append('<p class="note">No public repositories listed. See the GitHub profile for details.</p>')
     years=''.join(f'<option value="{h(y)}">{h(y)}</option>' for y in sorted({str(p['year']) for p in pubs if p.get('year')},reverse=True))
     meta=raw.get('metadata',{}); update=' '.join(f'{label}: {meta.get(key) or "not yet recorded"}. ' for key,label in [('scopus_publications_as_of','Scopus sync'),('wos_publications_as_of','WoS API sync'),('orcid_as_of','ORCID sync')])
     t=(ROOT/'tools/index.template.html').read_text(); vals={'METRICS':metrics,'FEATURED':''.join(features),'PUBLICATIONS':''.join(rows),'YEARS':years,'COUNT':str(len(pubs)),'REPOSITORIES':''.join(repos),'UPDATE':h(update),'CURRENT_YEAR':str(date.today().year),'FULLTEXT_OPTION':'<option value="fulltext">Author-shared PDF available</option>' if any(displayed_access(papers.get(doi(p.get('doi')),{})) for p in pubs) else '', 'FULLTEXT_NOTE':' Author-shared PDFs are provided only for individually approved versions.' if any(displayed_access(papers.get(doi(p.get('doi')),{})) for p in pubs) else ''}

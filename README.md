@@ -59,3 +59,10 @@ If a workflow fails, inspect its log. Share only error messages or the SDG repor
 ## v5.6 update of an existing website
 
 Upload the files in the update archive, maintaining paths. Do not replace the live publication/editorial JSON, photos, favicon, CNAME or API settings. The existing workflow builds `index.html` from the updated template on push. Then manually run **Update publications and deploy website**, with `force_sdg_refresh` enabled, and inspect the `sdg-classification-report` artifact. The classifier version change also invalidates v1 caches. The full-height hero restores the original centre/cover photo positioning; your portrait is now in About and uses its native aspect ratio. No actual photograph files are in this archive.
+
+
+## v5.7 — Automatic GitHub repository discovery
+
+The workflow retrieves owned public repositories from the GitHub REST API on every scheduled, manual and push build. No additional API key is needed. It excludes forks, `ekinhaneriskin.github.io` and the account's profile README repository `ekinhaneriskin`. Archived public repositories are retained and labelled Archived. New entries use GitHub's description and language; existing curated titles and descriptions in `editorial.json` take precedence. Successful snapshots are committed to `repositories.json`; the generated HTML is the only repository listing deployed to the website. API failures preserve the last successful snapshot; before the first successful sync, the site uses the existing curated list with exclusions. If a repository becomes private or is deleted, it disappears after the next successful sync.
+
+To hide more repositories, add a top-level array to your existing `editorial.json`, e.g. `"exclude_repositories": ["example-repo"]`. Do not replace your existing editorial or publication data. The list is not a licence check; review public repositories for material appropriate for your academic site.
