@@ -3,11 +3,11 @@ import json, os, re, time, math
 from datetime import date
 from pathlib import Path
 from urllib.parse import quote
+from html import unescape
 import requests
 
-VERSION = 'openalex-aurora-consensus-v1'
+VERSION = 'openalex-aurora-v2'
 MODELS = ('aurora-sdg-multi', 'elsevier-sdg-multi')
-OA_THRESHOLD = .80
 AURORA_THRESHOLD = .80
 CACHE_DAYS = 90
 REVIEW_DAYS = 30
@@ -65,6 +65,13 @@ def openalex(d,key):
         out[n]=s
     return out,abstract_from_index(obj.get('abstract_inverted_index'))
 
+def crossref_abstract(d):
+    obj=request_json('GET','https://api.crossref.org/works/'+quote(d,safe='/'),headers={'Accept':'application/json','User-Agent':'AcademicWebsiteUpdater/2.1 (mailto:ekinhaneriskin@sdu.edu.tr)'})
+    m=obj.get('message',{}) if isinstance(obj,dict) else {}
+    if doi(m.get('DOI'))!=d: raise SDGError('Crossref DOI identity mismatch')
+    text=m.get('abstract')
+    return ' '.join(unescape(re.sub(r'<[^>]*>',' ',text)).split()) if isinstance(text,str) else ''
+
 def aurora_scores(obj):
     """Accept explicit goal/score pairs or goal-keyed maps; fail closed on unknown schema."""
     out={}
@@ -88,14 +95,16 @@ def aurora_scores(obj):
         if isinstance(x,list):
             for y in x: walk(y)
         elif isinstance(x,dict):
-            for k in ('sdg','sdg_id','sdgId','sdg_number','goal','goal_id','goalId','goal_number','id','label','name','class'):
+            for k in ('sdg','sdg_id','sdgId','sdg_number','sdg_label','goal','goal_id','goalId','goal_number','id','label','name','class'):
                 if goal(x.get(k)) is not None:
                     put(x[k],x); return
             for k,v in x.items():
                 if goal(k) is not None: put(k,v)
-                elif k in ('results','result','predictions','prediction','scores','probabilities','sdgs','SDGs','goals','data','classification','labels','output'): walk(v)
+                elif k in ('results','result','predictions','prediction','scores','probabilities','sdgs','SDGs','goals','data','classification','classifications','labels','output','predicted_labels','prediction_results'): walk(v)
     walk(obj)
-    if not out: raise SDGError('Aurora response has no recognized goal-score pairs; check API schema')
+    if not out:
+        shape = ', '.join(str(k)[:40] for k in list(obj)[:12]) if isinstance(obj,dict) else type(obj).__name__
+        raise SDGError('Aurora response has no recognized goal-score pairs; top-level schema: '+shape)
     return out
 
 def aurora(text,model):
@@ -126,25 +135,35 @@ def classify(p,key,force=False,today=None):
     if re.fullmatch(r'10\.\d{4,9}/\S+',d):
         try: oa,abstract=openalex(d,key)
         except SDGError as e: errors.append(str(e))
+    abstract_source='OpenAlex' if abstract else None
+    if not abstract and re.fullmatch(r'10\.\d{4,9}/\S+',d):
+        try:
+            abstract=crossref_abstract(d)
+            if abstract: abstract_source='Crossref'
+        except SDGError as e: errors.append(str(e))
     text=str(p['title'])+ ('\n\n'+abstract if abstract else '')
-    # No full text or private material is transmitted; abstract is not persisted.
+    # The published OpenAlex labels are usable independently of the Aurora service.
+    # Aurora supplements these when both models agree on abstract-based labels.
     for model in MODELS:
         try: results[model]=aurora(text,model)
         except SDGError as e: errors.append(model+': '+str(e))
-    strong_oa={n for n,s in oa.items() if s>=OA_THRESHOLD}
-    strong_aurora={n for m in results.values() for n,s in m.items() if s>=AURORA_THRESHOLD}
-    # Require cross-provider agreement and abstract, not mere title matching.
-    # If OA is absent or disagrees, even strong Aurora-only tags are suggestions.
-    selected=sorted(strong_oa & strong_aurora) if abstract and not errors else []
-    candidates=sorted(strong_oa | strong_aurora)
+    oa_labels=set(oa)
+    strong_by_model={m:{n for n,s in r.items() if s>=AURORA_THRESHOLD} for m,r in results.items()}
+    strong_aurora=set().union(*strong_by_model.values()) if strong_by_model else set()
+    aurora_agreement=set.intersection(*(strong_by_model[m] for m in MODELS)) if abstract and all(m in strong_by_model for m in MODELS) else set()
+    selected=sorted(oa_labels | aurora_agreement)
+    provenance={str(n): ('OpenAlex + Aurora' if n in oa_labels and n in aurora_agreement else 'OpenAlex' if n in oa_labels else 'Aurora + Elsevier model') for n in selected}
+    candidates=sorted(oa_labels | strong_aurora)
     previous=goals(p.get('sdg'))
-    if not locked and not errors and abstract:
-        # A new inconclusive result must not erase earlier verified automatic tags.
-        if selected: p['sdg']=selected; p['sdg_source']='OpenAlex + Aurora'; p['sdg_manual']=False
+    if not locked and selected:
+        # A partial provider failure must not erase previously assigned tags.
+        applied_now=sorted(set(previous)|set(selected)) if errors else selected
+        prior_sources=p.get('sdg_sources') or {}
+        p['sdg_sources']={str(n):provenance.get(str(n),prior_sources.get(str(n),p.get('sdg_source','OpenAlex + Aurora'))) for n in applied_now}
+        p['sdg']=applied_now; p['sdg_source']='OpenAlex / Aurora'; p['sdg_manual']=False
     applied=goals(p.get('sdg'))
     status='manual' if locked else 'classified' if selected else 'review' if candidates or not abstract or errors or applied else 'no_consensus'
-    # Keep every model's raw normalized scores, not the abstract. No fake zeroes.
-    p['sdg_classification']={'version':VERSION,'identity':identity,'checked_on':stamp,'input':'title+abstract' if abstract else 'title only','status':status,'openalex':{str(k):v for k,v in sorted(oa.items())},'aurora':{m:{str(k):v for k,v in sorted(r.items())} for m,r in results.items()},'recommended':selected,'review_candidates':sorted(set(candidates)-set(selected)),'applied':applied,'errors':errors}
+    p['sdg_classification']={'version':VERSION,'identity':identity,'checked_on':stamp,'input':'title+abstract' if abstract else 'title only','abstract_source':abstract_source,'status':status,'openalex':{str(k):v for k,v in sorted(oa.items())},'aurora':{m:{str(k):v for k,v in sorted(r.items())} for m,r in results.items()},'recommended':selected,'recommended_sources':provenance,'review_candidates':sorted(set(candidates)-set(selected)),'applied':applied,'errors':errors}
     # Preserve automatic ownership even after an unsuccessful attempt with no sdg field.
     return status
 
@@ -154,7 +173,7 @@ def enrich(records,report_path,force=False):
     for p in records:
         result=classify(p,key,force=force) if key else 'missing_key'
         counts[result]=counts.get(result,0)+1
-    report={'method':VERSION,'thresholds':{'OpenAlex':OA_THRESHOLD,'Aurora':AURORA_THRESHOLD},'counts':counts,'papers':[]}
+    report={'method':VERSION,'thresholds':{'OpenAlex':'published labels as returned','Aurora_both_models':AURORA_THRESHOLD},'counts':counts,'papers':[]}
     for p in records:
         report['papers'].append({'title':p.get('title'),'doi':doi(p.get('doi')),'displayed_sdgs':goals(p.get('sdg')),'manual':manual(p),'classification':p.get('sdg_classification')})
     Path(report_path).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

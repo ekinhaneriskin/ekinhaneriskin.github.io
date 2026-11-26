@@ -34,8 +34,9 @@ def sdg_impact(p):
     goals = list(dict.fromkeys(int(x) for x in (p.get('sdg') or []) if str(x).isdigit() and 1 <= int(x) <= 17))
     if not goals: return ''
     items = []
-    source = 'Manual / existing assignment' if p.get('sdg_manual') is True or p.get('sdg_source') != 'OpenAlex + Aurora' else 'OpenAlex + Aurora (automated classification)'
     for n in goals:
+        raw_source=(p.get('sdg_sources') or {}).get(str(n),p.get('sdg_source'))
+        source=raw_source+' (automated classification)' if p.get('sdg_manual') is not True and raw_source in ('OpenAlex + Aurora','OpenAlex','Aurora + Elsevier model','OpenAlex / Aurora') else 'Manual / existing assignment'
         # Original UN icons; goal names remain accessible without visible adjacent text.
         src=f'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Inverted-Icons_WEB-{n:02d}-1024x1024.png'
         items.append(f'<a class="sdg-chip" href="https://sdgs.un.org/goals/goal{n}" title="SDG {n}: {h(SDG_NAMES[n])} · {h(source)}" aria-label="SDG {n}: {h(SDG_NAMES[n])}"><img src="{src}" width="38" height="38" loading="lazy" decoding="async" alt="SDG {n}: {h(SDG_NAMES[n])}"></a>')

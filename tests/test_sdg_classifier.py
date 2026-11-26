@@ -23,7 +23,7 @@ class SDGTests(unittest.TestCase):
     def test_consensus_and_cache(self):
         p=self.paper()
         with patch.object(s,'openalex',return_value=({9:.85,12:.95,11:.5},'reuse waste')),patch.object(s,'aurora',side_effect=self.models) as aur:
-            self.assertEqual(s.classify(p,'key'),'classified'); self.assertEqual(p['sdg'],[9,12]); self.assertEqual(p['sdg_classification']['review_candidates'],[11]); self.assertEqual(p['citations'],20)
+            self.assertEqual(s.classify(p,'key'),'classified'); self.assertEqual(p['sdg'],[9,11,12]); self.assertEqual(p['sdg_classification']['review_candidates'],[]); self.assertEqual(p['sdg_sources']['11'],'OpenAlex'); self.assertEqual(p['citations'],20)
             self.assertEqual(s.classify(p,'key'),'cached'); self.assertEqual(aur.call_count,2)
     def test_manual_and_empty_manual(self):
         for assignment in ([5,11],[]):
@@ -36,15 +36,34 @@ class SDGTests(unittest.TestCase):
         with patch.object(s,'openalex',return_value=({12:.95},'abstract')),patch.object(s,'aurora',side_effect=self.models):
             s.classify(p,'key'); p['sdg']=[3]; s.classify(p,'key',force=True)
             self.assertEqual(p['sdg'],[3]); self.assertTrue(p['sdg_manual'])
-    def test_missing_abstract_and_disagreement(self):
-        for oa,abstract in [({12:.95},''),({},'abstract'),({4:.95},'abstract')]:
-            p=self.paper()
-            with patch.object(s,'openalex',return_value=(oa,abstract)),patch.object(s,'aurora',side_effect=self.models):
-                self.assertEqual(s.classify(p,'key'),'review'); self.assertNotIn('sdg',p)
+    def test_openalex_only_without_abstract(self):
+        p=self.paper()
+        with patch.object(s,'openalex',return_value=({9:.62},'')),patch.object(s,'crossref_abstract',return_value=''),patch.object(s,'aurora',side_effect=s.SDGError('unavailable')):
+            self.assertEqual(s.classify(p,'key'),'classified'); self.assertEqual(p['sdg'],[9]); self.assertEqual(p['sdg_sources'],{'9':'OpenAlex'})
+    def test_aurora_only_with_crossref_fallback(self):
+        p=self.paper()
+        with patch.object(s,'openalex',return_value=({},'')),patch.object(s,'crossref_abstract',return_value='reuse waste'),patch.object(s,'aurora',side_effect=self.models) as aur:
+            self.assertEqual(s.classify(p,'key'),'classified'); self.assertEqual(p['sdg'],[12]); self.assertEqual(p['sdg_sources'],{'12':'Aurora + Elsevier model'}); self.assertEqual(p['sdg_classification']['abstract_source'],'Crossref'); self.assertIn('reuse waste',aur.call_args.args[0])
+    def test_title_only_does_not_assign_aurora_labels(self):
+        p=self.paper()
+        with patch.object(s,'openalex',return_value=({},'')),patch.object(s,'crossref_abstract',return_value=''),patch.object(s,'aurora',side_effect=self.models):
+            self.assertEqual(s.classify(p,'key'),'review'); self.assertNotIn('sdg',p)
+    def test_crossref_abstract_contract(self):
+        with patch.object(s,'request_json',return_value={'message':{'DOI':'10.1234/a','abstract':'<jats:p>Reuse &amp; recycling.</jats:p>'}}):
+            self.assertEqual(s.crossref_abstract('10.1234/a'),'Reuse & recycling.')
+            with self.assertRaises(s.SDGError): s.crossref_abstract('10.1234/other')
+    def test_aurora_fallback_after_openalex_failure(self):
+        p=self.paper()
+        with patch.object(s,'openalex',side_effect=s.SDGError('not found')),patch.object(s,'crossref_abstract',return_value='abstract'),patch.object(s,'aurora',side_effect=self.models):
+            self.assertEqual(s.classify(p,'key'),'classified'); self.assertEqual(p['sdg'],[12]); self.assertIn('not found',p['sdg_classification']['errors'])
+    def test_openalex_and_single_aurora_error(self):
+        p=self.paper()
+        with patch.object(s,'openalex',return_value=({9:.67},'abstract')),patch.object(s,'aurora',side_effect=[{12:.98},s.SDGError('unavailable')]):
+            self.assertEqual(s.classify(p,'key'),'classified'); self.assertEqual(p['sdg'],[9]); self.assertEqual(p['sdg_classification']['review_candidates'],[12])
     def test_failure_preserves_and_retries(self):
         p=self.paper()
         with patch.object(s,'openalex',return_value=({12:.95},'abstract')),patch.object(s,'aurora',side_effect=self.models): s.classify(p,'key')
-        with patch.object(s,'openalex',side_effect=s.SDGError('unavailable')),patch.object(s,'aurora',side_effect=self.models):
+        with patch.object(s,'openalex',side_effect=s.SDGError('unavailable')),patch.object(s,'crossref_abstract',return_value=''),patch.object(s,'aurora',side_effect=s.SDGError('unavailable')):
             self.assertEqual(s.classify(p,'key',force=True),'review'); self.assertEqual(p['sdg'],[12]); self.assertFalse(s.manual(p))
             self.assertEqual(s.classify(p,'key'),'cached'); self.assertEqual(s.classify(p,'key',today=date.today()+timedelta(days=1)),'review')
     def test_no_key_and_source_hover(self):
