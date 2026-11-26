@@ -87,7 +87,64 @@
         11
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.ress.2026.113930",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Ceylan",
+              "given": "Halim",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "280",
+          "issue": "",
+          "page": "113930",
+          "article-number": "113930",
+          "publisher": "Elsevier BV",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.ress.2026.113930",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Traffic control and management",
+            "Transportation Planning and Optimization",
+            "Evacuation and Crowd Dynamics"
+          ],
+          "subfield": "Control and Systems Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.0,
+          "percentile": 0.0,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 0,
+          "publication_year": 2026,
+          "volume": "",
+          "issue": "",
+          "page": "113930"
+        }
+      }
     },
     {
       "title": "A Scalable Geodemographic Baseline for Traffic Safety Monitoring in a Middle-Income Country",
@@ -215,7 +272,52 @@
         "15": "Manual / existing assignment",
         "17": "Manual / existing assignment"
       },
-      "sdg_source": "Manual + automatic"
+      "sdg_source": "Manual + automatic",
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.3390/ijgi15040178",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            }
+          ],
+          "volume": "15",
+          "issue": "4",
+          "page": "178",
+          "article-number": "",
+          "publisher": "MDPI AG",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.3390/ijgi15040178",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Traffic and Road Safety",
+            "Injury Epidemiology and Prevention",
+            "IoT and GPS-based Vehicle Safety Systems"
+          ],
+          "subfield": "Safety, Risk, Reliability and Quality",
+          "is_oa": true,
+          "oa_status": "gold",
+          "fwci": 0.0,
+          "percentile": 0.0,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 0,
+          "publication_year": 2026,
+          "volume": "15",
+          "issue": "4",
+          "page": "178"
+        }
+      }
     },
     {
       "title": "Segment-level roughness forecasting and rule-based maintenance prioritization for pavement management systems using a simplified NBeatsX-inspired neural network",
@@ -311,7 +413,58 @@
         11
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1080/10298436.2026.2677651",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4776-824X"
+            }
+          ],
+          "volume": "27",
+          "issue": "1",
+          "page": "",
+          "article-number": "2677651",
+          "publisher": "Informa UK Limited",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1080/10298436.2026.2677651",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Infrastructure Maintenance and Monitoring",
+            "Asphalt Pavement Performance Evaluation",
+            "Traffic Prediction and Management Techniques"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 1.5025,
+          "percentile": 0.75631778,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 1,
+          "publication_year": 2026,
+          "volume": "27",
+          "issue": "1",
+          "page": "2677651"
+        }
+      }
     },
     {
       "title": "A Horizon-Adaptive Benchmarking Framework for Long-Term Reservoir Storage Forecasting Using Physics-Informed Transformers and Machine Learning",
@@ -410,7 +563,64 @@
         "6": "Manual / existing assignment",
         "13": "OpenAlex"
       },
-      "sdg_source": "Manual + automatic"
+      "sdg_source": "Manual + automatic",
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1007/s11269-025-04399-w",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Terzi",
+              "given": "Özlem",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-6429-5176"
+            },
+            {
+              "family": "Taylan",
+              "given": "Emine Dilek",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0003-0734-1900"
+            }
+          ],
+          "volume": "40",
+          "issue": "1",
+          "page": "",
+          "article-number": "37",
+          "publisher": "Springer Science and Business Media LLC",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1007/s11269-025-04399-w",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Hydrological Forecasting Using AI",
+            "Water resources management and optimization",
+            "Hydrology and Watershed Management Studies"
+          ],
+          "subfield": "Environmental Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.3836,
+          "percentile": 0.45487055,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 2,
+          "publication_year": 2025,
+          "volume": "40",
+          "issue": "1",
+          "page": "37"
+        }
+      }
     },
     {
       "title": "Perpetual Pavement Design for Turkish Highways: A Sustainable Approach to Long-Life Asphalt Infrastructure",
@@ -503,7 +713,88 @@
         11
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1061/9780784487037.003",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Conference paper",
+          "authors": [
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Ozer",
+              "given": "Hasan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Avcar",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Ugur Kucuksille",
+              "given": "Ecir",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Armagan",
+              "given": "Kemal",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "",
+          "issue": "",
+          "page": "25-36",
+          "article-number": "",
+          "publisher": "American Society of Civil Engineers",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1061/9780784487037.003",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Life Cycle Costing Analysis",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.0,
+          "percentile": 0.0,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 0,
+          "publication_year": 2026,
+          "volume": "",
+          "issue": "",
+          "page": "25–36"
+        }
+      }
     },
     {
       "title": "Predictive modeling of pavement final service life using machine learning techniques",
@@ -596,7 +887,64 @@
         11
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.trpro.2026.07.182",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "99",
+          "issue": "",
+          "page": "1300-1306",
+          "article-number": "",
+          "publisher": "Elsevier BV",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.trpro.2026.07.182",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Infrastructure Maintenance and Monitoring",
+            "Asphalt Pavement Performance Evaluation",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": true,
+          "oa_status": "diamond",
+          "fwci": 0.0,
+          "percentile": 0.0,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 0,
+          "publication_year": 2026,
+          "volume": "99",
+          "issue": "",
+          "page": "1300–1306"
+        }
+      }
     },
     {
       "title": "Estimating Pavement Temperature Using Machine Learning Models Based on Climatic Data",
@@ -698,7 +1046,76 @@
         13
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1061/9780784486214.036",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Conference paper",
+          "authors": [
+            {
+              "family": "Terzi",
+              "given": "Ö.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Baykal",
+              "given": "T.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karahançer",
+              "given": "Ş.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Erişkin",
+              "given": "E.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "S.",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "",
+          "issue": "",
+          "page": "391-400",
+          "article-number": "",
+          "publisher": "American Society of Civil Engineers",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1061/9780784486214.036",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Infrastructure Maintenance and Monitoring",
+            "Asphalt Pavement Performance Evaluation",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.0,
+          "percentile": 0.0,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 0,
+          "publication_year": 2025,
+          "volume": "",
+          "issue": "",
+          "page": "391–400"
+        }
+      }
     },
     {
       "title": "Accident severity prediction in big data using auto-machine learning",
@@ -806,7 +1223,70 @@
         "9": "OpenAlex",
         "11": "OpenAlex"
       },
-      "sdg_source": "Manual + automatic"
+      "sdg_source": "Manual + automatic",
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.24200/sci.2023.60144.6626",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Baykal",
+              "given": "Tahsin",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Ergezer",
+              "given": "Fatih",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "0",
+          "issue": "0",
+          "page": "0-0",
+          "article-number": "",
+          "publisher": "SCI AND TECH UNIVERSAL INC",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.24200/sci.2023.60144.6626",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Traffic and Road Safety",
+            "IoT and GPS-based Vehicle Safety Systems",
+            "Traffic Prediction and Management Techniques"
+          ],
+          "subfield": "Safety, Risk, Reliability and Quality",
+          "is_oa": true,
+          "oa_status": "diamond",
+          "fwci": 1.1021,
+          "percentile": 0.74476838,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 8,
+          "publication_year": 2023,
+          "volume": "0",
+          "issue": "0",
+          "page": "0"
+        }
+      }
     },
     {
       "title": "Collaborative Game-Theoretic Optimization of Public Transport Fare Policies: A Global Framework for Sustainable Urban Mobility",
@@ -923,7 +1403,52 @@
         "11": "Manual / existing assignment",
         "17": "Manual / existing assignment"
       },
-      "sdg_source": "Manual + automatic"
+      "sdg_source": "Manual + automatic",
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.3390/su162411199",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "16",
+          "issue": "24",
+          "page": "11199",
+          "article-number": "",
+          "publisher": "MDPI AG",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.3390/su162411199",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Transportation Planning and Optimization",
+            "Transportation and Mobility Innovations",
+            "Railways and European Transport Policy"
+          ],
+          "subfield": "Transportation",
+          "is_oa": true,
+          "oa_status": "gold",
+          "fwci": 1.691,
+          "percentile": 0.80512504,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 11,
+          "publication_year": 2024,
+          "volume": "16",
+          "issue": "24",
+          "page": "11199"
+        }
+      }
     },
     {
       "title": "Using Ensemble Machine Learning to Estimate International Roughness Index of Asphalt Pavements",
@@ -1013,7 +1538,70 @@
         9
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1007/s40996-023-01320-6",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Baykal",
+              "given": "Tahsin",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-6218-0826"
+            },
+            {
+              "family": "Ergezer",
+              "given": "Fatih",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-8034-5743"
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4776-824X"
+            }
+          ],
+          "volume": "48",
+          "issue": "4",
+          "page": "2773-2784",
+          "article-number": "",
+          "publisher": "Springer Science and Business Media LLC",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1007/s40996-023-01320-6",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Infrastructure Maintenance and Monitoring",
+            "Asphalt Pavement Performance Evaluation",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 1.1741,
+          "percentile": 0.73341925,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 12,
+          "publication_year": 2023,
+          "volume": "48",
+          "issue": "4",
+          "page": "2773–2784"
+        }
+      }
     },
     {
       "title": "Predicting Hydrological Droughts of Long-Narrow Type Drainage Basin Using Monte Carlo Technique",
@@ -1120,7 +1708,70 @@
         "8": "Manual / existing assignment",
         "13": "OpenAlex"
       },
-      "sdg_source": "Manual + automatic"
+      "sdg_source": "Manual + automatic",
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1061/jhyeff.heeng-6144",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Baykal",
+              "given": "Tahsin",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-6218-0826"
+            },
+            {
+              "family": "Taylan",
+              "given": "Emine Dilek",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0003-0734-1900"
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Terzi",
+              "given": "Özlem",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-6429-5176"
+            }
+          ],
+          "volume": "29",
+          "issue": "3",
+          "page": "",
+          "article-number": "04024013",
+          "publisher": "American Society of Civil Engineers (ASCE)",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1061/jhyeff.heeng-6144",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Hydrology and Drought Analysis",
+            "Hydrology and Watershed Management Studies",
+            "Water resources management and optimization"
+          ],
+          "subfield": "Global and Planetary Change",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.2116,
+          "percentile": 0.37216101,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 2,
+          "publication_year": 2024,
+          "volume": "29",
+          "issue": "3",
+          "page": ""
+        }
+      }
     },
     {
       "title": "An alternative approach for increasing the visibility of roads",
@@ -1227,7 +1878,106 @@
         "9": "OpenAlex",
         "11": "Manual / existing assignment"
       },
-      "sdg_source": "Manual + automatic"
+      "sdg_source": "Manual + automatic",
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.7764/rdlc.23.2.203",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Ergezer",
+              "given": "Fatih",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Uncu",
+              "given": "Ismail Serkan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karadag",
+              "given": "Oznur",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Kurtman",
+              "given": "Akay Kurter",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Kayakus",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Erten",
+              "given": "Kemal Muhammet",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "23",
+          "issue": "2",
+          "page": "203-217",
+          "article-number": "",
+          "publisher": "Pontificia Universidad Catolica de Chile",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.7764/rdlc.23.2.203",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Geotechnical and construction materials studies",
+            "Materials Engineering and Processing"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": true,
+          "oa_status": "diamond",
+          "fwci": 0.1334,
+          "percentile": 0.34034024,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 1,
+          "publication_year": 2024,
+          "volume": "23",
+          "issue": "2",
+          "page": "203–217"
+        }
+      }
     },
     {
       "title": "Replacement of signalized traffic network design with Hamiltonian roads: delay? Nevermind",
@@ -1329,7 +2079,70 @@
         "9": "OpenAlex",
         "11": "Manual / existing assignment"
       },
-      "sdg_source": "Manual + automatic"
+      "sdg_source": "Manual + automatic",
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1007/s00500-022-07735-z",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Turker",
+              "given": "Gul Fatma",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-5714-5102"
+            },
+            {
+              "family": "Gunduz",
+              "given": "Fatih Kursat",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-8952-6660"
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4776-824X"
+            }
+          ],
+          "volume": "27",
+          "issue": "12",
+          "page": "8245-8254",
+          "article-number": "",
+          "publisher": "Springer Science and Business Media LLC",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1007/s00500-022-07735-z",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Traffic control and management",
+            "Transportation Planning and Optimization",
+            "Road Transport and Highway Systems"
+          ],
+          "subfield": "Control and Systems Engineering",
+          "is_oa": true,
+          "oa_status": "green",
+          "fwci": 0.0,
+          "percentile": 0.0,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 0,
+          "publication_year": 2022,
+          "volume": "27",
+          "issue": "12",
+          "page": "8245–8254"
+        }
+      }
     },
     {
       "title": "Importance of A-pillars of vehicles during intersection approach",
@@ -1399,6 +2212,51 @@
         ],
         "applied": [],
         "errors": []
+      },
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.51513/jitsa.1104161",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "ERİŞKİN",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            }
+          ],
+          "volume": "6",
+          "issue": "1",
+          "page": "22-30",
+          "article-number": "",
+          "publisher": "Bandirma Onyedi Eylul University",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.51513/jitsa.1104161",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Traffic and Road Safety",
+            "Transportation Safety and Impact Analysis",
+            "Road Transport and Highway Systems"
+          ],
+          "subfield": "Safety, Risk, Reliability and Quality",
+          "is_oa": true,
+          "oa_status": "bronze",
+          "fwci": 0.0,
+          "percentile": 0.0,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 0,
+          "publication_year": 2023,
+          "volume": "6",
+          "issue": "1",
+          "page": "22–30"
+        }
       }
     },
     {
@@ -1495,7 +2353,76 @@
         12
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.conbuildmat.2022.128004",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Taciroğlu",
+              "given": "Murat Vergi",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Ergezer",
+              "given": "Fatih",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Baykal",
+              "given": "Tahsin",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4776-824X"
+            }
+          ],
+          "volume": "342",
+          "issue": "",
+          "page": "128004",
+          "article-number": "128004",
+          "publisher": "Elsevier BV",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.conbuildmat.2022.128004",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Materials Engineering and Processing",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.879,
+          "percentile": 0.67054879,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 13,
+          "publication_year": 2022,
+          "volume": "342",
+          "issue": "",
+          "page": "128004"
+        }
+      }
     },
     {
       "title": "Development of dynamic traffic signal control based on Monte Carlo simulation approach",
@@ -1591,7 +2518,64 @@
       "sdg_sources": {
         "11": "Manual / existing assignment"
       },
-      "sdg_source": "Manual + automatic"
+      "sdg_source": "Manual + automatic",
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.measurement.2021.110591",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Ceylan",
+              "given": "Halim",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "188",
+          "issue": "",
+          "page": "110591",
+          "article-number": "110591",
+          "publisher": "Elsevier BV",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.measurement.2021.110591",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Traffic control and management",
+            "Transportation Planning and Optimization",
+            "Traffic Prediction and Management Techniques"
+          ],
+          "subfield": "Control and Systems Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.5299,
+          "percentile": 0.56291537,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 10,
+          "publication_year": 2021,
+          "volume": "188",
+          "issue": "",
+          "page": "110591"
+        }
+      }
     },
     {
       "title": "Bitumen expanding using bio-oil product of rose pulp's pyrolysis process",
@@ -1701,7 +2685,88 @@
         "9": "Manual / existing assignment",
         "12": "OpenAlex"
       },
-      "sdg_source": "Manual + automatic"
+      "sdg_source": "Manual + automatic",
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.conbuildmat.2020.118721",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4776-824X"
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Armagan",
+              "given": "Kemal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Kurtman",
+              "given": "Akay Kurter",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Uz",
+              "given": "Volkan Emre",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "249",
+          "issue": "",
+          "page": "118721",
+          "article-number": "118721",
+          "publisher": "Elsevier BV",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.conbuildmat.2020.118721",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Thermochemical Biomass Conversion Processes",
+            "Materials Engineering and Processing"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": true,
+          "oa_status": "green",
+          "fwci": 0.0,
+          "percentile": 0.0,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 6,
+          "publication_year": 2020,
+          "volume": "249",
+          "issue": "",
+          "page": "118721"
+        }
+      }
     },
     {
       "title": "Evaluating mechanical properties of bitumen and hot mix asphalt modified with nano ferric oxide",
@@ -1791,7 +2856,88 @@
         9
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.conbuildmat.2019.117381",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Enieb",
+              "given": "Mahmoud",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4776-824X"
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-7734-2365"
+            },
+            {
+              "family": "Cengizhan",
+              "given": "Akten",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Akbas",
+              "given": "Mustafa Yasin",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "234",
+          "issue": "",
+          "page": "117381",
+          "article-number": "117381",
+          "publisher": "Elsevier BV",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.conbuildmat.2019.117381",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Geotechnical and construction materials studies",
+            "Materials Engineering and Processing"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 1.6242,
+          "percentile": 0.80474638,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 36,
+          "publication_year": 2019,
+          "volume": "234",
+          "issue": "",
+          "page": "117381"
+        }
+      }
     },
     {
       "title": "Investigation the Usability of Garnet as Filler Material in Hot Mix Asphalt",
@@ -1878,7 +3024,94 @@
         12
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1007/978-981-15-2349-6_60",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Book chapter",
+          "authors": [
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-7734-2365"
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Armagan",
+              "given": "Kemal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4443-0761"
+            },
+            {
+              "family": "Morova",
+              "given": "Nihat",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-9158-6523"
+            },
+            {
+              "family": "Kacaroglu",
+              "given": "Gizem",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-5734-7131"
+            },
+            {
+              "family": "Karadag",
+              "given": "Oznur",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0003-0755-5626"
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-6221-4918"
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4776-824X"
+            }
+          ],
+          "volume": "",
+          "issue": "",
+          "page": "907-913",
+          "article-number": "",
+          "publisher": "Springer Singapore",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1007/978-981-15-2349-6_60",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Geotechnical and construction materials studies",
+            "Materials Engineering and Processing"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": true,
+          "oa_status": "green",
+          "fwci": 0.5849,
+          "percentile": 0.52134405,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 1,
+          "publication_year": 2020,
+          "volume": "",
+          "issue": "",
+          "page": "907–913"
+        }
+      }
     },
     {
       "title": "Expanded Glass Usability in Hot-Mix Asphalt as Fine Aggregate",
@@ -1971,7 +3204,94 @@
         12
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1007/978-981-15-2349-6_54",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Book chapter",
+          "authors": [
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-7734-2365"
+            },
+            {
+              "family": "Morova",
+              "given": "Nihat",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-9158-6523"
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Armagan",
+              "given": "Kemal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4443-0761"
+            },
+            {
+              "family": "Kacaroglu",
+              "given": "Gizem",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-5734-7131"
+            },
+            {
+              "family": "Karadag",
+              "given": "Oznur",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0003-0755-5626"
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-6221-4918"
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4776-824X"
+            }
+          ],
+          "volume": "",
+          "issue": "",
+          "page": "831-838",
+          "article-number": "",
+          "publisher": "Springer Singapore",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1007/978-981-15-2349-6_54",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Materials Engineering and Processing",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": true,
+          "oa_status": "green",
+          "fwci": 0.5849,
+          "percentile": 0.52134405,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 1,
+          "publication_year": 2020,
+          "volume": "",
+          "issue": "",
+          "page": "831–838"
+        }
+      }
     },
     {
       "title": "Utility of Aramid, Polyolefin and Polypropylene Combination in Hot Mix Asphalt as a Fiber Material",
@@ -2042,6 +3362,81 @@
         "review_candidates": [],
         "applied": [],
         "errors": []
+      },
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1007/978-981-15-2349-6_61",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Book chapter",
+          "authors": [
+            {
+              "family": "Karahancer",
+              "given": "Baris",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-8706-1900"
+            },
+            {
+              "family": "Morova",
+              "given": "Nihat",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-9158-6523"
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-7734-2365"
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-4776-824X"
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-6221-4918"
+            }
+          ],
+          "volume": "",
+          "issue": "",
+          "page": "915-922",
+          "article-number": "",
+          "publisher": "Springer Singapore",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1007/978-981-15-2349-6_61",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Innovative concrete reinforcement materials",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.5849,
+          "percentile": 0.52134405,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 1,
+          "publication_year": 2020,
+          "volume": "",
+          "issue": "",
+          "page": "915–922"
+        }
       }
     },
     {
@@ -2138,7 +3533,88 @@
         11
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1080/14680629.2017.1374999",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0001-7734-2365"
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Capali",
+              "given": "Buket",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Uncu",
+              "given": "Ismail Serkan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Coskunsu",
+              "given": "Safinur",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "20",
+          "issue": "1",
+          "page": "199-210",
+          "article-number": "",
+          "publisher": "Informa UK Limited",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1080/14680629.2017.1374999",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Geotechnical and construction materials studies",
+            "Materials Engineering and Processing"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.0,
+          "percentile": 0.0,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 2,
+          "publication_year": 2017,
+          "volume": "20",
+          "issue": "1",
+          "page": "199–210"
+        }
+      }
     },
     {
       "title": "Moisture Susceptibility of Nano-Al2O3 and SiO2 Modified Asphalt Mixtures",
@@ -2209,6 +3685,81 @@
         "review_candidates": [],
         "applied": [],
         "errors": []
+      },
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1061/9780784482469.013",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Conference paper",
+          "authors": [
+            {
+              "family": "Karahancer",
+              "given": "S.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "E.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "M.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "S.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Akbas",
+              "given": "M. Y.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Cengizhan",
+              "given": "A.",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "",
+          "issue": "",
+          "page": "127-135",
+          "article-number": "",
+          "publisher": "American Society of Civil Engineers",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1061/9780784482469.013",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Geotechnical and construction materials studies",
+            "Innovative concrete reinforcement materials"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.7378,
+          "percentile": 0.58257415,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 2,
+          "publication_year": 2019,
+          "volume": "",
+          "issue": "",
+          "page": "127–135"
+        }
       }
     },
     {
@@ -2433,7 +3984,82 @@
         9
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.5592/co/cetra.2018.788",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Conference paper",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Armagan",
+              "given": "Kemal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Sivri",
+              "given": "Caglar",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "5",
+          "issue": "",
+          "page": "411-416",
+          "article-number": "",
+          "publisher": "University of Zagreb Faculty of Civil Engineering",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.5592/co/cetra.2018.788",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Innovative concrete reinforcement materials",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": true,
+          "oa_status": "hybrid",
+          "fwci": 0.7633,
+          "percentile": 0.58286186,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 1,
+          "publication_year": 2018,
+          "volume": "5",
+          "issue": "",
+          "page": "411–416"
+        }
+      }
     },
     {
       "title": "USABILITY OF HEMP FIBER IN DENSE GRADED HOT MIX ASPHALT MIXTURE",
@@ -2518,7 +4144,82 @@
         9
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.5592/co/cetra.2018.798",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Conference paper",
+          "authors": [
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Armagan",
+              "given": "Kemal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Morova",
+              "given": "Nihat",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "5",
+          "issue": "",
+          "page": "433-437",
+          "article-number": "",
+          "publisher": "University of Zagreb Faculty of Civil Engineering",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.5592/co/cetra.2018.798",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Innovative concrete reinforcement materials",
+            "Materials Engineering and Processing"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": true,
+          "oa_status": "hybrid",
+          "fwci": 0.7633,
+          "percentile": 0.58286186,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 1,
+          "publication_year": 2018,
+          "volume": "5",
+          "issue": "",
+          "page": "433–437"
+        }
+      }
     },
     {
       "title": "Waste frying oil modified bitumen usage for sustainable hot mix asphalt pavement",
@@ -2614,7 +4315,70 @@
         12
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.acme.2017.03.006",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "17",
+          "issue": "4",
+          "page": "863-870",
+          "article-number": "",
+          "publisher": "Springer Science and Business Media LLC",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.acme.2017.03.006",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Materials Engineering and Processing",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 4.433,
+          "percentile": 0.9363364,
+          "top1": false,
+          "top10": true,
+          "cited_by_count": 58,
+          "publication_year": 2017,
+          "volume": "17",
+          "issue": "4",
+          "page": "863–870"
+        }
+      }
     },
     {
       "title": "Modelling Marshall Stability of fiber reinforced asphalt mixtures with ANFIS",
@@ -2688,6 +4452,87 @@
         "review_candidates": [],
         "applied": [],
         "errors": []
+      },
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1109/inista.2017.8001152",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Conference paper",
+          "authors": [
+            {
+              "family": "Morova",
+              "given": "Nihat",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Serin",
+              "given": "Sercan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Usta",
+              "given": "Pinar",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "",
+          "issue": "",
+          "page": "174-179",
+          "article-number": "",
+          "publisher": "IEEE",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1109/inista.2017.8001152",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Innovative concrete reinforcement materials",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 0.7664,
+          "percentile": 0.62281066,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 7,
+          "publication_year": 2017,
+          "volume": "",
+          "issue": "",
+          "page": "174–179"
+        }
       }
     },
     {
@@ -2764,6 +4609,69 @@
         ],
         "applied": [],
         "errors": []
+      },
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.proeng.2017.04.411",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "187",
+          "issue": "",
+          "page": "532-537",
+          "article-number": "",
+          "publisher": "Elsevier BV",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.proeng.2017.04.411",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Surface Modification and Superhydrophobicity",
+            "Asphalt Pavement Performance Evaluation",
+            "Icing and De-icing Technologies"
+          ],
+          "subfield": "Surfaces, Coatings and Films",
+          "is_oa": true,
+          "oa_status": "diamond",
+          "fwci": 12.3919,
+          "percentile": 0.98799782,
+          "top1": false,
+          "top10": true,
+          "cited_by_count": 14,
+          "publication_year": 2017,
+          "volume": "187",
+          "issue": "",
+          "page": "532–537"
+        }
       }
     },
     {
@@ -2837,6 +4745,58 @@
         "errors": [
           "OpenAlex: no unique exact DOI match"
         ]
+      },
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.21533/pen.v5i2.106",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Serin",
+              "given": "Sercan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            },
+            {
+              "family": "Morova",
+              "given": "Nihat",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "5",
+          "issue": "2",
+          "page": "",
+          "article-number": "",
+          "publisher": "International University of Sarajevo",
+          "editors": []
+        }
       }
     },
     {
@@ -3005,7 +4965,70 @@
         11
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.proeng.2017.04.378",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "187",
+          "issue": "",
+          "page": "295-300",
+          "article-number": "",
+          "publisher": "Elsevier BV",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.proeng.2017.04.378",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Traffic control and management",
+            "Transportation Planning and Optimization",
+            "Road Transport and Highway Systems"
+          ],
+          "subfield": "Control and Systems Engineering",
+          "is_oa": true,
+          "oa_status": "diamond",
+          "fwci": 3.9624,
+          "percentile": 0.94888592,
+          "top1": false,
+          "top10": true,
+          "cited_by_count": 30,
+          "publication_year": 2017,
+          "volume": "187",
+          "issue": "",
+          "page": "295–300"
+        }
+      }
     },
     {
       "title": "Utilization of Arundo donax in Hot Mix Asphalt as a fiber",
@@ -3096,7 +5119,82 @@
         9
       ],
       "sdg_source": "OpenAlex / Aurora",
-      "sdg_manual": false
+      "sdg_manual": false,
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.conbuildmat.2016.08.147",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Sargin Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Sarioglu",
+              "given": "Onur",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Capali",
+              "given": "Buket",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "125",
+          "issue": "",
+          "page": "981-986",
+          "article-number": "",
+          "publisher": "Elsevier BV",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.conbuildmat.2016.08.147",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Innovative concrete reinforcement materials",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": false,
+          "oa_status": "closed",
+          "fwci": 1.2412,
+          "percentile": 0.78267901,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 11,
+          "publication_year": 2016,
+          "volume": "125",
+          "issue": "",
+          "page": "981–986"
+        }
+      }
     },
     {
       "title": "Marshall stability estimating using artificial neural network with polyparaphenylene terephtalamide fibre rate",
@@ -3171,6 +5269,93 @@
         "review_candidates": [],
         "applied": [],
         "errors": []
+      },
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1109/inista.2016.7571848",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Conference paper",
+          "authors": [
+            {
+              "family": "Karahancer",
+              "given": "Sebnem",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Capali",
+              "given": "Buket",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "Ekinhan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Morova",
+              "given": "Nihat",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Serin",
+              "given": "Sercan",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "Mehmet",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "Serdal",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Kucukcapraz",
+              "given": "Dicle Ozdemir",
+              "name": "",
+              "orcid": ""
+            }
+          ],
+          "volume": "",
+          "issue": "",
+          "page": "1-5",
+          "article-number": "",
+          "publisher": "IEEE",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1109/inista.2016.7571848",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Innovative concrete reinforcement materials",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": true,
+          "oa_status": "green",
+          "fwci": 1.0781,
+          "percentile": 0.70209651,
+          "top1": false,
+          "top10": false,
+          "cited_by_count": 8,
+          "publication_year": 2016,
+          "volume": "2016",
+          "issue": "",
+          "page": "1–5"
+        }
       }
     },
     {
@@ -3246,6 +5431,87 @@
         "review_candidates": [],
         "applied": [],
         "errors": []
+      },
+      "publication_metadata": {
+        "crossref": {
+          "doi": "10.1016/j.conbuildmat.2015.12.193",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "authors": [
+            {
+              "family": "Morova",
+              "given": "N.",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-9158-6523"
+            },
+            {
+              "family": "Serin",
+              "given": "S.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Terzi",
+              "given": "S.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Saltan",
+              "given": "M.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Ozdemir Kucukcapraz",
+              "given": "D.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Sargin Karahancer",
+              "given": "S.",
+              "name": "",
+              "orcid": ""
+            },
+            {
+              "family": "Eriskin",
+              "given": "E.",
+              "name": "",
+              "orcid": "https://orcid.org/0000-0002-0087-0933"
+            }
+          ],
+          "volume": "107",
+          "issue": "",
+          "page": "87-94",
+          "article-number": "",
+          "publisher": "Elsevier BV",
+          "editors": []
+        },
+        "openalex": {
+          "doi": "10.1016/j.conbuildmat.2015.12.193",
+          "version": 1,
+          "checked_on": "2026-11-26",
+          "type": "Journal article",
+          "topics": [
+            "Asphalt Pavement Performance Evaluation",
+            "Innovative concrete reinforcement materials",
+            "Geotechnical and construction materials studies"
+          ],
+          "subfield": "Civil and Structural Engineering",
+          "is_oa": true,
+          "oa_status": "green",
+          "fwci": 3.7236,
+          "percentile": 0.91270655,
+          "top1": false,
+          "top10": true,
+          "cited_by_count": 26,
+          "publication_year": 2016,
+          "volume": "107",
+          "issue": "",
+          "page": "87–94"
+        }
       }
     }
   ],
