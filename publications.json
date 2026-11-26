@@ -9,8 +9,12 @@
       "author": "Ekinhan Eriskin, Serdal Terzi, Halim Ceylan",
       "index": "other",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.ress.2026.113930|Congestion-induced behavioral escalation and dynamic reliability at oversaturated roundabouts",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -96,6 +100,8 @@
       "sdg": [
         3,
         5,
+        9,
+        10,
         11,
         15,
         17
@@ -109,8 +115,18 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.3390/ijgi15040178|A Scalable Geodemographic Baseline for Traffic Safety Monitoring in a Middle-Income Country",
+        "policy": {
+          "mode": "add",
+          "manual_goals": [
+            3,
+            5,
+            11,
+            15,
+            17
+          ]
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -174,12 +190,32 @@
         "applied": [
           3,
           5,
+          9,
+          10,
           11,
           15,
           17
         ],
         "errors": []
-      }
+      },
+      "sdg_manual_goals": [
+        3,
+        5,
+        11,
+        15,
+        17
+      ],
+      "sdg_mode": "add",
+      "sdg_sources": {
+        "3": "Manual / existing assignment",
+        "5": "Manual / existing assignment",
+        "9": "OpenAlex",
+        "10": "OpenAlex",
+        "11": "Manual / existing assignment",
+        "15": "Manual / existing assignment",
+        "17": "Manual / existing assignment"
+      },
+      "sdg_source": "Manual + automatic"
     },
     {
       "title": "Segment-level roughness forecasting and rule-based maintenance prioritization for pavement management systems using a simplified NBeatsX-inspired neural network",
@@ -197,8 +233,12 @@
       "wos_uid": "WOS:001773633100001",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1080/10298436.2026.2677651|Segment-level roughness forecasting and rule-based maintenance prioritization for pavement management systems using a simplified NBeatsX-inspired neural network",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -282,7 +322,8 @@
       "doi": "10.1007/s11269-025-04399-w",
       "citations": 2,
       "sdg": [
-        6
+        6,
+        13
       ],
       "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-105026208678",
       "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001651149800011",
@@ -293,8 +334,14 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1007/s11269-025-04399-w|A Horizon-Adaptive Benchmarking Framework for Long-Term Reservoir Storage Forecasting Using Physics-Informed Transformers and Machine Learning",
+        "policy": {
+          "mode": "add",
+          "manual_goals": [
+            6
+          ]
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -350,10 +397,20 @@
         },
         "review_candidates": [],
         "applied": [
-          6
+          6,
+          13
         ],
         "errors": []
-      }
+      },
+      "sdg_manual_goals": [
+        6
+      ],
+      "sdg_mode": "add",
+      "sdg_sources": {
+        "6": "Manual / existing assignment",
+        "13": "OpenAlex"
+      },
+      "sdg_source": "Manual + automatic"
     },
     {
       "title": "Perpetual Pavement Design for Turkish Highways: A Sustainable Approach to Long-Life Asphalt Infrastructure",
@@ -368,8 +425,12 @@
       "first_author": "Terzi S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1061/9780784487037.003|Perpetual Pavement Design for Turkish Highways: A Sustainable Approach to Long-Life Asphalt Infrastructure",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -457,8 +518,12 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.trpro.2026.07.182|Predictive modeling of pavement final service life using machine learning techniques",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -549,8 +614,12 @@
       "wos_uid": "WOS:001586172500036",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1061/9780784486214.036|Estimating Pavement Temperature Using Machine Learning Models Based on Climatic Data",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -640,7 +709,9 @@
       "doi": "10.24200/sci.2023.60144.6626",
       "citations": 4,
       "sdg": [
-        3
+        3,
+        9,
+        11
       ],
       "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-105030650052",
       "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001591176700002",
@@ -651,8 +722,14 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.24200/sci.2023.60144.6626|Accident severity prediction in big data using auto-machine learning",
+        "policy": {
+          "mode": "add",
+          "manual_goals": [
+            3
+          ]
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -714,10 +791,22 @@
         },
         "review_candidates": [],
         "applied": [
-          3
+          3,
+          9,
+          11
         ],
         "errors": []
-      }
+      },
+      "sdg_manual_goals": [
+        3
+      ],
+      "sdg_mode": "add",
+      "sdg_sources": {
+        "3": "Manual / existing assignment",
+        "9": "OpenAlex",
+        "11": "OpenAlex"
+      },
+      "sdg_source": "Manual + automatic"
     },
     {
       "title": "Collaborative Game-Theoretic Optimization of Public Transport Fare Policies: A Global Framework for Sustainable Urban Mobility",
@@ -742,8 +831,17 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.3390/su162411199|Collaborative Game-Theoretic Optimization of Public Transport Fare Policies: A Global Framework for Sustainable Urban Mobility",
+        "policy": {
+          "mode": "add",
+          "manual_goals": [
+            9,
+            10,
+            11,
+            17
+          ]
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -811,7 +909,21 @@
           17
         ],
         "errors": []
-      }
+      },
+      "sdg_manual_goals": [
+        9,
+        10,
+        11,
+        17
+      ],
+      "sdg_mode": "add",
+      "sdg_sources": {
+        "9": "Manual / existing assignment",
+        "10": "Manual / existing assignment",
+        "11": "Manual / existing assignment",
+        "17": "Manual / existing assignment"
+      },
+      "sdg_source": "Manual + automatic"
     },
     {
       "title": "Using Ensemble Machine Learning to Estimate International Roughness Index of Asphalt Pavements",
@@ -829,8 +941,12 @@
       "wos_uid": "WOS:001132106300001",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1007/s40996-023-01320-6|Using Ensemble Machine Learning to Estimate International Roughness Index of Asphalt Pavements",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -905,11 +1021,12 @@
       "year": "2024",
       "journal": "Journal of Hydrologic Engineering",
       "index": "sci",
-      "doi": "10.1061/JHYEFF.HEENG-6144",
+      "doi": "10.1061/jhyeff.heeng-6144",
       "citations": 1,
       "sdg": [
         6,
-        8
+        8,
+        13
       ],
       "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85190527987",
       "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:001202621600013",
@@ -920,8 +1037,15 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1061/jhyeff.heeng-6144|Predicting Hydrological Droughts of Long-Narrow Type Drainage Basin Using Monte Carlo Technique",
+        "policy": {
+          "mode": "add",
+          "manual_goals": [
+            6,
+            8
+          ]
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -981,10 +1105,22 @@
         "review_candidates": [],
         "applied": [
           6,
-          8
+          8,
+          13
         ],
         "errors": []
-      }
+      },
+      "sdg_manual_goals": [
+        6,
+        8
+      ],
+      "sdg_mode": "add",
+      "sdg_sources": {
+        "6": "Manual / existing assignment",
+        "8": "Manual / existing assignment",
+        "13": "OpenAlex"
+      },
+      "sdg_source": "Manual + automatic"
     },
     {
       "title": "An alternative approach for increasing the visibility of roads",
@@ -992,10 +1128,11 @@
       "year": "2024",
       "journal": "Revista De La Construccion",
       "index": "sci",
-      "doi": "10.7764/RDLC.23.2.203",
+      "doi": "10.7764/rdlc.23.2.203",
       "citations": 1,
       "sdg": [
         3,
+        9,
         11
       ],
       "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85203088073",
@@ -1007,8 +1144,15 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.7764/rdlc.23.2.203|An alternative approach for increasing the visibility of roads",
+        "policy": {
+          "mode": "add",
+          "manual_goals": [
+            3,
+            11
+          ]
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -1068,10 +1212,22 @@
         "review_candidates": [],
         "applied": [
           3,
+          9,
           11
         ],
         "errors": []
-      }
+      },
+      "sdg_manual_goals": [
+        3,
+        11
+      ],
+      "sdg_mode": "add",
+      "sdg_sources": {
+        "3": "Manual / existing assignment",
+        "9": "OpenAlex",
+        "11": "Manual / existing assignment"
+      },
+      "sdg_source": "Manual + automatic"
     },
     {
       "title": "Replacement of signalized traffic network design with Hamiltonian roads: delay? Nevermind",
@@ -1082,6 +1238,7 @@
       "doi": "10.1007/s00500-022-07735-z",
       "citations": 0,
       "sdg": [
+        9,
         11
       ],
       "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85144199026",
@@ -1093,8 +1250,14 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1007/s00500-022-07735-z|Replacement of signalized traffic network design with Hamiltonian roads: delay? Nevermind",
+        "policy": {
+          "mode": "add",
+          "manual_goals": [
+            11
+          ]
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -1153,10 +1316,20 @@
         },
         "review_candidates": [],
         "applied": [
+          9,
           11
         ],
         "errors": []
-      }
+      },
+      "sdg_manual_goals": [
+        11
+      ],
+      "sdg_mode": "add",
+      "sdg_sources": {
+        "9": "OpenAlex",
+        "11": "Manual / existing assignment"
+      },
+      "sdg_source": "Manual + automatic"
     },
     {
       "title": "Importance of A-pillars of vehicles during intersection approach",
@@ -1168,8 +1341,12 @@
       "journal": "Journal of Intelligent Transportation Systems and Applications",
       "citations": "0",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.51513/jitsa.1104161|Importance of A-pillars of vehicles during intersection approach",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -1240,8 +1417,12 @@
       "wos_uid": "WOS:000813423000003",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.conbuildmat.2022.128004|Investigation of waste quartz sand as filler in hot-mix asphalt",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -1336,8 +1517,14 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.measurement.2021.110591|Development of dynamic traffic signal control based on Monte Carlo simulation approach",
+        "policy": {
+          "mode": "add",
+          "manual_goals": [
+            11
+          ]
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -1396,7 +1583,15 @@
           11
         ],
         "errors": []
-      }
+      },
+      "sdg_manual_goals": [
+        11
+      ],
+      "sdg_mode": "add",
+      "sdg_sources": {
+        "11": "Manual / existing assignment"
+      },
+      "sdg_source": "Manual + automatic"
     },
     {
       "title": "Bitumen expanding using bio-oil product of rose pulp's pyrolysis process",
@@ -1408,7 +1603,8 @@
       "citations": 4,
       "sdg": [
         7,
-        9
+        9,
+        12
       ],
       "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85082136200",
       "wos_link": "https://www.webofscience.com/wos/woscc/full-record/WOS:000535925900030",
@@ -1419,8 +1615,15 @@
       "wos_source": "ORCID (record identifier)",
       "sdg_manual": true,
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.conbuildmat.2020.118721|Bitumen expanding using bio-oil product of rose pulp's pyrolysis process",
+        "policy": {
+          "mode": "add",
+          "manual_goals": [
+            7,
+            9
+          ]
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -1483,10 +1686,22 @@
         "review_candidates": [],
         "applied": [
           7,
-          9
+          9,
+          12
         ],
         "errors": []
-      }
+      },
+      "sdg_manual_goals": [
+        7,
+        9
+      ],
+      "sdg_mode": "add",
+      "sdg_sources": {
+        "7": "Manual / existing assignment",
+        "9": "Manual / existing assignment",
+        "12": "OpenAlex"
+      },
+      "sdg_source": "Manual + automatic"
     },
     {
       "title": "Evaluating mechanical properties of bitumen and hot mix asphalt modified with nano ferric oxide",
@@ -1504,8 +1719,12 @@
       "wos_uid": "WOS:000514748700061",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.conbuildmat.2019.117381|Evaluating mechanical properties of bitumen and hot mix asphalt modified with nano ferric oxide",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -1587,8 +1806,12 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1007/978-981-15-2349-6_60|Investigation the Usability of Garnet as Filler Material in Hot Mix Asphalt",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -1670,8 +1893,12 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1007/978-981-15-2349-6_54|Expanded Glass Usability in Hot-Mix Asphalt as Fine Aggregate",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -1759,8 +1986,12 @@
       "first_author": "Karahancer B.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1007/978-981-15-2349-6_61|Utility of Aramid, Polyolefin and Polypropylene Combination in Hot Mix Asphalt as a Fiber Material",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -1829,8 +2060,12 @@
       "wos_uid": "WOS:000454358700012",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1080/14680629.2017.1374999|Increasing the visibility of roads using phosphorous paint",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -1918,8 +2153,12 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1061/9780784482469.013|Moisture Susceptibility of Nano-Al2O3 and SiO2 Modified Asphalt Mixtures",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -1982,8 +2221,12 @@
       "wos_source": "ORCID (record identifier)",
       "source": "ORCID",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "|Moisture Susceptibility of Nano-Al<sub>2</sub>O<sub>3</sub> and SiO<sub>2</sub> Modified Asphalt Mixtures",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -2049,8 +2292,12 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "|Sulphur factory waste usability in hot mix asphalt as filler material",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -2114,8 +2361,12 @@
       "source": "ORCID",
       "author": "Ekinhan Eriskin, Sebnem Karahancer, Kemal Armagan, Caglar Sivri, Serdal Terzi, Mehmet Saltan",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.5592/co/cetra.2018.788|THE INVESTIGATION OF POLYAMIDE FIBER AS AN ADDITIVE IN HMA",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -2195,8 +2446,12 @@
       "source": "ORCID",
       "author": "Sebnem Karahancer, Ekinhan Eriskin, Kemal Armagan, Nihat Morova, Mehmet Saltan, Serdal Terzi",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.5592/co/cetra.2018.798|USABILITY OF HEMP FIBER IN DENSE GRADED HOT MIX ASPHALT MIXTURE",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -2281,8 +2536,12 @@
       "wos_uid": "WOS:000416528900013",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.acme.2017.03.006|Waste frying oil modified bitumen usage for sustainable hot mix asphalt pavement",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -2363,7 +2622,7 @@
       "year": "2017",
       "journal": "Proceedings 2017 IEEE International Conference on Innovations in Intelligent Systems and Applications Inista 2017",
       "index": "scopus",
-      "doi": "10.1109/INISTA.2017.8001152",
+      "doi": "10.1109/inista.2017.8001152",
       "citations": 5,
       "scopus_link": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85030233095",
       "date": "2017-08-03",
@@ -2373,8 +2632,12 @@
       "wos_uid": "WOS:000450992400031",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1109/inista.2017.8001152|Modelling Marshall Stability of fiber reinforced asphalt mixtures with ANFIS",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -2443,8 +2706,12 @@
       "wos_uid": "WOS:000404961500070",
       "wos_source": "ORCID (record identifier)",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.proeng.2017.04.411|Examination of the Effect of Superhydrophobic Coated Pavement under Wet Conditions",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -2512,8 +2779,12 @@
       "first_author": "Serin S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.21533/pen.v5i2.106|Estimation of specific gravity with penetration and penetration index parameters by artificial neural network",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -2581,8 +2852,12 @@
       "first_author": "Karahancer S.",
       "scopus_as_of": "2026-11-26",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "|Comparing CBR values obtained from field with laboratory test results",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -2652,8 +2927,12 @@
       "wos_source": "ORCID (record identifier)",
       "author": "Ekinhan Eriskin, Sebnem Karahancer, Serdal Terzi, Mehmet Saltan",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.proeng.2017.04.378|Optimization of Traffic Signal Timing at Oversaturated Intersections Using Elimination Pairing System",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -2745,8 +3024,12 @@
       "wos_source": "ORCID (record identifier)",
       "author": "Sebnem Sargin Karahancer, Ekinhan Eriskin, Onur Sarioglu, Buket Capali, Mehmet Saltan, Serdal Terzi",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.conbuildmat.2016.08.147|Utilization of Arundo donax in Hot Mix Asphalt as a fiber",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
@@ -2832,8 +3115,12 @@
       "wos_source": "ORCID (record identifier)",
       "author": "Sebnem Karahancer, Buket Capali, Ekinhan Eriskin, Nihat Morova, Sercan Serin, Mehmet Saltan, Serdal Terzi, Dicle Ozdemir Kucukcapraz",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1109/inista.2016.7571848|Marshall stability estimating using artificial neural network with polyparaphenylene terephtalamide fibre rate",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title+abstract",
         "abstract_source": "OpenAlex",
@@ -2903,8 +3190,12 @@
       "wos_source": "ORCID (record identifier)",
       "author": "N. Morova, S. Serin, S. Terzi, M. Saltan, D. Ozdemir Kucukcapraz, S. Sargin Karahancer, E. Eriskin",
       "sdg_classification": {
-        "version": "openalex-aurora-v4",
+        "version": "openalex-aurora-v5",
         "identity": "10.1016/j.conbuildmat.2015.12.193|Utility of polyparaphenylene terephtalamide fiber in hot mix asphalt as a fiber",
+        "policy": {
+          "mode": "auto",
+          "manual_goals": []
+        },
         "checked_on": "2026-11-26",
         "input": "title only",
         "abstract_source": null,
