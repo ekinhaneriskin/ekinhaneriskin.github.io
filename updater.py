@@ -6,6 +6,7 @@ from pathlib import Path
 from urllib.parse import quote
 import requests
 import sdg_classifier
+from tools import publication_metadata
 from tools.publication_records import normalize_doi, deduplicate
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -256,6 +257,7 @@ def main():
     for p in records:
         if p.get('first_author') and not p.get('author'): p['author']=p['first_author']+' et al. (author list incomplete)'
     sdg_classifier.enrich(records, ROOT/'sdg_report.json', force=os.getenv('FORCE_SDG_REFRESH','').lower()=='true')
+    publication_metadata.enrich(records)
     data['publications']=sorted(records,key=lambda p:(str(p.get('year') or ''),str(p.get('date') or '')),reverse=True)
     with tempfile.NamedTemporaryFile(mode='w',encoding='utf-8',dir=ROOT,delete=False) as f:
         json.dump(data,f,ensure_ascii=False,indent=2); f.write('\n'); tmp=f.name

@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 """Build static academic homepage from bibliography and editorial records."""
-import json, re, shutil, argparse, os
+import json, re, shutil, argparse, os, sys
 from pathlib import Path
 from datetime import date
 from html import escape
 from urllib.parse import urlparse, quote
 if __package__:
+    from .publication_metadata import metadata, top_label, topic_groups
+    from .citation_display import author_html, citation, exports
     from .github_repos import repositories_for_site
     from .publication_records import normalize_doi, valid_doi, deduplicate
 else:
+    sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+    from tools.publication_metadata import metadata, top_label, topic_groups
+    from tools.citation_display import author_html, citation, exports
     from github_repos import repositories_for_site
     from publication_records import normalize_doi, valid_doi, deduplicate
 ROOT=Path(__file__).resolve().parents[1]
@@ -52,8 +57,10 @@ def title_link(p):
     return link(u,p['title']) if u else h(p['title'])
 def actions(p,e,plum=False):
     d=doi(p.get('doi')); aa=[]
-    if d.startswith('10.'): aa.append(link('https://doi.org/'+quote(d,safe='/():;._-'),d,'doi-link'))
-    for key,label in [('wos_link','WoS'),('scopus_link','Scopus'),('trdizin_link','TR Dizin')]:
+    if d.startswith('10.'):
+        u='https://doi.org/'+quote(d,safe='/():;._-')
+        aa.append(f'<a href="{h(u)}" class="doi-link" title="{h(d)}" aria-label="DOI {h(d)}">DOI</a>' if plum else link(u,d,'doi-link'))
+    for key,label in ([] if plum else [('wos_link','WoS'),('scopus_link','Scopus'),('trdizin_link','TR Dizin')]):
         u=web(p.get(key));
         if u: aa.append(link(u,label,'index-link '+key.removesuffix('_link')))
     a=displayed_access(e)
@@ -61,9 +68,39 @@ def actions(p,e,plum=False):
     if web(e.get('video')): aa.append(link(e['video'],'Video overview'))
     if not plum and e.get('repo'): aa.append(link('https://github.com/ekinhaneriskin/'+quote(e['repo'],safe=''),'Research code'))
     if plum and d.startswith('10.'):
-        config=h(json.dumps({'hideWhenEmpty':True,'printSize':'small','popupDirection':'top'},separators=(',',':')))
-        aa.append(f'<span class="plum-holder"><plumx-widget type="artifact" identifier-type="doi" identifier="{h(d)}" display="plumprint" theme="Liberty" config="{config}"></plumx-widget></span>')
+        aa.append(cite_controls(p,metadata(p)))
     return '<div class="actions">'+''.join(aa)+'</div>' if aa else ''
+def plum_widget(p):
+    d=doi(p.get('doi'))
+    if d.startswith('10.'):
+        config=h(json.dumps({'hideWhenEmpty':True,'printSize':'small','popupDirection':'top'},separators=(',',':')))
+        return f'<span class="plum-holder"><plumx-widget type="artifact" identifier-type="doi" identifier="{h(d)}" display="plumprint" theme="Liberty" config="{config}"></plumx-widget></span>'
+    return ''
+def cite_controls(p,m):
+    d=doi(p.get('doi')); formats={'APA-style' if m['crossref'].get('authors') else 'Bibliographic citation':citation(p,m),**exports(p,m)}
+    # Native disclosure works without JS; copy buttons are progressively enhanced.
+    blocks=[]
+    for label,value in formats.items():
+        blocks.append(f'<div class="cite-format"><label>{h(label)}<textarea readonly rows="3">{h(value)}</textarea></label><button type="button" class="btn copy-cite" hidden>Copy {h(label)}</button></div>')
+    if 'BibTeX' not in formats:
+        base='https://api.crossref.org/works/'+quote(d,safe='/')+'/transform/'
+        blocks.append('<div class="cite-downloads">'+link(base+'application/x-bibtex','BibTeX (Crossref)')+' '+link(base+'application/x-research-info-systems','RIS (Crossref)')+'</div>')
+    fwci=m['openalex'].get('fwci'); pct=m['openalex'].get('percentile')
+    if fwci is not None or pct is not None:
+        detail=' · '.join(x for x in (f'FWCI: {fwci:.2f}' if isinstance(fwci,(int,float)) else '',f'Citation percentile: {pct*100:.1f}' if isinstance(pct,(int,float)) else '') if x)
+        blocks.append(f'<p class="cite-metrics">{h(detail)} · OpenAlex ({h(m["openalex"].get("checked_on"))})</p>')
+    return '<details class="cite-details"><summary>Cite</summary><div class="cite-panel">'+''.join(blocks)+'<span class="copy-status" role="status"></span><p class="note">Generated from available bibliographic metadata; verify formatting before submission.</p></div></details>'
+
+def publication_info(p,e,m,badge,indices):
+    oa=m['openalex']; label=top_label(p,m); badges=[badge] if badge else []
+    if label: badges.append(f'<span class="top-cited" title="OpenAlex normalized citation percentile · checked {h(oa.get("checked_on"))}">{h(label)}</span>')
+    for key,name in [('scopus_link','Scopus'),('wos_link','WoS'),('trdizin_link','TR Dizin')]:
+        if web(p.get(key)): badges.append(link(web(p[key]),name,'index-link '+key.removesuffix('_link')))
+    if oa.get('is_oa') is True or paper_access(e) and e.get('access',{}).get('kind')=='publisher_oa':
+        source='OpenAlex · '+str(oa.get('oa_status') or '') if oa.get('is_oa') is True else 'Publisher open access (editorial record)'
+        badges.append(f'<span class="oa-indicator" title="{h(source)}"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0"/></svg> Open Access</span>')
+    return '<div class="record-badges">'+''.join(badges)+'</div>' if badges else ''
+
 def author_metrics_html(m):
     if os.getenv('SHOW_SCOPUS_METRICS','').lower()!='true': return ''
     if not isinstance(m,dict) or m.get('source')!='Scopus API': return ''
@@ -82,7 +119,7 @@ def build():
     pubs=[p for p in deduplicate(pubs) if valid_doi(p.get('doi'))]
     bydoi={p['doi']:p for p in pubs}
     pubs=sorted(pubs,key=lambda p:(str(p.get('year') or '0000'),str(p.get('date') or '')),reverse=True)
-    rows=[]; features=[]
+    rows=[]; features=[]; all_groups=set(); all_types=set()
     for d in dict.fromkeys([*(ed.get('featured') or []), *papers]):
         p=bydoi.get(doi(d)); e=papers.get(doi(d),{})
         if not p or not web(e.get('video')): continue
@@ -97,13 +134,22 @@ def build():
         elif 'scopus' in indices: indices.append('scopus-only')
         else: indices.append('neither')
         citations=p.get('citations'); ci=int(citations) if str(citations).isdigit() else -1
-        search=' '.join(str(p.get(x) or '') for x in ('title','author','journal','doi')).lower()
+        pm=metadata(p); groups=topic_groups(pm); all_groups.update(groups)
+        if pm['type']: all_types.add(pm['type'])
+        search=(' '.join(str(p.get(x) or '') for x in ('title','author','journal','doi'))+' '+ ' '.join(pm['topics']+groups)+' '+ ' '.join(str(a.get('given',''))+' '+str(a.get('family','')) for a in pm['crossref'].get('authors',[]))).lower()
         attr=f'data-order="{k}" data-year="{h(p.get("year"))}" data-title="{h(p["title"])}" data-search="{h(search)}" data-indices="{" ".join(indices)}" data-citations="{ci}" data-wos-citations="{int(p['wos_citations']) if str(p.get('wos_citations','')).isdigit() else -1}"'
+        attr+=f' data-type="{h(pm["type"])}" data-topics="{h(json.dumps(groups,ensure_ascii=False))}"'
         badge=f'<span class="citations-count" title="Scopus citation count" aria-label="Scopus citations: {ci}">Cited: {ci}</span>' if ci>0 and 'scopus' in indices else ''
         ctext=''
         wc=p.get('wos_citations')
         if str(wc).isdigit() and 'wos' in indices: ctext+=f' · WoS citations: {wc}'
-        rows.append(f'<article class="pub" {attr}><div class="year">{h(p.get("year") or "—")}</div><div><div class="pub-heading"><h3>{title_link(p)}</h3>{badge}</div><p>{h(p.get("author") or "Author metadata pending")}</p><p><i>{h(p.get("journal"))}</i>{h(ctext)}</p>{actions(p,e,True)}'+sdg_impact(p)+'</div></article>')
+        volume,issue=pm['volume'],pm['issue']; pages=pm['page']; article=pm['article-number']
+        bibliog=' · '.join(x for x in ('Vol. '+str(volume) if volume else '', 'Issue '+str(issue) if issue else '', 'Article '+str(article) if article else 'pp. '+str(pages) if pages else '') if x)
+        topics=' · '.join([x for x in [pm['type'],*pm['topics'][:2]] if x])
+        topic_html=f'<p class="record-topics">{h(topics)}</p>' if topics else ''
+        impacts=sdg_impact(p)+plum_widget(p)
+        rows.append(f'<article class="pub" {attr}><div class="year">{h(p.get("year") or "—")}</div><div class="pub-body"><div class="pub-heading"><h3>{title_link(p)}</h3></div><p class="record-authors">{author_html(p,pm,h)}</p><p><i>{h(p.get("journal"))}</i>{h(" · "+bibliog if bibliog else "")}{h(ctext)}</p>{topic_html}{publication_info(p,e,pm,badge,indices)}<div class="record-impact">{impacts}</div>{actions(p,e,True)}</div></article>')
+
     metrics=author_metrics_html(m)
     repos=[]
     for r in repositories_for_site(ed, ROOT):
@@ -114,6 +160,8 @@ def build():
     years=''.join(f'<option value="{h(y)}">{h(y)}</option>' for y in sorted({str(p['year']) for p in pubs if p.get('year')},reverse=True))
     meta=raw.get('metadata',{}); update=' '.join(f'{label}: {meta.get(key) or "not yet recorded"}. ' for key,label in [('scopus_publications_as_of','Scopus sync'),('wos_publications_as_of','WoS API sync'),('orcid_as_of','ORCID sync')])
     t=(ROOT/'tools/index.template.html').read_text(); vals={'METRICS':metrics,'FEATURED':''.join(features),'PUBLICATIONS':''.join(rows),'YEARS':years,'COUNT':str(len(pubs)),'REPOSITORIES':''.join(repos),'UPDATE':h(update),'CURRENT_YEAR':str(date.today().year),'FULLTEXT_OPTION':'<option value="fulltext">Author-shared PDF available</option>' if any(displayed_access(papers.get(doi(p.get('doi')),{})) for p in pubs) else '', 'FULLTEXT_NOTE':' Author-shared PDFs are provided only for individually approved versions.' if any(displayed_access(papers.get(doi(p.get('doi')),{})) for p in pubs) else ''}
+    vals['TOPIC_OPTIONS']=''.join(f'<option value="{h(v)}">{h(v)}</option>' for v in sorted(all_groups))
+    vals['TYPE_OPTIONS']=''.join(f'<option value="{h(v)}">{h(v)}</option>' for v in sorted(all_types))
     for k,v in vals.items(): t=t.replace('@@'+k+'@@',v)
     (ROOT/'index.html').write_text(t,encoding='utf-8'); return ed
 
