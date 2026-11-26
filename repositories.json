@@ -1,0 +1,29 @@
+{
+  "owner": "ekinhaneriskin",
+  "repositories": [
+    {
+      "name": "beraygecescale",
+      "description": "Reusable triangular/barycentric survey scale interface for gender perception and compositional response studies.",
+      "language": "JavaScript",
+      "archived": false
+    },
+    {
+      "name": "DBMR-Roundabout-Reliability",
+      "description": "Reproducible SUMO framework and data for dynamic behavioral adaptation, congestion collapse, and reliability analysis at oversaturated roundabouts.",
+      "language": "Python",
+      "archived": false
+    },
+    {
+      "name": "ltppcompositepavementmodeling",
+      "description": "Mechanics-inspired feature engineering and A3 model-selection pipeline for LTPP-based AC–PCC composite pavement deterioration prediction.",
+      "language": "Jupyter Notebook",
+      "archived": false
+    },
+    {
+      "name": "turkiye-traffic-safety-geodemography",
+      "description": "",
+      "language": "Jupyter Notebook",
+      "archived": false
+    }
+  ]
+}
