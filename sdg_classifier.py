@@ -6,13 +6,16 @@ from urllib.parse import quote
 from html import unescape
 import requests
 
-VERSION = 'openalex-aurora-v2'
+VERSION = 'openalex-aurora-v3'
 MODELS = ('aurora-sdg-multi', 'elsevier-sdg-multi')
 AURORA_THRESHOLD = .80
 CACHE_DAYS = 90
 REVIEW_DAYS = 30
 ERROR_DAYS = 1
-class SDGError(Exception): pass
+class SDGError(Exception):
+    def __init__(self,message,status=None):
+        super().__init__(message)
+        self.status=status
 
 def doi(value):
     return re.sub(r'^(?:https?://(?:dx\.)?doi\.org/|doi:\s*)','',str(value or '').strip(),flags=re.I).lower()
@@ -40,7 +43,7 @@ def request_json(method,url,**kwargs):
         r.raise_for_status(); return r.json()
     except requests.RequestException as e:
         status=getattr(getattr(e,'response',None),'status_code',None)
-        raise SDGError(f'{url.split("/")[2]}: HTTP {status}' if status else f'{url.split("/")[2]}: {type(e).__name__}') from None
+        raise SDGError(f'{url.split("/")[2]}: HTTP {status}' if status else f'{url.split("/")[2]}: {type(e).__name__}',status) from None
     except ValueError: raise SDGError(f'{url.split("/")[2]}: invalid JSON') from None
 
 def abstract_from_index(idx):
@@ -53,7 +56,19 @@ def abstract_from_index(idx):
     return ' '.join(words[i] for i in sorted(words))
 
 def openalex(d,key):
-    obj=request_json('GET','https://api.openalex.org/works/https://doi.org/'+quote(d,safe='/'),headers={'Authorization':'Bearer '+key,'Accept':'application/json'},params={'select':'doi,title,abstract_inverted_index,sustainable_development_goals'})
+    base='https://api.openalex.org/works'
+    fields='doi,title,abstract_inverted_index,sustainable_development_goals'
+    headers={'Accept':'application/json'}
+    params={'api_key':key,'select':fields}
+    try:
+        obj=request_json('GET',base+'/https://doi.org/'+quote(d,safe='/'),headers=headers,params=params)
+    except SDGError as e:
+        if e.status not in (400,404): raise
+        # Exact DOI filter is an alternative to the single-work DOI route.
+        result=request_json('GET',base,headers=headers,params={'api_key':key,'filter':'doi:https://doi.org/'+d,'per_page':10,'select':fields})
+        matches=[x for x in result.get('results',[]) if isinstance(x,dict) and doi(x.get('doi'))==d] if isinstance(result,dict) else []
+        if len(matches)!=1: raise SDGError('OpenAlex: no unique exact DOI match',404)
+        obj=matches[0]
     if not isinstance(obj,dict) or doi(obj.get('doi'))!=d: raise SDGError('OpenAlex DOI identity mismatch')
     vals=obj.get('sustainable_development_goals')
     if not isinstance(vals,list): raise SDGError('OpenAlex SDG field missing or invalid')
@@ -131,10 +146,14 @@ def classify(p,key,force=False,today=None):
         except (KeyError,TypeError,ValueError): pass
     if not key: return 'missing_key'
     if not p.get('title'): return 'missing_title'
-    errors=[]; oa={}; abstract=''; results={}
+    errors=[]; oa={}; abstract=''; results={}; oa_status='no_doi'
     if re.fullmatch(r'10\.\d{4,9}/\S+',d):
-        try: oa,abstract=openalex(d,key)
-        except SDGError as e: errors.append(str(e))
+        try:
+            oa,abstract=openalex(d,key)
+            oa_status='labels_found' if oa else 'no_labels'
+        except SDGError as e:
+            oa_status='not_found' if e.status==404 else 'authentication_error' if e.status in (401,403) else 'rate_limited' if e.status==429 else 'error'
+            errors.append(str(e))
     abstract_source='OpenAlex' if abstract else None
     if not abstract and re.fullmatch(r'10\.\d{4,9}/\S+',d):
         try:
@@ -163,7 +182,7 @@ def classify(p,key,force=False,today=None):
         p['sdg']=applied_now; p['sdg_source']='OpenAlex / Aurora'; p['sdg_manual']=False
     applied=goals(p.get('sdg'))
     status='manual' if locked else 'classified' if selected else 'review' if candidates or not abstract or errors or applied else 'no_consensus'
-    p['sdg_classification']={'version':VERSION,'identity':identity,'checked_on':stamp,'input':'title+abstract' if abstract else 'title only','abstract_source':abstract_source,'status':status,'openalex':{str(k):v for k,v in sorted(oa.items())},'aurora':{m:{str(k):v for k,v in sorted(r.items())} for m,r in results.items()},'recommended':selected,'recommended_sources':provenance,'review_candidates':sorted(set(candidates)-set(selected)),'applied':applied,'errors':errors}
+    p['sdg_classification']={'version':VERSION,'identity':identity,'checked_on':stamp,'input':'title+abstract' if abstract else 'title only','abstract_source':abstract_source,'status':status,'openalex_status':oa_status,'openalex':{str(k):v for k,v in sorted(oa.items())},'aurora':{m:{str(k):v for k,v in sorted(r.items())} for m,r in results.items()},'recommended':selected,'recommended_sources':provenance,'review_candidates':sorted(set(candidates)-set(selected)),'applied':applied,'errors':errors}
     # Preserve automatic ownership even after an unsuccessful attempt with no sdg field.
     return status
 
@@ -173,10 +192,27 @@ def enrich(records,report_path,force=False):
     for p in records:
         result=classify(p,key,force=force) if key else 'missing_key'
         counts[result]=counts.get(result,0)+1
-    report={'method':VERSION,'thresholds':{'OpenAlex':'published labels as returned','Aurora_both_models':AURORA_THRESHOLD},'counts':counts,'papers':[]}
+    report={'method':VERSION,'thresholds':{'OpenAlex':'published labels as returned','Aurora_both_models':AURORA_THRESHOLD},'counts':counts,'openalex_key_configured':bool(key),'openalex_counts':{},'papers':[]}
     for p in records:
-        report['papers'].append({'title':p.get('title'),'doi':doi(p.get('doi')),'displayed_sdgs':goals(p.get('sdg')),'manual':manual(p),'classification':p.get('sdg_classification')})
+        c=p.get('sdg_classification') or {}
+        state=c.get('openalex_status','not_checked') if key else 'missing_key'
+        report['openalex_counts'][state]=report['openalex_counts'].get(state,0)+1
+        report['papers'].append({'title':p.get('title'),'doi':doi(p.get('doi')),'displayed_sdgs':goals(p.get('sdg')),'manual':manual(p),'openalex_status':state,'classification':c})
     Path(report_path).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print('SDG summary: '+json.dumps(counts,sort_keys=True))
+    print('OpenAlex lookup summary: '+json.dumps(report['openalex_counts'],sort_keys=True))
     if not key: print('WARNING: OPENALEX_API_KEY missing; SDG enrichment skipped.')
+    # The Actions summary is visible even without downloading the JSON artifact.
+    summary=os.getenv('GITHUB_STEP_SUMMARY')
+    if summary:
+        with open(summary,'a',encoding='utf-8') as f:
+            f.write('\n## SDG classification diagnostics\n\n')
+            f.write('OpenAlex key configured: **'+('yes' if key else 'NO')+'**\n\n')
+            f.write('| DOI | OpenAlex status | OpenAlex goals | Displayed goals | Manual override |\n|---|---|---|---|---|\n')
+            for row in report['papers']:
+                c=row['classification']; d=row['doi'].replace('|','%7C').replace('\n',' ')
+                found=', '.join(sorted(c.get('openalex',{}),key=int)) or '—'
+                shown=', '.join(map(str,row['displayed_sdgs'])) or '—'
+                f.write(f"| {d or 'No DOI'} | {row['openalex_status']} | {found} | {shown} | {'yes' if row['manual'] else 'no'} |\n")
+            f.write('\nSee sdg-classification-report for per-paper errors and Aurora results.\n')
     return counts

@@ -17,7 +17,7 @@ class SDGTests(unittest.TestCase):
         fixture={'doi':'https://doi.org/10.1234/a','sustainable_development_goals':[{'id':'https://openalex.org/sdgs/12','score':.91}], 'abstract_inverted_index':{'reuse':[0]}}
         with patch.object(s,'request_json',return_value=fixture) as req:
             self.assertEqual(s.openalex('10.1234/a','test-key'),({12:.91},'reuse'))
-            self.assertEqual(req.call_args.kwargs['headers']['Authorization'],'Bearer test-key')
+            self.assertEqual(req.call_args.kwargs['params']['api_key'],'test-key')
         with patch.object(s,'request_json',return_value=fixture):
             with self.assertRaises(s.SDGError): s.openalex('10.1234/other','test-key')
     def test_consensus_and_cache(self):
@@ -70,3 +70,17 @@ class SDGTests(unittest.TestCase):
         p=self.paper(); self.assertEqual(s.classify(p,''),'missing_key'); self.assertNotIn('sdg',p)
         html=b.sdg_impact({'sdg':[12],'sdg_source':'OpenAlex + Aurora','sdg_manual':False})
         self.assertIn('OpenAlex + Aurora (automated classification)',html); self.assertIn('<img',html)
+
+    def test_openalex_exact_doi_fallback(self):
+        fixture={'doi':'https://doi.org/10.1234/a','sustainable_development_goals':[{'id':'https://openalex.org/sdgs/9','score':.45}]}
+        with patch.object(s,'request_json',side_effect=[s.SDGError('HTTP 404',404),{'results':[fixture]}]) as req:
+            self.assertEqual(s.openalex('10.1234/a','key'),({9:.45},''))
+            self.assertEqual(req.call_args.kwargs['params']['filter'],'doi:https://doi.org/10.1234/a')
+    def test_openalex_error_status(self):
+        p=self.paper()
+        with patch.object(s,'openalex',side_effect=s.SDGError('HTTP 401',401)),patch.object(s,'crossref_abstract',return_value=''),patch.object(s,'aurora',side_effect=s.SDGError('unavailable')):
+            s.classify(p,'key'); self.assertEqual(p['sdg_classification']['openalex_status'],'authentication_error')
+    def test_openalex_no_labels_status(self):
+        p=self.paper()
+        with patch.object(s,'openalex',return_value=({},'abstract')),patch.object(s,'aurora',return_value={}):
+            s.classify(p,'key'); self.assertEqual(p['sdg_classification']['openalex_status'],'no_labels')

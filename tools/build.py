@@ -57,7 +57,7 @@ def actions(p,e,plum=False):
     a=displayed_access(e)
     if a: aa.append(link(a[0],a[1],'full')); aa.append(f'<span class="license">{h(a[2])}</span>')
     if web(e.get('video')): aa.append(link(e['video'],'Video overview'))
-    if e.get('repo'): aa.append(link('https://github.com/ekinhaneriskin/'+quote(e['repo'],safe=''),'Research code'))
+    if not plum and e.get('repo'): aa.append(link('https://github.com/ekinhaneriskin/'+quote(e['repo'],safe=''),'Research code'))
     if plum and d.startswith('10.'):
         config=h(json.dumps({'hideWhenEmpty':True,'printSize':'small','popupDirection':'top'},separators=(',',':')))
         aa.append(f'<span class="plum-holder"><plumx-widget type="artifact" identifier-type="doi" identifier="{h(d)}" display="plumprint" theme="Liberty" config="{config}"></plumx-widget></span>')
@@ -79,9 +79,9 @@ def build():
     raw=json.loads((ROOT/'publications.json').read_text()); ed=json.loads((ROOT/'editorial.json').read_text()); raw=raw if isinstance(raw,dict) else {'publications':raw,'metrics':{}}; pubs=list(raw['publications']); papers=ed['papers']; m=raw.get('metrics',{}); existing={doi(p.get('doi')) for p in pubs if p.get('doi')}; pubs.extend({'doi':d,**e['bibliography']} for d,e in papers.items() if e.get('bibliography') and doi(d) not in existing); bydoi={doi(p.get('doi')):p for p in pubs if p.get('doi')}
     pubs=sorted(pubs,key=lambda p:(str(p.get('year') or '0000'),str(p.get('date') or '')),reverse=True)
     rows=[]; features=[]
-    for d in ed['featured']:
+    for d in dict.fromkeys([*(ed.get('featured') or []), *papers]):
         p=bydoi.get(doi(d)); e=papers.get(doi(d),{})
-        if not p: continue
+        if not p or not web(e.get('video')): continue
         features.append(f'<article class="feature"><span class="tag">{h(e.get("topic","Research"))}</span><h3>{title_link(p)}</h3><p>{h(e.get("summary"))}</p><div class="meta">{h(p.get("journal"))} · {h(p.get("year"))}</div>{actions(p,e)}{sdg_impact(p)}</article>')
     for k,p in enumerate(pubs):
         d=doi(p.get('doi')); e=papers.get(d,{}); indices=[]
@@ -95,11 +95,12 @@ def build():
         citations=p.get('citations'); ci=int(citations) if str(citations).isdigit() else -1
         search=' '.join(str(p.get(x) or '') for x in ('title','author','journal','doi')).lower()
         attr=f'data-order="{k}" data-year="{h(p.get("year"))}" data-title="{h(p["title"])}" data-search="{h(search)}" data-indices="{" ".join(indices)}" data-citations="{ci}" data-wos-citations="{int(p['wos_citations']) if str(p.get('wos_citations','')).isdigit() else -1}"'
-        ctext=f' · Scopus citations: {ci}' if ci>=0 and 'scopus' in indices else ''
+        badge=f'<span class="citations-count" title="Scopus citation count" aria-label="Scopus citations: {ci}">Cited: {ci}</span>' if ci>0 and 'scopus' in indices else ''
+        ctext=''
         wc=p.get('wos_citations')
         if str(wc).isdigit() and 'wos' in indices: ctext+=f' · WoS citations: {wc}'
         if p.get('wos_source')=='ORCID (record identifier)': ctext+=' · WoS identifier via ORCID'
-        rows.append(f'<article class="pub" {attr}><div class="year">{h(p.get("year") or "—")}</div><div><h3>{title_link(p)}</h3><p>{h(p.get("author") or "Author metadata pending")}</p><p><i>{h(p.get("journal"))}</i>{h(ctext)}</p>{actions(p,e,True)}'+sdg_impact(p)+'</div></article>')
+        rows.append(f'<article class="pub" {attr}><div class="year">{h(p.get("year") or "—")}</div><div><div class="pub-heading"><h3>{title_link(p)}</h3>{badge}</div><p>{h(p.get("author") or "Author metadata pending")}</p><p><i>{h(p.get("journal"))}</i>{h(ctext)}</p>{actions(p,e,True)}'+sdg_impact(p)+'</div></article>')
     metrics=author_metrics_html(m)
     repos=[]
     for r in repositories_for_site(ed, ROOT):
