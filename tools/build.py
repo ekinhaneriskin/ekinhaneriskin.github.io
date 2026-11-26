@@ -73,7 +73,7 @@ def actions(p,e,plum=False):
 def plum_widget(p):
     d=doi(p.get('doi'))
     if d.startswith('10.'):
-        config=h(json.dumps({'hideWhenEmpty':True,'printSize':'small','popupDirection':'top'},separators=(',',':')))
+        config=h(json.dumps({'hideWhenEmpty':True,'printSize':'medium','popupDirection':'top'},separators=(',',':')))
         return f'<span class="plum-holder"><plumx-widget type="artifact" identifier-type="doi" identifier="{h(d)}" display="plumprint" theme="Liberty" config="{config}"></plumx-widget></span>'
     return ''
 def cite_controls(p,m):
