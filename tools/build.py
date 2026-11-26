@@ -7,11 +7,13 @@ from html import escape
 from urllib.parse import urlparse, quote
 if __package__:
     from .github_repos import repositories_for_site
+    from .publication_records import normalize_doi, valid_doi, deduplicate
 else:
     from github_repos import repositories_for_site
+    from publication_records import normalize_doi, valid_doi, deduplicate
 ROOT=Path(__file__).resolve().parents[1]
 def h(s): return escape(str(s or ''),quote=True)
-def doi(s): return re.sub(r'^(?:https?://(?:dx\.)?doi\.org/|doi:\s*)','',str(s or '').strip(),flags=re.I).lower()
+def doi(s): return normalize_doi(s)
 def web(s):
     p=urlparse(str(s or '')); return str(s) if p.scheme=='https' and p.netloc and not p.username and not p.password else ''
 def link(url,label,cls=''):
@@ -76,7 +78,9 @@ def author_metrics_html(m):
     source=link('https://www.scopus.com/authid/detail.uri?authorId=57039193000','Scopus author profile')
     return f'<section class="metrics" aria-label="Scopus research metrics">{stats}<p class="metric-note">{source} · Updated {h(stamp.isoformat())}</p></section>'
 def build():
-    raw=json.loads((ROOT/'publications.json').read_text()); ed=json.loads((ROOT/'editorial.json').read_text()); raw=raw if isinstance(raw,dict) else {'publications':raw,'metrics':{}}; pubs=list(raw['publications']); papers=ed['papers']; m=raw.get('metrics',{}); existing={doi(p.get('doi')) for p in pubs if p.get('doi')}; pubs.extend({'doi':d,**e['bibliography']} for d,e in papers.items() if e.get('bibliography') and doi(d) not in existing); bydoi={doi(p.get('doi')):p for p in pubs if p.get('doi')}
+    raw=json.loads((ROOT/'publications.json').read_text()); ed=json.loads((ROOT/'editorial.json').read_text()); raw=raw if isinstance(raw,dict) else {'publications':raw,'metrics':{}}; pubs=list(raw['publications']); papers=ed['papers']; m=raw.get('metrics',{}); existing={doi(p.get('doi')) for p in pubs if p.get('doi')}; pubs.extend({'doi':d,**e['bibliography']} for d,e in papers.items() if e.get('bibliography') and doi(d) not in existing)
+    pubs=[p for p in deduplicate(pubs) if valid_doi(p.get('doi'))]
+    bydoi={p['doi']:p for p in pubs}
     pubs=sorted(pubs,key=lambda p:(str(p.get('year') or '0000'),str(p.get('date') or '')),reverse=True)
     rows=[]; features=[]
     for d in dict.fromkeys([*(ed.get('featured') or []), *papers]):

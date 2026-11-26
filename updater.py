@@ -6,6 +6,7 @@ from pathlib import Path
 from urllib.parse import quote
 import requests
 import sdg_classifier
+from tools.publication_records import normalize_doi, deduplicate
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 ROOT=Path(__file__).resolve().parent
@@ -29,7 +30,7 @@ def scopus(url,params=None):
     headers={'Accept':'application/json','X-ELS-APIKey':KEY}
     if TOKEN: headers['X-ELS-Insttoken']=TOKEN
     return get(url,params,headers)
-def clean_doi(x): return re.sub(r'^(?:https?://(?:dx\.)?doi\.org/|doi:\s*)','',str(x or '').strip(),flags=re.I).lower()
+def clean_doi(x): return normalize_doi(x)
 def norm(x): return ''.join(c for c in unicodedata.normalize('NFKC',str(x or '')).casefold() if c.isalnum())
 def number(x):
     if isinstance(x,dict): x=x.get('$')
@@ -216,7 +217,7 @@ def main():
     # Refuse to silently replace an invalid archive.
     data=json.loads(PATH.read_text(encoding='utf-8'))
     if isinstance(data,list): data={'metrics':{},'publications':data}
-    records=data['publications']; meta=data.setdefault('metadata',{}); errors=[]
+    original=data['publications']; records=deduplicate(original); removed=len(original)-len(records); meta=data.setdefault('metadata',{}); errors=[]
     # Editorial metadata keeps explicitly selected papers visible before index discovery.
     editorial=json.loads((ROOT/'editorial.json').read_text(encoding='utf-8'))
     merge(records,[{'doi':d,**e['bibliography']} for d,e in editorial.get('papers',{}).items() if e.get('bibliography')])
@@ -243,6 +244,10 @@ def main():
         except FetchError as e: errors.append('WoS: '+str(e))
     else:
         print('INFO: WoS direct synchronization not configured (WOS_API_KEY); ORCID fallback remains active.')
+    before=len(records)
+    records=deduplicate(records)
+    removed+=before-len(records)
+    print(f'Duplicate DOI records consolidated: {removed}')
     for p in records:
         if (not p.get('author') or p.get('author','').endswith('(author list incomplete)')) and p.get('doi'):
             try: crossref(p)
