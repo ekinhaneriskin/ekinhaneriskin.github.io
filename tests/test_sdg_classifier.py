@@ -84,3 +84,23 @@ class SDGTests(unittest.TestCase):
         p=self.paper()
         with patch.object(s,'openalex',return_value=({},'abstract')),patch.object(s,'aurora',return_value={}):
             s.classify(p,'key'); self.assertEqual(p['sdg_classification']['openalex_status'],'no_labels')
+
+    def test_real_openalex_un_metadata_identifiers(self):
+        fixture={'doi':'https://doi.org/10.1234/a','sustainable_development_goals':[
+            {'id':'https://metadata.un.org/sdg/9','score':.84,'display_name':'Industry, innovation and infrastructure'},
+            {'id':'http://metadata.un.org/sdg/12','score':.71,'display_name':'Responsible consumption and production'}],
+            'abstract_inverted_index':{'pavement':[0]}}
+        with patch.object(s,'request_json',return_value=fixture):
+            self.assertEqual(s.openalex('10.1234/a','key'),({9:.84,12:.71},'pavement'))
+        self.assertIsNone(s.goal('https://metadata.un.org/sdg/9.4'))
+
+    def test_real_aurora_jsonld_predictions(self):
+        def pred(code,value,kind='Goal'):
+            return {'prediction':value,'sdg':{'@type':'sdg','id':'http://metadata.un.org/sdg/'+code,'code':code,'type':kind,'label':'Goal '+code}}
+        fixture={'@self':'example','text':'test','model':'aurora-sdg-multi','predictions':[pred('9',.91),pred('12',.83),pred('11',.04),pred('9.4',.99,'Target')]}
+        self.assertEqual(s.aurora_scores(fixture),{9:.91,12:.83,11:.04})
+
+    def test_doi_mismatch_falls_back_to_exact_filter(self):
+        fixture={'doi':'https://doi.org/10.1234/a','sustainable_development_goals':[{'id':'https://metadata.un.org/sdg/9','score':.85}]}
+        with patch.object(s,'request_json',side_effect=[dict(fixture,doi='https://doi.org/10.1234/other'),{'results':[fixture]}]):
+            self.assertEqual(s.openalex('10.1234/a','key'),({9:.85},''))

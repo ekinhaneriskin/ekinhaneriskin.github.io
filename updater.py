@@ -222,13 +222,17 @@ def main():
     merge(records,[{'doi':d,**e['bibliography']} for d,e in editorial.get('papers',{}).items() if e.get('bibliography')])
     try:
         new=fetch_publications(); merge(records,new); meta['scopus_publications_as_of']=TODAY; print(f'Scopus: {len(new)} records retrieved.')
-    except FetchError as e: errors.append(str(e))
-    try: refresh_author_metrics(data)
-    except FetchError as e: errors.append(str(e))
+    except FetchError as e: errors.append('Scopus publications: '+str(e))
+    if os.getenv('SHOW_SCOPUS_METRICS','').lower()=='true':
+        try: refresh_author_metrics(data)
+        except FetchError as e: errors.append('Scopus author metrics: '+str(e))
+    else:
+        data.pop('metrics',None)
+        print('INFO: Scopus author metrics disabled; optional API request skipped.')
     try:
         merge_orcid(records,orcid_records()); meta['orcid_as_of']=TODAY
         print('ORCID: matched publications enriched; WoS-identified new records imported.')
-    except FetchError as e: errors.append(str(e))
+    except FetchError as e: errors.append('ORCID: '+str(e))
     if WOS_KEY:
         try:
             new=fetch_wos_publications()
@@ -236,7 +240,7 @@ def main():
             print(f'WoS: {len(new)} author-identifier records retrieved.')
             wos_backfill(records)
             meta['wos_publications_as_of']=TODAY
-        except FetchError as e: errors.append(str(e))
+        except FetchError as e: errors.append('WoS: '+str(e))
     else:
         print('INFO: WoS direct synchronization not configured (WOS_API_KEY); ORCID fallback remains active.')
     for p in records:
@@ -252,6 +256,11 @@ def main():
         json.dump(data,f,ensure_ascii=False,indent=2); f.write('\n'); tmp=f.name
     os.replace(tmp,PATH)
     for error in errors: print('WARNING:',error)
+    summary=os.getenv('GITHUB_STEP_SUMMARY')
+    if summary:
+        with open(summary,'a',encoding='utf-8') as f:
+            f.write('\n## Publication source synchronization\n\n')
+            f.write('\n'.join('- '+e.replace('\n',' ') for e in errors)+'\n' if errors else 'No publication source errors reported.\n')
     print(f'{len(records)} total records preserved.')
     return 2 if errors else 0
 if __name__=='__main__': sys.exit(main())

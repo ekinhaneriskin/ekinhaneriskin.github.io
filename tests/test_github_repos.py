@@ -39,3 +39,10 @@ class GithubRepositoriesTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp); session=Mock(); session.get.return_value=response([])
             self.assertTrue(g.refresh(root,session)); self.assertEqual(g.repositories_for_site({'repositories':[{'name':'study'}]},root),[])
+
+    def test_timeout_then_success(self):
+        from unittest.mock import patch
+        session=Mock(); session.get.side_effect=[requests.Timeout(),response([record('study')])]
+        with patch.object(g.time,'sleep'):
+            self.assertEqual([r['name'] for r in g.fetch_public_repositories(session)],['study'])
+            self.assertEqual(session.get.call_count,2)

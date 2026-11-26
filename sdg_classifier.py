@@ -6,7 +6,7 @@ from urllib.parse import quote
 from html import unescape
 import requests
 
-VERSION = 'openalex-aurora-v3'
+VERSION = 'openalex-aurora-v4'
 MODELS = ('aurora-sdg-multi', 'elsevier-sdg-multi')
 AURORA_THRESHOLD = .80
 CACHE_DAYS = 90
@@ -22,7 +22,7 @@ def doi(value):
 
 def goal(value):
     if isinstance(value,bool): return None
-    m = re.fullmatch(r'(?:https?://openalex\.org/sdgs/|SDG[ _-]*|Goal[ _-]*)?0*([1-9]|1[0-7])',str(value or '').strip(),re.I)
+    m = re.fullmatch(r'(?:https?://(?:openalex\.org/sdgs/|metadata\.un\.org/sdg/)|SDG[ _-]*|Goal[ _-]*)?0*([1-9]|1[0-7])',str(value or '').strip(),re.I)
     return int(m.group(1)) if m else None
 
 def score(value,percent=False):
@@ -62,21 +62,23 @@ def openalex(d,key):
     params={'api_key':key,'select':fields}
     try:
         obj=request_json('GET',base+'/https://doi.org/'+quote(d,safe='/'),headers=headers,params=params)
+        if not isinstance(obj,dict) or doi(obj.get('doi'))!=d:
+            # A redirected/merged work may carry another DOI; never attribute its labels blindly.
+            raise SDGError('OpenAlex DOI identity mismatch',404)
     except SDGError as e:
         if e.status not in (400,404): raise
-        # Exact DOI filter is an alternative to the single-work DOI route.
         result=request_json('GET',base,headers=headers,params={'api_key':key,'filter':'doi:https://doi.org/'+d,'per_page':10,'select':fields})
         matches=[x for x in result.get('results',[]) if isinstance(x,dict) and doi(x.get('doi'))==d] if isinstance(result,dict) else []
         if len(matches)!=1: raise SDGError('OpenAlex: no unique exact DOI match',404)
         obj=matches[0]
-    if not isinstance(obj,dict) or doi(obj.get('doi'))!=d: raise SDGError('OpenAlex DOI identity mismatch')
     vals=obj.get('sustainable_development_goals')
     if not isinstance(vals,list): raise SDGError('OpenAlex SDG field missing or invalid')
     out={}
     for item in vals:
         if not isinstance(item,dict): raise SDGError('OpenAlex SDG item invalid')
         n=goal(item.get('id')); s=score(item.get('score'))
-        if n is None or s is None: raise SDGError('OpenAlex SDG score invalid')
+        if n is None: raise SDGError('OpenAlex SDG identifier unrecognized')
+        if s is None: raise SDGError('OpenAlex SDG score invalid')
         out[n]=s
     return out,abstract_from_index(obj.get('abstract_inverted_index'))
 
@@ -116,7 +118,19 @@ def aurora_scores(obj):
             for k,v in x.items():
                 if goal(k) is not None: put(k,v)
                 elif k in ('results','result','predictions','prediction','scores','probabilities','sdgs','SDGs','goals','data','classification','classifications','labels','output','predicted_labels','prediction_results'): walk(v)
-    walk(obj)
+    # Actual Aurora JSON-LD contract: predictions[i].prediction and
+    # predictions[i].sdg.{id,code,type}. Do not mistake targets for goals.
+    if isinstance(obj,dict) and isinstance(obj.get('predictions'),list):
+        for row in obj['predictions']:
+            if not isinstance(row,dict) or not isinstance(row.get('sdg'),dict): continue
+            sdg=row['sdg']
+            if sdg.get('type') not in (None,'Goal'): continue
+            n=goal(sdg.get('id'))
+            code=goal(sdg.get('code'))
+            if n is None or (sdg.get('code') is not None and code!=n): continue
+            v=score(row.get('prediction'))
+            if v is not None: out[n]=max(v,out.get(n,0))
+    if not out: walk(obj)
     if not out:
         shape = ', '.join(str(k)[:40] for k in list(obj)[:12]) if isinstance(obj,dict) else type(obj).__name__
         raise SDGError('Aurora response has no recognized goal-score pairs; top-level schema: '+shape)

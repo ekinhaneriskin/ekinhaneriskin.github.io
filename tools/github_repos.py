@@ -2,6 +2,7 @@
 """Refresh a public-only repository snapshot for static site builds."""
 import json
 import re
+import time
 from pathlib import Path
 from urllib.parse import quote
 import requests
@@ -26,9 +27,17 @@ def fetch_public_repositories(session=requests):
     endpoint = f'https://api.github.com/users/{OWNER}/repos'
     result = {}
     for page in range(1, 101):
-        response = session.get(endpoint, params={'type':'owner','per_page':100,'page':page,'sort':'full_name','direction':'asc'},
-                               headers={'Accept':'application/vnd.github+json','User-Agent':'academic-website-repository-sync'}, timeout=30)
-        response.raise_for_status()
+        for attempt in range(3):
+            try:
+                response = session.get(endpoint, params={'type':'owner','per_page':100,'page':page,'sort':'full_name','direction':'asc'},
+                                       headers={'Accept':'application/vnd.github+json','User-Agent':'academic-website-repository-sync'}, timeout=(10,45))
+                response.raise_for_status()
+                break
+            except (requests.Timeout, requests.ConnectionError, requests.HTTPError) as exc:
+                status=getattr(getattr(exc,'response',None),'status_code',None)
+                retryable=isinstance(exc,(requests.Timeout,requests.ConnectionError)) or status in (429,500,502,503,504)
+                if not retryable or attempt==2: raise
+                time.sleep(2**attempt)
         records = response.json()
         if not isinstance(records, list):
             raise ValueError('GitHub response is not a repository list')
